@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "653744739271",
+    "firebase_url": "https://golang-b564c.firebaseio.com",
+    "project_id": "golang-b564c",
+    "storage_bucket": "golang-b564c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653744739271:android:aa874b1faa7729fa",
+        "android_client_info": {
+          "package_name": "com.example.fauza.golang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653744739271-tubr6m8nil2s22q5c13c9ovcqkajvkkj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fauza.golang",
+            "certificate_hash": "a0b63657ece7b1c22678efb42103bed428a2caaf"
+          }
+        },
+        {
+          "client_id": "653744739271-dl3vks7lnthcp1egvarlob3mlvlgubj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6mp_0tXwofAyRERI7edH2TiJLYnIKcAg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653744739271-dl3vks7lnthcp1egvarlob3mlvlgubj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
