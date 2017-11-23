@@ -18,6 +18,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editTextPassword;
     private Button buttonLogin;
     private TextView textViewForgetPassword;
+    private TextView textViewSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword = findViewById(R.id.editText_password);
         buttonLogin = findViewById(R.id.button_login);
         textViewForgetPassword = findViewById(R.id.textView_forget_password);
+        textViewSignUp = findViewById(R.id.textView_sign_up);
 
         editTextEmail.addTextChangedListener(this);
         editTextPassword.addTextChangedListener(this);
@@ -50,6 +52,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.textView_forget_password:
                 //to do forget password
+                break;
+            case R.id.textView_sign_up:
+                //to do intent DaftarActivity
                 break;
         }
     }

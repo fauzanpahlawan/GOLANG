@@ -2,12 +2,21 @@ package com.example.fauza.golang;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class DaftarActivity extends AppCompatActivity implements View.OnClickListener {
@@ -17,10 +26,16 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editTextPassword;
     private Button buttonSignUp;
 
+    private FirebaseAuth mAuth;
+
+    private String TAG = "EmailPassword";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
         setContentView(R.layout.activity_daftar);
+
+        mAuth = FirebaseAuth.getInstance();
 
         editTextName = findViewById(R.id.editText_name);
         editTextMobileNumber = findViewById(R.id.editText_mobile_number);
@@ -46,10 +61,40 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                 } else if (isEmpty(this.editTextPassword)) {
                     this.editTextPassword.setError("Required.");
                 } else {
-                    //to do sign up
+                    String email = this.editTextEmail.getText().toString();
+                    String password = this.editTextPassword.getText().toString();
+                    createAccount(email, password);
+
                 }
                 break;
         }
+    }
+
+    private void createAccount(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(DaftarActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    private void updateUI(FirebaseUser user) {
+        //to do intent HomeActivity
     }
 
     private boolean isEmpty(EditText editText) {

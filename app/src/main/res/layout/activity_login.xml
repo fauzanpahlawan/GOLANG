@@ -69,5 +69,32 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/forget_password" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView_sign_up_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="end"
+                android:text="Not yet a member? "
+                android:textAlignment="textEnd" />
+
+            <TextView
+                android:id="@+id/textView_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:gravity="start"
+                android:text="Sign Up"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/holo_blue_dark" />
+        </LinearLayout>
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
