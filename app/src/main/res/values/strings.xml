@@ -6,9 +6,10 @@
     <string name="password">Password</string>
     <string name="logo_golang">Logo GOLANG</string>
     <string name="sign_in">Sign In</string>
+    <string name="sign_in_process">Signing in ...</string>
     <string name="sign_out">Sign Out</string>
-    <string name="log_out">Log out</string>
     <string name="forget_password">Forget password?</string>
     <string name="not_yet_a_member">Not yet a member? </string>
     <string name="create_an_account">Create an Account</string>
+    <string name="create_an_account_progress">Creating account ...</string>
 </resources>

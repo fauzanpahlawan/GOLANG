@@ -1,5 +1,6 @@
 package com.example.fauza.golang;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,7 +24,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editTextMobileNumber;
     private EditText editTextEmail;
     private EditText editTextPassword;
-    private Button buttonSignUp;
+    private Button buttonCreateAnAccount;
 
     //START check current auth state
     private FirebaseAuth mAuth;
@@ -44,25 +45,15 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         editTextMobileNumber = findViewById(R.id.editText_mobile_number);
         editTextEmail = findViewById(R.id.editText_email);
         editTextPassword = findViewById(R.id.editText_password);
-        buttonSignUp = findViewById(R.id.button_sign_up);
+        buttonCreateAnAccount = findViewById(R.id.button_create_an_account);
 
-        buttonSignUp.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            updateUI(currentUser);
-        }
+        buttonCreateAnAccount.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_sign_up:
+            case R.id.button_create_an_account:
                 if (isEmpty(this.editTextName)) {
                     this.editTextName.setError("Required.");
                 } else if (isEmpty(this.editTextMobileNumber)) {
@@ -74,6 +65,8 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                 } else if (isEmpty(this.editTextPassword)) {
                     this.editTextPassword.setError("Required.");
                 } else {
+                    this.buttonCreateAnAccount.setClickable(false);
+                    this.buttonCreateAnAccount.setText(R.string.create_an_account_progress);
                     String email = this.editTextEmail.getText().toString();
                     String password = this.editTextPassword.getText().toString();
                     createAccount(email, password);
@@ -92,30 +85,29 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            explicitIntent(DaftarActivity.this, HomeActivity.class);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(DaftarActivity.this, "Authentication failed.",
+                            Toast.makeText(DaftarActivity.this, "Creating an account failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            buttonCreateAnAccount.setText(R.string.create_an_account);
+                            buttonCreateAnAccount.setClickable(true);
                         }
-
-                        // ...
                     }
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
-        Intent intentHomeActivity = new Intent(DaftarActivity.this, HomeActivity.class);
-        startActivity(intentHomeActivity);
+    private boolean invalidEmail(EditText editText) {
+        return Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
     }
 
     private boolean isEmpty(EditText editText) {
         return editText.getText().toString().trim().length() == 0;
     }
 
-    private boolean invalidEmail(EditText editText) {
-        return Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
+    private void explicitIntent(Activity loginActivity, Class activity) {
+        Intent explicitIntent = new Intent(loginActivity, activity);
+        this.startActivity(explicitIntent);
     }
 }

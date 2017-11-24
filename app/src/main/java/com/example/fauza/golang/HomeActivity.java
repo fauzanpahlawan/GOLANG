@@ -1,7 +1,6 @@
 package com.example.fauza.golang;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,31 +16,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewCurrentUser;
     private Button buttonLogOut;
 
-    //START check current auth state
-    private FirebaseAuth mAuth;
-    //END check current auth state
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //START initialize FirebaseAuth instance
-        mAuth = FirebaseAuth.getInstance();
-        //END initialize FirebaseAuth instance
 
         textViewCurrentUser = findViewById(R.id.textView_current_user);
         buttonLogOut = findViewById(R.id.button_sign_out);
 
-        FirebaseUser user = mAuth.getCurrentUser();
-        String email = "";
-        String uid = "";
-        if (user != null) {
-            email = user.getEmail();
-            uid = user.getUid();
-        }
+        setUser();
 
-        textViewCurrentUser.setText(email + " " + uid + "");
         buttonLogOut.setOnClickListener(this);
 
     }
@@ -50,7 +36,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_sign_out:
-                mAuth.signOut();
+                FirebaseAuth.getInstance().signOut();
                 explicitIntent();
                 break;
         }
@@ -59,5 +45,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void explicitIntent() {
         Intent explicitIntent = new Intent(HomeActivity.this, LoginActivity.class);
         startActivity(explicitIntent);
+    }
+
+    private void setUser() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String email = "";
+        if (user != null) {
+            email = user.getEmail();
+        }
+
+        this.textViewCurrentUser.setText(email);
     }
 }

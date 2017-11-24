@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context="com.example.fauza.golang.LoginActivity">
 
+    <TextView
+        android:id="@+id/textView_forget_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:text="@string/forget_password"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout_create_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/imageView_logo"
         android:layout_width="match_parent"
@@ -58,21 +71,13 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/button_login"
+            android:id="@+id/button_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:text="@string/sign_in"
             android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/textView_forget_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="@string/forget_password" />
 
     </LinearLayout>
 
