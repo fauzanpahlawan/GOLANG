@@ -1,6 +1,7 @@
 
 package com.example.fauza.golang;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+import com.google.firebase.auth.FirebaseAuth;
 
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -21,10 +23,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView textViewForgetPassword;
     private TextView textViewSignUp;
 
+    //START check current auth state
+    private FirebaseAuth mAuth;
+    //END check current auth state
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //START initialize FirebaseAuth instance
+        mAuth = FirebaseAuth.getInstance();
+        //END initialize FirebaseAuth instance
 
         editTextEmail = findViewById(R.id.editText_email);
         editTextPassword = findViewById(R.id.editText_password);
@@ -86,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return editText.getText().toString().trim().length() == 0;
     }
 
-    private void explicitIntent(LoginActivity loginActivity, Class<DaftarActivity> activity) {
+    private void explicitIntent(Activity loginActivity, Class<DaftarActivity> activity) {
         Intent explicitIntent = new Intent(loginActivity, activity);
         this.startActivity(explicitIntent);
     }

@@ -54,7 +54,9 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        if (currentUser != null) {
+            updateUI(currentUser);
+        }
     }
 
     @Override
