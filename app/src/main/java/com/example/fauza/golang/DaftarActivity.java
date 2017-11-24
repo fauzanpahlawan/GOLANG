@@ -1,9 +1,7 @@
 package com.example.fauza.golang;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
@@ -26,16 +24,20 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editTextPassword;
     private Button buttonSignUp;
 
+    //START check current auth state
     private FirebaseAuth mAuth;
+    //END check current auth state
 
     private String TAG = "EmailPassword";
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar);
 
+        //START initialize FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
+        //END initialize FirebaseAuth instance
 
         editTextName = findViewById(R.id.editText_name);
         editTextMobileNumber = findViewById(R.id.editText_mobile_number);
@@ -44,6 +46,14 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         buttonSignUp = findViewById(R.id.button_sign_up);
 
         buttonSignUp.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
     @Override

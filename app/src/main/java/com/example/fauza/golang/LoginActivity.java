@@ -1,6 +1,7 @@
 
 package com.example.fauza.golang;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword.addTextChangedListener(this);
         buttonLogin.setOnClickListener(this);
         textViewForgetPassword.setOnClickListener(this);
+        textViewSignUp.setOnClickListener(this);
     }
 
 
@@ -55,6 +57,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.textView_sign_up:
                 //to do intent DaftarActivity
+                Intent intentDaftarActivity = new Intent(LoginActivity.this, DaftarActivity.class);
+                this.startActivity(intentDaftarActivity);
+//                explicitIntent(DaftarActivity.class);
                 break;
         }
     }
@@ -81,5 +86,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean isEmpty(EditText editText) {
         return editText.getText().toString().trim().length() == 0;
+    }
+
+    private void explicitIntent(Class<DaftarActivity> activity) {
+        Intent explicitIntent = new Intent(this, activity);
+        this.startActivity(explicitIntent);
     }
 }
