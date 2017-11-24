@@ -1,5 +1,6 @@
 package com.example.fauza.golang;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -104,7 +105,8 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void updateUI(FirebaseUser user) {
-        //to do intent HomeActivity
+        Intent intentHomeActivity = new Intent(DaftarActivity.this, HomeActivity.class);
+        startActivity(intentHomeActivity);
     }
 
     private boolean isEmpty(EditText editText) {

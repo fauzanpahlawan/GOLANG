@@ -57,9 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.textView_sign_up:
                 //to do intent DaftarActivity
-                Intent intentDaftarActivity = new Intent(LoginActivity.this, DaftarActivity.class);
-                this.startActivity(intentDaftarActivity);
-//                explicitIntent(DaftarActivity.class);
+                explicitIntent(LoginActivity.this, DaftarActivity.class);
                 break;
         }
     }
@@ -88,8 +86,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return editText.getText().toString().trim().length() == 0;
     }
 
-    private void explicitIntent(Class<DaftarActivity> activity) {
-        Intent explicitIntent = new Intent(this, activity);
+    private void explicitIntent(LoginActivity loginActivity, Class<DaftarActivity> activity) {
+        Intent explicitIntent = new Intent(loginActivity, activity);
         this.startActivity(explicitIntent);
     }
 }
