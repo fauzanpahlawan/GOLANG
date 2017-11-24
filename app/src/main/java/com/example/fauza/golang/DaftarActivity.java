@@ -64,14 +64,30 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                     this.editTextEmail.setError("Invalid email.");
                 } else if (isEmpty(this.editTextPassword)) {
                     this.editTextPassword.setError("Required.");
+                } else if (passwordLessThanSix(this.editTextPassword)) {
+                    this.editTextPassword.setError("At least 6 characters long.");
                 } else {
                     this.buttonCreateAnAccount.setClickable(false);
                     this.buttonCreateAnAccount.setText(R.string.create_an_account_progress);
                     String email = this.editTextEmail.getText().toString();
                     String password = this.editTextPassword.getText().toString();
                     createAccount(email, password);
-
                 }
+//                this.buttonCreateAnAccount.setClickable(false);
+//                this.buttonCreateAnAccount.setText(R.string.create_an_account_progress);
+//                String email = this.editTextEmail.getText().toString();
+//                String password = this.editTextPassword.getText().toString();
+//                createAccount(email, password);
+//                String name = this.editTextName.getText().toString();
+//                String mobileNumber = this.editTextMobileNumber.getText().toString();
+//                String email = this.editTextEmail.getText().toString();
+//                String pass = this.editTextPassword.getText().toString();
+//                String builder = "name :" + name + "\n" +
+//                        "mobileNumber :" + mobileNumber + "\n" +
+//                        "email :" + email + "\n" +
+//                        "pass :" + pass + "\n";
+//                Toast.makeText(DaftarActivity.this, builder, Toast.LENGTH_SHORT).show();
+
                 break;
         }
     }
@@ -89,7 +105,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(DaftarActivity.this, "Creating an account failed.",
+                            Toast.makeText(DaftarActivity.this, "Create account failed.",
                                     Toast.LENGTH_SHORT).show();
                             buttonCreateAnAccount.setText(R.string.create_an_account);
                             buttonCreateAnAccount.setClickable(true);
@@ -99,11 +115,18 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean invalidEmail(EditText editText) {
-        return Patterns.EMAIL_ADDRESS.matcher(editText.getText().toString()).matches();
+        String email = editText.getText().toString();
+        return !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private boolean passwordLessThanSix(EditText editText) {
+        String password = editText.getText().toString();
+        return password.length() < 6;
     }
 
     private boolean isEmpty(EditText editText) {
-        return editText.getText().toString().trim().length() == 0;
+        String text = editText.getText().toString();
+        return text.length() == 0;
     }
 
     private void explicitIntent(Activity loginActivity, Class activity) {
