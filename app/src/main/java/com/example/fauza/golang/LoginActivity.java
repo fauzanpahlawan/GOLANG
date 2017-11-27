@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.textView_forget_password:
-                //to do forget password
+                // TODO Forget Password Event.
                 break;
             case R.id.textView_sign_up:
                 explicitIntent(LoginActivity.this, DaftarActivity.class);

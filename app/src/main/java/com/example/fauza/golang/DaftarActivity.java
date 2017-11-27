@@ -64,7 +64,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                     this.editTextEmail.setError("Invalid email.");
                 } else if (isEmpty(this.editTextPassword)) {
                     this.editTextPassword.setError("Required.");
-                } else if (passwordLessThanSix(this.editTextPassword)) {
+                } else if (lessThanSix(this.editTextPassword)) {
                     this.editTextPassword.setError("At least 6 characters long.");
                 } else {
                     this.buttonCreateAnAccount.setClickable(false);
@@ -73,21 +73,6 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                     String password = this.editTextPassword.getText().toString();
                     createAccount(email, password);
                 }
-//                this.buttonCreateAnAccount.setClickable(false);
-//                this.buttonCreateAnAccount.setText(R.string.create_an_account_progress);
-//                String email = this.editTextEmail.getText().toString();
-//                String password = this.editTextPassword.getText().toString();
-//                createAccount(email, password);
-//                String name = this.editTextName.getText().toString();
-//                String mobileNumber = this.editTextMobileNumber.getText().toString();
-//                String email = this.editTextEmail.getText().toString();
-//                String pass = this.editTextPassword.getText().toString();
-//                String builder = "name :" + name + "\n" +
-//                        "mobileNumber :" + mobileNumber + "\n" +
-//                        "email :" + email + "\n" +
-//                        "pass :" + pass + "\n";
-//                Toast.makeText(DaftarActivity.this, builder, Toast.LENGTH_SHORT).show();
-
                 break;
         }
     }
@@ -119,7 +104,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         return !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private boolean passwordLessThanSix(EditText editText) {
+    private boolean lessThanSix(EditText editText) {
         String password = editText.getText().toString();
         return password.length() < 6;
     }
