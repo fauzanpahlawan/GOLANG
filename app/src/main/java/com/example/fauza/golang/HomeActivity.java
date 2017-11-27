@@ -1,5 +1,7 @@
 package com.example.fauza.golang;
 
+import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView textViewCurrentUser;
     private Button buttonLogOut;
+    private Menu menu;
 
 
     @Override
@@ -36,30 +39,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO Create Account page? or simply Log Out
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_sign_out:
                 FirebaseAuth.getInstance().signOut();
-                explicitIntent();
+                explicitIntent(this, LoginActivity.class);
                 break;
         }
     }
 
-    private void explicitIntent() {
-        Intent explicitIntent = new Intent(HomeActivity.this, LoginActivity.class);
+    private void explicitIntent(Activity activity, Class _class) {
+        Intent explicitIntent = new Intent(activity, _class);
         startActivity(explicitIntent);
     }
 

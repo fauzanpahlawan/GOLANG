@@ -144,8 +144,8 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void explicitIntent(Activity loginActivity, Class activity) {
-        Intent explicitIntent = new Intent(loginActivity, activity);
+    private void explicitIntent(Activity activity, Class _class) {
+        Intent explicitIntent = new Intent(activity, _class);
         this.startActivity(explicitIntent);
     }
 }
