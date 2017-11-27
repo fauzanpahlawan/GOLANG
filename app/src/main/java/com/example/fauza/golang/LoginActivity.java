@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText editTextEmail;
-    private EditText editTextPassword;
+    private TextInputLayout layoutEmail;
+    private TextInputEditText editTextEmail;
+    private TextInputLayout layoutPassword;
+    private TextInputEditText editTextPassword;
     private Button buttonSignIn;
     private TextView textViewForgetPassword;
     private TextView textViewSignUp;
@@ -43,7 +47,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
         //END initialize FirebaseAuth instance
 
+        layoutEmail = findViewById(R.id.layout_email);
         editTextEmail = findViewById(R.id.editText_email);
+        layoutPassword = findViewById(R.id.layout_password);
         editTextPassword = findViewById(R.id.editText_password);
         buttonSignIn = findViewById(R.id.button_sign_in);
         textViewForgetPassword = findViewById(R.id.textView_forget_password);
@@ -68,11 +74,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_sign_in:
-                if (isEmpty(this.editTextEmail)) {
-                    this.editTextEmail.setError("Required.");
-                } else if (isEmpty(this.editTextPassword)) {
-                    this.editTextPassword.setError("Required.");
-                } else {
+                if (!isEmpty(editTextEmail, layoutEmail)
+                        && !isEmpty(editTextPassword, layoutPassword)) {
+
                     this.buttonSignIn.setClickable(false);
                     this.buttonSignIn.setText(R.string.sign_in_process);
                     String email = this.editTextEmail.getText().toString();
@@ -113,8 +117,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    private boolean isEmpty(EditText editText) {
-        return editText.getText().toString().trim().length() == 0;
+    private boolean isEmpty(TextInputEditText editText, TextInputLayout textInputLayout) {
+        if (TextUtils.isEmpty(editText.getText().toString())) {
+            textInputLayout.setError("*Required");
+            return true;
+        } else {
+            textInputLayout.setError(null);
+            return false;
+        }
     }
 
     private void explicitIntent(Activity loginActivity, Class activity) {
