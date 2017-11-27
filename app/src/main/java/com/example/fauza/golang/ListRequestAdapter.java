@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 
+
 public class ListRequestAdapter extends RecyclerView.Adapter<ListRequestViewHolder> {
 
     //TODO Handling requests data

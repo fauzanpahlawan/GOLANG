@@ -26,10 +26,7 @@
             tools:text="active user" />
     </android.support.v7.widget.Toolbar>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="REQUEST TOUR GUIDE" />
+    
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_request_list"

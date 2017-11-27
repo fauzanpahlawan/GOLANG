@@ -28,7 +28,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         toolbarHome = findViewById(R.id.toolbar_home);
         textViewCurrentUser = findViewById(R.id.textView_current_user);
 
+        // Set textView text with the current signed in user
         setUser();
+
+        // Set app logo to account
         toolbarHome.setLogo(R.drawable.ic_account);
         setSupportActionBar(toolbarHome);
         if (getSupportActionBar() != null) {
@@ -57,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            // TODO onClick Handler
+            // TODO onClick Handler of various things
         }
     }
 
