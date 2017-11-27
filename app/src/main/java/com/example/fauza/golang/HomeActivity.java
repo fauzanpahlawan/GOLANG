@@ -5,6 +5,8 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +22,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView textViewCurrentUser;
     private Button buttonLogOut;
-    private Menu menu;
+    private Toolbar toolbarHome;
 
 
     @Override
@@ -28,7 +30,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
+        toolbarHome = findViewById(R.id.toolbar_home);
         textViewCurrentUser = findViewById(R.id.textView_current_user);
         buttonLogOut = findViewById(R.id.button_sign_out);
 
@@ -36,15 +38,31 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonLogOut.setOnClickListener(this);
 
+        setSupportActionBar(toolbarHome);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_sign_out:
+                FirebaseAuth.getInstance().signOut();
+                explicitIntent(this, LoginActivity.class);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_sign_out:
-                FirebaseAuth.getInstance().signOut();
-                explicitIntent(this, LoginActivity.class);
-                break;
+            // TODO onClick Handler
         }
     }
 
