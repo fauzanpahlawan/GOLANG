@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,10 +21,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class DaftarActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText editTextName;
-    private EditText editTextMobileNumber;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
+    private TextInputLayout layoutName;
+    private TextInputEditText editTextName;
+    private TextInputLayout layoutMobileNumber;
+    private TextInputEditText editTextMobileNumber;
+    private TextInputLayout layoutEmail;
+    private TextInputEditText editTextEmail;
+    private TextInputLayout layoutPassword;
+    private TextInputEditText editTextPassword;
     private Button buttonCreateAnAccount;
 
     //START check current auth state
@@ -40,10 +46,16 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         mAuth = FirebaseAuth.getInstance();
         //END initialize FirebaseAuth instance
 
+
+        layoutName = findViewById(R.id.layout_name);
         editTextName = findViewById(R.id.editText_name);
+        layoutMobileNumber = findViewById(R.id.layout_mobile_number);
         editTextMobileNumber = findViewById(R.id.editText_mobile_number);
+        layoutEmail = findViewById(R.id.layout_email);
         editTextEmail = findViewById(R.id.editText_email);
+        layoutPassword = findViewById(R.id.layout_password);
         editTextPassword = findViewById(R.id.editText_password);
+
         buttonCreateAnAccount = findViewById(R.id.button_create_an_account);
 
         buttonCreateAnAccount.setOnClickListener(this);
@@ -53,19 +65,12 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_create_an_account:
-                if (isEmpty(this.editTextName)) {
-                    this.editTextName.setError("Required.");
-                } else if (isEmpty(this.editTextMobileNumber)) {
-                    this.editTextMobileNumber.setError("Required.");
-                } else if (isEmpty(this.editTextEmail)) {
-                    this.editTextEmail.setError("Required.");
-                } else if (invalidEmail(this.editTextEmail)) {
-                    this.editTextEmail.setError("Invalid email.");
-                } else if (isEmpty(this.editTextPassword)) {
-                    this.editTextPassword.setError("Required.");
-                } else if (lessThanSix(this.editTextPassword)) {
-                    this.editTextPassword.setError("At least 6 characters long.");
-                } else {
+                if (!isEmpty(editTextName, layoutName)
+                        && !isEmpty(editTextMobileNumber, layoutMobileNumber)
+                        && !isEmpty(editTextEmail, layoutEmail)
+                        && !invalidEmail(editTextEmail, layoutEmail)
+                        && !isEmpty(editTextPassword, layoutPassword)
+                        && !lessThanSix(editTextPassword, layoutPassword)) {
                     this.buttonCreateAnAccount.setClickable(false);
                     this.buttonCreateAnAccount.setText(R.string.create_an_account_progress);
                     String email = this.editTextEmail.getText().toString();
@@ -105,19 +110,38 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     End of Create Account
     */
 
-    private boolean invalidEmail(EditText editText) {
+    private boolean invalidEmail(TextInputEditText editText, TextInputLayout textInputLayout) {
+
         String email = editText.getText().toString();
-        return !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            textInputLayout.setError("Invalid email.");
+            return true;
+        } else {
+            textInputLayout.setError(null);
+            return false;
+        }
     }
 
-    private boolean lessThanSix(EditText editText) {
+    private boolean lessThanSix(TextInputEditText editText, TextInputLayout textInputLayout) {
         String password = editText.getText().toString();
-        return password.length() < 6;
+        if (password.length() < 6) {
+            textInputLayout.setError("At least 6 characters");
+            return true;
+        } else {
+            textInputLayout.setError(null);
+            return false;
+        }
     }
 
-    private boolean isEmpty(EditText editText) {
+    private boolean isEmpty(TextInputEditText editText, TextInputLayout textInputLayout) {
         String text = editText.getText().toString();
-        return text.length() == 0;
+        if (TextUtils.isEmpty(text)) {
+            textInputLayout.setError("*Required");
+            return true;
+        } else {
+            textInputLayout.setError(null);
+            return false;
+        }
     }
 
     private void explicitIntent(Activity loginActivity, Class activity) {
