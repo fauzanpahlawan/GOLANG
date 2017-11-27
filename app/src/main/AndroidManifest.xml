@@ -9,16 +9,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DaftarActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".DaftarActivity"
+            android:parentActivityName=".LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoginActivity" />
+        </activity>
         <activity android:name=".HomeActivity" />
-        <activity android:name=".RequestTourGuideActivity"></activity>
+        <activity
+            android:name=".RequestTourGuideActivity"
+            android:parentActivityName=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

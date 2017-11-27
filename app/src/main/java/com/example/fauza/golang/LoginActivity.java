@@ -61,16 +61,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            explicitIntent(LoginActivity.this, HomeActivity.class);
-        }
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_sign_in:
