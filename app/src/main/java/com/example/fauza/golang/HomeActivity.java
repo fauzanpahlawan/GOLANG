@@ -1,17 +1,13 @@
 package com.example.fauza.golang;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,7 +17,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView textViewCurrentUser;
-    private Button buttonLogOut;
     private Toolbar toolbarHome;
 
 
@@ -32,13 +27,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         toolbarHome = findViewById(R.id.toolbar_home);
         textViewCurrentUser = findViewById(R.id.textView_current_user);
-        buttonLogOut = findViewById(R.id.button_sign_out);
 
         setUser();
-
-        buttonLogOut.setOnClickListener(this);
-
+        toolbarHome.setLogo(R.drawable.ic_account);
         setSupportActionBar(toolbarHome);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
     }
 
