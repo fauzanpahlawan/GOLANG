@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.fauza.golang.HomeActivity">
+    tools:context="com.example.fauza.golang.HomeTourGuideActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_home"
@@ -26,24 +26,9 @@
             tools:text="active user" />
     </android.support.v7.widget.Toolbar>
 
-    <AutoCompleteTextView
-        android:id="@+id/ac_tv_places"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/cari_tempat" />
-
-    <TextView
-        android:id="@+id/tv_place_result"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        tools:text="Tempat still such empty" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_request_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
 </LinearLayout>
