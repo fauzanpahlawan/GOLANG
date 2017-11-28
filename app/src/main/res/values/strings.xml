@@ -6,10 +6,17 @@
     <string name="password">Password</string>
     <string name="logo_golang">Logo GOLANG</string>
     <string name="sign_in">Sign In</string>
-    <string name="sign_in_process">Signing in ...</string>
+    <string name="sign_in_process">Signing in …</string>
     <string name="sign_out">Sign Out</string>
     <string name="forget_password">Forget password?</string>
     <string name="not_yet_a_member">Not yet a member? </string>
     <string name="create_an_account">Create an Account</string>
-    <string name="create_an_account_progress">Creating account ...</string>
+    <string name="create_an_account_progress">Creating account …</string>
+    <string name="place_format">
+        &lt;b&gt;%1$s&lt;/b&gt;
+        &lt;br/&gt;
+
+        Address: %2$s&lt;br/&gt;
+    </string>
+    <string name="cari_tempat">Cari tempat …</string>
 </resources>
