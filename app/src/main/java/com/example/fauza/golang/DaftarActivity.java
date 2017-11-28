@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class DaftarActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,10 +32,18 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private TextInputLayout layoutPassword;
     private TextInputEditText editTextPassword;
     private Button buttonCreateAnAccount;
+    private static final String CHILD_MEMBER = "members";
 
-    //START check current auth state
+
+    /**
+     * Firebase Real Time Database Reference
+     */
+    private DatabaseReference mDatabase;
+
+    /**
+     * Firebase Authentication
+     */
     private FirebaseAuth mAuth;
-    //END check current auth state
 
     private String TAG = "EmailPassword";
 
@@ -42,9 +52,11 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar);
 
-        //START initialize FirebaseAuth instance
+        // Firebase DatabaseReference instance
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //Firebase FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
-        //END initialize FirebaseAuth instance
 
 
         layoutName = findViewById(R.id.layout_name);
@@ -73,9 +85,11 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                         && !lessThanSix(editTextPassword, layoutPassword)) {
                     this.buttonCreateAnAccount.setClickable(false);
                     this.buttonCreateAnAccount.setText(R.string.create_an_account_progress);
+                    String memberName = this.editTextName.getText().toString();
+                    String mobileNumber = this.editTextMobileNumber.getText().toString();
                     String email = this.editTextEmail.getText().toString();
                     String password = this.editTextPassword.getText().toString();
-                    createAccount(email, password);
+                    createAccount(memberName, mobileNumber, email, password);
                 }
                 break;
         }
@@ -85,7 +99,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     Create Account Starts here
     */
 
-    private void createAccount(String email, String password) {
+    private void createAccount(final String memberName, final String mobileNumber, final String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -94,6 +108,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            writeNewUser(user.getUid(), memberName, mobileNumber, email);
                             explicitIntent(DaftarActivity.this, HomeMemberActivity.class);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -105,6 +120,11 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
+    }
+
+    private void writeNewUser(String userId, String memberName, String mobileNumber, String email) {
+        Member member = new Member(memberName, mobileNumber, email);
+        mDatabase.child(CHILD_MEMBER).child(userId).setValue(member);
     }
     /*
     End of Create Account

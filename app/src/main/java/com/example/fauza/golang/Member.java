@@ -1,21 +1,17 @@
 package com.example.fauza.golang;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-
 public class Member {
 
-    private FirebaseAuth mAuth;
+    public String memberName;
+    public String mobileNumher;
+    public String email;
 
-    private String name;
-    private String mobileNumber;
-    private String email;
-    private String password;
+    public Member() {
+    }
 
-    public Member(String name, String mobileNumber, String email, String password) {
-        this.name = name;
-        this.mobileNumber = mobileNumber;
+    public Member(String memberName, String mobileNumher, String email) {
+        this.memberName = memberName;
+        this.mobileNumher = mobileNumher;
         this.email = email;
-        this.password = password;
     }
 }
