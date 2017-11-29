@@ -14,7 +14,6 @@
     <string name="create_an_account_progress">Creating account …</string>
     <string name="cari_tujuan_wisata">Cari tujuan wisata …</string>
     <string name="cari_tempat">Cari tempat …</string>
-    <string name="pilih_tanggal">Pilih Tanggal</string>
     <string name="place_format">
         &lt;b&gt;%1$s&lt;/b&gt;
         &lt;br/&gt;
@@ -22,6 +21,11 @@
         Address: %2$s&lt;br/&gt;
     </string>
     <string name="jumlah_wisatawan">Jumlah Wisatawan</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="zero">0</string>
+    <string name="buat_request">Buat Request</string>
+    <string name="pilih_tanggal">Pilih tanggal</string>
     <string-array name="tempat_wisata">
         <item>Coban Tundo 1, 2 &amp; 3</item>
         <item>Coban Rondo</item>
