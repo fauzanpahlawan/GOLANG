@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -27,6 +28,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class HomeMemberActivity extends AppCompatActivity implements View.OnClickListener {
@@ -109,12 +115,9 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
 
     private void setUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String email = "";
         if (user != null) {
-            email = user.getEmail();
+            this.textViewCurrentUser.setText(user.getDisplayName());
         }
-
-        this.textViewCurrentUser.setText(email);
     }
 
     private AdapterView.OnItemClickListener mAutocompleteClickListener
