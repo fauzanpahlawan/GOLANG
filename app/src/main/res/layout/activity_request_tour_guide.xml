@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
-        android:textAlignment="center"
+        android:padding="3dp"
         android:textSize="24sp"
         tools:text="Nama tempat" />
 
@@ -34,32 +34,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/bt_minus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/minus"
-            android:textSize="26sp" />
 
         <TextView
             android:id="@+id/tv_jumlah_wisatawan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:padding="3dp"
             android:paddingEnd="30dp"
             android:paddingStart="30dp"
             android:text="@string/zero"
             android:textSize="24sp" />
 
         <Button
+            android:id="@+id/bt_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minus"
+            android:textSize="18sp" />
+
+
+        <Button
             android:id="@+id/bt_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/plus"
-            android:textSize="26sp" />
+            android:textSize="18sp" />
+
 
     </LinearLayout>
 
@@ -73,15 +76,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
+        android:padding="3dp"
         android:text="@string/pilih_tanggal"
-        android:textAlignment="center"
         android:textSize="24sp" />
 
     <Button
         android:id="@+id/bt_buat_request"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="end"
         android:text="@string/buat_request"
         android:textAllCaps="false" />
 
