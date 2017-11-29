@@ -20,7 +20,8 @@ import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
-public class RequestTourGuideActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class RequestTourGuideActivity extends AppCompatActivity implements View.OnClickListener,
+        DatePickerDialog.OnDateSetListener {
 
     private final String NAMA_TEMPAT = "nama_tempat";
     private TextView textViewNamaTempat;
@@ -46,27 +47,9 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_tanggal_wisata:
-//                Calendar calendar = Calendar.getInstance();
-//                int year = calendar.get(Calendar.YEAR);
-//                int month = calendar.get(Calendar.MONTH);
-//                int day = calendar.get(Calendar.DAY_OF_MONTH);
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(
-//                        this,
-//                        android.R.style.Theme_Material_Light_Dialog_MinWidth,
-//                        this,
-//                        year, month, day);
-//                if (datePickerDialog.getWindow() != null) {
-//                    datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                    datePickerDialog.show();
-//                }
                 showDatePickerDialog(view);
                 break;
         }
-    }
-
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
     public void setNamaTempat(TextView textView) {
@@ -80,23 +63,8 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
 
     }
 
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-        }
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 }
