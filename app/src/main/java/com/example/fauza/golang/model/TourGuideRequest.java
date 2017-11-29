@@ -1,8 +1,4 @@
-package com.example.fauza.golang;
-
-/**
- * Created by fauza on 11/29/2017.
- */
+package com.example.fauza.golang.model;
 
 public class TourGuideRequest {
     String idMember;

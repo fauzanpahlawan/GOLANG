@@ -1,4 +1,4 @@
-package com.example.fauza.golang;
+package com.example.fauza.golang.model;
 
 public class Member {
 

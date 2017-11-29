@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.fauza.golang.LoginActivity">
+    tools:context="com.example.fauza.golang.activity.LoginActivity">
 
     <TextView
         android:id="@+id/textView_forget_password"
@@ -87,7 +87,7 @@
         <Button
             android:id="@+id/button_sign_in"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:text="@string/sign_in"

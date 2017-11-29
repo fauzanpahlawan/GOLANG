@@ -1,4 +1,4 @@
-package com.example.fauza.golang;
+package com.example.fauza.golang.viewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.example.fauza.golang;
+package com.example.fauza.golang.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.example.fauza.golang.R;
+import com.example.fauza.golang.viewHolder.TempatWisataViewHolder;
+import com.example.fauza.golang.activity.RequestTourGuideActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +20,7 @@ public class TempatWisataAdapter extends RecyclerView.Adapter<TempatWisataViewHo
     private ArrayList<String> data = new ArrayList<>();
     private ArrayList<String> dataCopy = new ArrayList<>();
 
-    TempatWisataAdapter(Context mContext) {
+    public TempatWisataAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -55,7 +58,7 @@ public class TempatWisataAdapter extends RecyclerView.Adapter<TempatWisataViewHo
         return data.size();
     }
 
-    void filter(String text) {
+    public void filter(String text) {
         this.data.clear();
         if (text.isEmpty()) {
             this.data.addAll(dataCopy);

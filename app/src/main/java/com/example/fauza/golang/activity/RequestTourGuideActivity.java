@@ -1,4 +1,4 @@
-package com.example.fauza.golang;
+package com.example.fauza.golang.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+
+import com.example.fauza.golang.R;
 
 import java.util.Calendar;
 

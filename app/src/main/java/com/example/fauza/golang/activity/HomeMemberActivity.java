@@ -1,4 +1,4 @@
-package com.example.fauza.golang;
+package com.example.fauza.golang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.fauza.golang.R;
+import com.example.fauza.golang.adapter.TempatWisataAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

@@ -1,4 +1,4 @@
-package com.example.fauza.golang;
+package com.example.fauza.golang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.fauza.golang.R;
+import com.example.fauza.golang.model.Member;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

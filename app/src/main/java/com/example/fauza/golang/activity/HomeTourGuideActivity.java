@@ -1,4 +1,4 @@
-package com.example.fauza.golang;
+package com.example.fauza.golang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.fauza.golang.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeTourGuideActivity extends AppCompatActivity {

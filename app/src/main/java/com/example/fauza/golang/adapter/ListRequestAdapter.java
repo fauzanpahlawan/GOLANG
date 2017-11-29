@@ -1,8 +1,9 @@
-package com.example.fauza.golang;
+package com.example.fauza.golang.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.example.fauza.golang.viewHolder.ListRequestViewHolder;
 
 
 public class ListRequestAdapter extends RecyclerView.Adapter<ListRequestViewHolder> {
