@@ -25,9 +25,9 @@ public class SplashScreen extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            //TODO if user to tourguide intent to Home TourGuide
-            //TODO else user is member intent to Home
             explicitIntent(this, HomeMemberActivity.class);
+        } else if (true) {
+            //TODO if user to tourguide intent to Home TourGuide
         } else {
             explicitIntent(this, LoginActivity.class);
         }
