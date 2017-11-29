@@ -15,6 +15,5 @@ public class Member {
         this.mobileNumher = mobileNumher;
         this.email = email;
         this.type = type;
-
     }
 }

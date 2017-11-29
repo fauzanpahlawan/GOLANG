@@ -27,19 +27,24 @@
     </android.support.v7.widget.Toolbar>
 
     <SearchView
-
-        android:id="@+id/sv_filter_tempat_wisata"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
     </SearchView>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_tempat_wisata"
+    <AutoCompleteTextView
+        android:id="@+id/ac_tv_places"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/cari_tujuan_wisata" />
+
+    <TextView
+        android:id="@+id/tv_place_result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:gravity="center"
+        tools:text="Tempat still such empty" />
 
 
 </LinearLayout>

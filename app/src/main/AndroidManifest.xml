@@ -30,15 +30,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
         </activity>
-        <activity android:name=".HomeMemberActivity" />
+        <activity android:name=".HomeMemberTempActivity" />
         <activity
             android:name=".RequestTourGuideActivity"
-            android:parentActivityName=".HomeMemberActivity">
+            android:parentActivityName=".HomeMemberTempActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeMemberActivity" />
+                android:value=".HomeMemberTempActivity" />
         </activity>
-        <activity android:name=".HomeTourGuideActivity"></activity>
+        <activity android:name=".HomeTourGuideActivity" />
+        <activity android:name=".HomeMemberActivity"></activity>
     </application>
 
 </manifest>

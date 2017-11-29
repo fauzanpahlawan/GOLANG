@@ -2,85 +2,67 @@ package com.example.fauza.golang;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
+import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBufferResponse;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.RuntimeRemoteException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
-public class HomeMemberActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeMemberActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
 
     private TextView textViewCurrentUser;
     private Toolbar toolbarHome;
-
-    protected GeoDataClient mGeoDataClient;
-
-    private PlaceAutoCompleteAdapter mAdapter;
-
-    private AutoCompleteTextView mAutocompleteView;
-
-    private TextView textViewPlaceResult;
-
-
-    private static final LatLngBounds BOUNDS_EAST_JAVA = new LatLngBounds(
-            new LatLng(-8.808070, 115.949013),
-            new LatLng(-6.753266, 111.343689));
-
+    private SearchView searchViewTujuanWisata;
+    private List<String> data;
+    private TempatWisataAdapter mAdapter;
+    private RecyclerView rvTempatWisata;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_member);
 
+        data = Arrays.asList(getResources().getStringArray(R.array.tempat_wisata));
+        Collections.sort(data);
+
         toolbarHome = findViewById(R.id.toolbar_home);
         textViewCurrentUser = findViewById(R.id.textView_current_user);
+        searchViewTujuanWisata = findViewById(R.id.sv_filter_tempat_wisata);
+        searchViewTujuanWisata.setQueryHint(getString(R.string.cari_tempat));
+        searchViewTujuanWisata.setOnClickListener(this);
+
+
+        rvTempatWisata = findViewById(R.id.rv_tempat_wisata);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new TempatWisataAdapter(this);
+        rvTempatWisata.setLayoutManager(linearLayoutManager);
+        rvTempatWisata.setAdapter(mAdapter);
+        mAdapter.setData(data);
+        mAdapter.notifyDataSetChanged();
 
         // Set textView text with the current signed in user
         setUser();
-
-        mGeoDataClient = Places.getGeoDataClient(this, null);
-
-        mAutocompleteView = findViewById(R.id.ac_tv_places);
-        textViewPlaceResult = findViewById(R.id.tv_place_result);
-
-        mAutocompleteView.setOnItemClickListener(mAutocompleteClickListener);
-
-        mAdapter = new PlaceAutoCompleteAdapter(this, mGeoDataClient, BOUNDS_EAST_JAVA, null);
-        mAutocompleteView.setAdapter(mAdapter);
-
         // Set app logo to account
         toolbarHome.setLogo(R.drawable.ic_account);
         setSupportActionBar(toolbarHome);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        searchViewTujuanWisata.setOnQueryTextListener(this);
 
     }
 
@@ -104,7 +86,8 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            // TODO onClick Handler of various things
+            case R.id.sv_filter_tempat_wisata:
+                searchViewTujuanWisata.setIconified(false);
         }
     }
 
@@ -120,42 +103,15 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private AdapterView.OnItemClickListener mAutocompleteClickListener
-            = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            final AutocompletePrediction item = mAdapter.getItem(position);
-            final String placeId = item != null ? item.getPlaceId() : null;
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        mAdapter.filter(s);
+        return true;
+    }
 
-            Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById(placeId);
-            placeResult.addOnCompleteListener(mUpdatePlaceDetailsCallback);
-        }
-    };
-
-    private OnCompleteListener<PlaceBufferResponse> mUpdatePlaceDetailsCallback
-            = new OnCompleteListener<PlaceBufferResponse>() {
-        @Override
-        public void onComplete(Task<PlaceBufferResponse> task) {
-            try {
-                PlaceBufferResponse places = task.getResult();
-
-                final Place place = places.get(0);
-
-                // Format details of the place for display and show it in a TextView.
-                textViewPlaceResult.setText(
-                        formatPlaceDetails(getResources(), place.getName(), place.getAddress()));
-
-                places.release();
-            } catch (RuntimeRemoteException e) {
-                // Request did not complete successfully
-            }
-        }
-    };
-
-    private static Spanned formatPlaceDetails(Resources res,
-                                              CharSequence name,
-                                              CharSequence address) {
-        return Html.fromHtml(res.getString(R.string.place_format, name, address));
-
+    @Override
+    public boolean onQueryTextChange(String s) {
+        mAdapter.filter(s);
+        return true;
     }
 }

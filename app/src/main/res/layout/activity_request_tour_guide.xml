@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.fauza.golang.RequestTourGuideActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_nama_tempat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        tools:text="Nama tempat" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_jumlah_wisatawan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/jumlah_wisatawan" />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_tanggal_wisata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:text="Pilih Tanggal"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Buat Request"
+        android:textAllCaps="false" />
+
+</LinearLayout>

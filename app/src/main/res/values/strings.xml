@@ -14,10 +14,37 @@
     <string name="create_an_account_progress">Creating account …</string>
     <string name="cari_tujuan_wisata">Cari tujuan wisata …</string>
     <string name="cari_tempat">Cari tempat …</string>
+    <string name="pilih_tanggal">Pilih Tanggal</string>
     <string name="place_format">
         &lt;b&gt;%1$s&lt;/b&gt;
         &lt;br/&gt;
 
         Address: %2$s&lt;br/&gt;
     </string>
+    <string name="jumlah_wisatawan">Jumlah Wisatawan</string>
+    <string-array name="tempat_wisata">
+        <item>Coban Tundo 1, 2 &amp; 3</item>
+        <item>Coban Rondo</item>
+        <item>Coban Pelangi</item>
+        <item>Pantai Goa Cina</item>
+        <item>Pantai Sendiki</item>
+        <item>Gunung Arjuna</item>
+        <item>Gunung Bromo</item>
+        <item>Paralayang</item>
+        <item>Kota Batu</item>
+        <item>Jatim Park 1</item>
+        <item>Jatim Park 2</item>
+        <item>Museum Angkot</item>
+        <item>Mata Air Sumber Sirah</item>
+        <item>Coban Nirwana</item>
+        <item>Pemandian Kalireco</item>
+        <item>Teluk Bidadari</item>
+        <item>Pantai Batu Bengkung</item>
+        <item>Eco Green Park</item>
+        <item>Banyu Anjlok</item>
+        <item>Pantai Balekambang</item>
+        <item>Pantai Sipelot</item>
+        <item>Pantai Ngeliyep</item>
+        <item>Pantai Kedung Celeng</item>
+    </string-array>
 </resources>
