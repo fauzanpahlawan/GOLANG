@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,9 +27,9 @@ public class SplashScreen extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             explicitIntent(this, HomeMemberActivity.class);
-        } else if (true) {
-            //TODO if user to tourguide intent to Home TourGuide
-        } else {
+        }
+        //TODO Else statement for TourGuide to HomeTourGuide
+        else {
             explicitIntent(this, LoginActivity.class);
         }
     }
