@@ -119,8 +119,10 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(DaftarActivity.this, "Create Account Failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            if (task.getException() != null) {
+                                Toast.makeText(DaftarActivity.this, task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
                             buttonCreateAnAccount.setText(R.string.create_an_account);
                             buttonCreateAnAccount.setClickable(true);
                         }
