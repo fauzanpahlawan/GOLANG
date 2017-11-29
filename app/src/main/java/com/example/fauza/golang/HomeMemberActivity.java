@@ -116,7 +116,7 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
     private void setUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            this.textViewCurrentUser.setText(user.getDisplayName());
+            this.textViewCurrentUser.setText(user.getEmail());
         }
     }
 
