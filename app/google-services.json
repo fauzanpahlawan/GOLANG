@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "653744739271-gi5ppdt0vf8ac7pbrm5fh5jiikd0o9fp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fauza.golang",
+            "certificate_hash": "02097a4944f1f19d9009e98d69efedbd62ad97ca"
+          }
+        },
+        {
           "client_id": "653744739271-tubr6m8nil2s22q5c13c9ovcqkajvkkj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

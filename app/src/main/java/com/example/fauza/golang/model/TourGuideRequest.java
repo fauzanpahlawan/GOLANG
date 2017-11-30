@@ -1,7 +1,6 @@
 package com.example.fauza.golang.model;
 
 public class TourGuideRequest {
-    String idMember;
     String idTourGuide;
     String tujuanWisata;
     String tanggalWisata;
@@ -9,25 +8,16 @@ public class TourGuideRequest {
     String status;
 
 
-    public TourGuideRequest(){
+    public TourGuideRequest() {
 
     }
 
-    public TourGuideRequest(String idMember, String idTourGuide, String tujuanWisata, String tanggalWisata, String jumlahWisatawan, String status) {
-        this.idMember = idMember;
+    public TourGuideRequest(String idTourGuide, String tujuanWisata, String tanggalWisata, String jumlahWisatawan, String status) {
         this.idTourGuide = idTourGuide;
         this.tujuanWisata = tujuanWisata;
         this.tanggalWisata = tanggalWisata;
         this.jumlahWisatawan = jumlahWisatawan;
         this.status = status;
-    }
-
-    public String getIdMember() {
-        return idMember;
-    }
-
-    public void setIdMember(String idMember) {
-        this.idMember = idMember;
     }
 
     public String getIdTourGuide() {

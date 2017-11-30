@@ -31,6 +31,8 @@ import java.util.Calendar;
 public class RequestTourActivity extends AppCompatActivity implements View.OnClickListener,
         DatePickerDialog.OnDateSetListener, ValueEventListener {
 
+    private final String TOUR_REQUEST = "tourRequests";
+
     private TextView textViewJumlahWisatawan;
     private TextView textViewTanggalWisata;
     private TextView textViewTempatWisata;
@@ -40,18 +42,21 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
     private Button buttonBuatRequest;
 
 
-    private DatabaseReference mDatabase;
+    /**
+     * Firebase instances
+     */
+    private DatabaseReference mRef;
+    private FirebaseDatabase mDatabase;
     private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_tour);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("tourRequests");
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
         textViewTempatWisata = findViewById(R.id.tv_nama_tempat);
         textViewJumlahWisatawan = findViewById(R.id.tv_jumlah_wisatawan);
@@ -96,16 +101,17 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
             case R.id.bt_buat_request:
                 //COMPLETED Write to Firebase
                 try {
-                    String tourRequestId = mDatabase.push().getKey();
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
                     TourGuideRequest tourGuideRequest = new TourGuideRequest(
-                            currentUser.getUid(),
                             "tourguideId",
                             textViewTempatWisata.getText().toString(),
                             textViewTanggalWisata.getText().toString(),
                             textViewJumlahWisatawan.getText().toString(),
                             "0"
                     );
-                    mDatabase.child(tourRequestId).setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mRef.child(this.TOUR_REQUEST)
+                            .child(currentUser.getUid())
+                            .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
