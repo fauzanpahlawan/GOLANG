@@ -31,7 +31,7 @@
                 android:value=".activity.LoginActivity" />
         </activity>
         <activity
-            android:name=".activity.RequestTourGuideActivity"
+            android:name=".activity.RequestTourActivity"
             android:parentActivityName=".activity.HomeMemberActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

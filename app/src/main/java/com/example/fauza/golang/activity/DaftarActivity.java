@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private TextInputEditText editTextEmail;
     private TextInputLayout layoutPassword;
     private TextInputEditText editTextPassword;
+    private Toolbar toolbarMain;
     private Button buttonCreateAnAccount;
     private static final String CHILD_MEMBER = "members";
 
@@ -69,16 +71,23 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         editTextEmail = findViewById(R.id.editText_email);
         layoutPassword = findViewById(R.id.layout_password);
         editTextPassword = findViewById(R.id.editText_password);
+        toolbarMain = findViewById(R.id.toolbar_home);
 
         buttonCreateAnAccount = findViewById(R.id.button_create_an_account);
-
         buttonCreateAnAccount.setOnClickListener(this);
+
+        setSupportActionBar(toolbarMain);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
     }
 
     @Override
     protected void onStart() {
-        mAuth.addAuthStateListener(this);
         super.onStart();
+        mAuth.addAuthStateListener(this);
     }
 
     @Override
@@ -135,13 +144,13 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
             String mobileNumber = editTextMobileNumber.getText().toString();
             String email = editTextEmail.getText().toString();
             writeNewMember(user, memberName, mobileNumber, email);
-            explicitIntent(DaftarActivity.this, HomeMemberActivity.class);
+            explicitIntent(this, HomeMemberActivity.class);
         }
     }
 
     private void writeNewMember(FirebaseUser user, String memberName, String mobileNumber, String email) {
         String userUid = user.getUid();
-        Member member = new Member(memberName, mobileNumber, email, "2");
+        Member member = new Member(memberName, mobileNumber, email, "2", "");
         mDatabase.child(CHILD_MEMBER).child(userUid).setValue(member);
     }
 

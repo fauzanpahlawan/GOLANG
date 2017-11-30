@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.fauza.golang.activity.DaftarActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <ImageView
         android:id="@+id/imageView_logo"
         android:layout_width="match_parent"
@@ -15,6 +24,7 @@
         android:layout_marginTop="8dp"
         android:layout_weight="26"
         android:contentDescription="@string/logo_golang"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

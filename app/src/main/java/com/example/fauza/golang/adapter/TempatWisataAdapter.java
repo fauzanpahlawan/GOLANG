@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.viewHolder.TempatWisataViewHolder;
-import com.example.fauza.golang.activity.RequestTourGuideActivity;
+import com.example.fauza.golang.activity.RequestTourActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class TempatWisataAdapter extends RecyclerView.Adapter<TempatWisataViewHo
         holder.buttonPilih.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, RequestTourGuideActivity.class);
+                Intent intent = new Intent(mContext, RequestTourActivity.class);
                 intent.putExtra("nama_tempat", data.get(dataPosition));
                 mContext.startActivity(intent);
             }

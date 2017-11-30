@@ -16,12 +16,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fauza.golang.R;
+import com.example.fauza.golang.SplashScreen;
+import com.example.fauza.golang.model.Member;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
+        FirebaseAuth.AuthStateListener, ValueEventListener {
 
     private TextInputLayout layoutEmail;
     private TextInputEditText editTextEmail;
@@ -31,11 +41,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView textViewForgetPassword;
     private TextView textViewSignUp;
 
-    //START check current auth state
+    /**
+     * Initialize Firebase dataa
+     */
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mRef;
     private FirebaseAuth mAuth;
-    //END check current auth state
 
-    private String TAG = "EmailPassword";
+    private Class[] classes;
+
+    private String TAG = "LoginActivity";
 
 
     @Override
@@ -43,9 +58,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //START initialize FirebaseAuth instance
+        //START firebase
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
-        //END initialize FirebaseAuth instance
+        //END firebase
+
+        classes = new Class[3];
+        classes[1] = HomeTourGuideActivity.class;
+        classes[2] = HomeMemberActivity.class;
 
         layoutEmail = findViewById(R.id.layout_email);
         editTextEmail = findViewById(R.id.editText_email);
@@ -58,6 +79,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonSignIn.setOnClickListener(this);
         textViewForgetPassword.setOnClickListener(this);
         textViewSignUp.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(this);
     }
 
     @Override
@@ -92,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            explicitIntent(LoginActivity.this, HomeMemberActivity.class);
+//                            explicitIntent(LoginActivity.this, HomeMemberActivity.class);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -105,6 +132,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+            Query query = mRef.child("members").orderByKey().equalTo(currentUser.getUid());
+            query.addValueEventListener(this);
+//            explicitIntent(LoginActivity.this, HomeMemberActivity.class);
+        }
+    }
 
     private boolean isEmpty(TextInputEditText editText, TextInputLayout textInputLayout) {
         if (TextUtils.isEmpty(editText.getText().toString())) {
@@ -119,5 +156,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void explicitIntent(Activity activity, Class _class) {
         Intent explicitIntent = new Intent(activity, _class);
         this.startActivity(explicitIntent);
+    }
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.getValue() != null) {
+            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                Member member = postSnapshot.getValue(Member.class);
+                if (member != null) {
+                    explicitIntent(LoginActivity.this, classes[Integer.valueOf(member.getType())]);
+                    Log.i("Login", member.getType());
+                }
+            }
+        } else {
+            Log.i("Login", "Data Empty");
+        }
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
     }
 }

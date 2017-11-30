@@ -3,57 +3,71 @@ package com.example.fauza.golang.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.fauza.golang.R;
-import com.example.fauza.golang.adapter.TempatWisataAdapter;
+import com.example.fauza.golang.fragment.FragmentHomeMember;
+import com.example.fauza.golang.model.Member;
+import com.example.fauza.golang.model.TourGuideRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
+public class HomeMemberActivity extends AppCompatActivity implements View.OnClickListener,
+        ValueEventListener {
 
 
-public class HomeMemberActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
+    private final String TAG = "HomeMemberActivity";
 
     private TextView textViewCurrentUser;
     private Toolbar toolbarHome;
-    private SearchView searchViewTujuanWisata;
-    private List<String> data;
-    private TempatWisataAdapter mAdapter;
-    private RecyclerView rvTempatWisata;
+
+    private FragmentManager fragmentManager;
+    private FragmentHomeMember fragmentHomeMember;
+
+    /**
+     * Firebase instances
+     */
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mRef;
+    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_member);
 
-        data = Arrays.asList(getResources().getStringArray(R.array.tempat_wisata));
-        Collections.sort(data);
+        //START firebase
+        mDatabase = FirebaseDatabase.getInstance();
+        mRef = mDatabase.getReference();
+        mAuth = FirebaseAuth.getInstance();
 
-        toolbarHome = findViewById(R.id.toolbar_home);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        Query query = mRef.child("tourRequests").child("idMember").equalTo(currentUser.getUid());
+        query.addValueEventListener(this);
+        //END firebase
+
+        this.fragmentHomeMember = new FragmentHomeMember();
+        this.fragmentManager = this.getSupportFragmentManager();
+        this.fragmentManager.beginTransaction()
+                .add(R.id.fragment_home_member, this.fragmentHomeMember)
+                .commit();
+
         textViewCurrentUser = findViewById(R.id.textView_current_user);
-        searchViewTujuanWisata = findViewById(R.id.sv_filter_tempat_wisata);
-        searchViewTujuanWisata.setQueryHint(getString(R.string.cari_tempat));
-        searchViewTujuanWisata.setOnClickListener(this);
-
-
-        rvTempatWisata = findViewById(R.id.rv_tempat_wisata);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        mAdapter = new TempatWisataAdapter(this);
-        rvTempatWisata.setLayoutManager(linearLayoutManager);
-        rvTempatWisata.setAdapter(mAdapter);
-        mAdapter.setData(data);
-        mAdapter.notifyDataSetChanged();
+        toolbarHome = findViewById(R.id.toolbar_home);
 
         // Set textView text with the current signed in user
         setUser();
@@ -63,8 +77,6 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-        searchViewTujuanWisata.setOnQueryTextListener(this);
 
     }
 
@@ -88,8 +100,6 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.sv_filter_tempat_wisata:
-                searchViewTujuanWisata.setIconified(false);
         }
     }
 
@@ -106,14 +116,16 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public boolean onQueryTextSubmit(String s) {
-        mAdapter.filter(s);
-        return true;
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.getValue() != null) {
+            Log.i(TAG, dataSnapshot.getValue().toString());
+        } else {
+            Log.i(TAG, "Data Empty");
+        }
     }
 
     @Override
-    public boolean onQueryTextChange(String s) {
-        mAdapter.filter(s);
-        return true;
+    public void onCancelled(DatabaseError databaseError) {
+
     }
 }

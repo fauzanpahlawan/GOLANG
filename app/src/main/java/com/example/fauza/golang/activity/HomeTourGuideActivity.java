@@ -2,25 +2,47 @@ package com.example.fauza.golang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.fauza.golang.R;
+import com.example.fauza.golang.fragment.FragmentHomeMember;
+import com.example.fauza.golang.fragment.FragmentHomeTourGuide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeTourGuideActivity extends AppCompatActivity {
 
+    private TextView textViewCurrentUser;
     private Toolbar toolbarHome;
+
+    private FragmentManager fragmentManager;
+    private FragmentHomeTourGuide fragmentHomeTourGuide;
+    private FragmentHomeMember fragmentHomeMember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_tourgide);
+        setContentView(R.layout.activity_home_tourguide);
 
+        this.fragmentHomeTourGuide = new FragmentHomeTourGuide();
+        this.fragmentHomeMember = new FragmentHomeMember();
 
+        this.fragmentManager = this.getSupportFragmentManager();
+        this.fragmentManager.beginTransaction()
+                .add(R.id.fragment_home_tourguide, this.fragmentHomeTourGuide)
+//                .add(R.id.fragment_home_tourguide, this.fragmentHomeMember)
+                .commit();
+
+        textViewCurrentUser = findViewById(R.id.textView_current_user);
+        toolbarHome = findViewById(R.id.toolbar_home);
+
+        setUser();
         // Set app logo to account
         toolbarHome.setLogo(R.drawable.ic_account);
         setSupportActionBar(toolbarHome);
@@ -49,5 +71,12 @@ public class HomeTourGuideActivity extends AppCompatActivity {
     private void explicitIntent(Activity activity, Class _class) {
         Intent explicitIntent = new Intent(activity, _class);
         startActivity(explicitIntent);
+    }
+
+    private void setUser() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            this.textViewCurrentUser.setText(user.getEmail());
+        }
     }
 }
