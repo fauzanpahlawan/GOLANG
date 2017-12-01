@@ -26,22 +26,6 @@
             tools:text="active user" />
     </android.support.v7.widget.Toolbar>
 
-    <!--<SearchView-->
-
-    <!--android:id="@+id/sv_filter_tempat_wisata"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="end"-->
-    <!--android:visibility="invisible">-->
-
-    <!--</SearchView>-->
-
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:id="@+id/rv_tempat_wisata"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:visibility="invisible" />-->
-
     <LinearLayout
         android:id="@+id/fragment_home_member"
         android:layout_width="match_parent"

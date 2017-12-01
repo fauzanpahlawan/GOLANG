@@ -16,13 +16,12 @@ import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.model.Member;
+import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 
 public class DaftarActivity extends AppCompatActivity implements View.OnClickListener, FirebaseAuth.AuthStateListener {
@@ -40,14 +39,9 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
 
 
     /**
-     * Firebase Real Time Database Reference
+     * Firebase instance
      */
-    private DatabaseReference mDatabase;
-
-    /**
-     * Firebase Authentication
-     */
-    private FirebaseAuth mAuth;
+    FirebaseUtils firebaseUtils = new FirebaseUtils();
 
     private String TAG = "EmailPassword";
 
@@ -55,13 +49,6 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar);
-
-        // Firebase DatabaseReference instance
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        // Firebase FirebaseAuth instance
-        mAuth = FirebaseAuth.getInstance();
-
 
         layoutName = findViewById(R.id.layout_name);
         editTextName = findViewById(R.id.editText_name);
@@ -87,7 +74,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(this);
+        firebaseUtils.firebaseAuth().addAuthStateListener(this);
     }
 
     @Override
@@ -115,7 +102,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     */
 
     private void createAccount(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
+        firebaseUtils.firebaseAuth().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -151,7 +138,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private void writeNewMember(FirebaseUser user, String memberName, String mobileNumber, String email) {
         String userUid = user.getUid();
         Member member = new Member(memberName, mobileNumber, email, "2", "");
-        mDatabase.child(CHILD_MEMBER).child(userUid).setValue(member);
+        firebaseUtils.firebaseRef().child(CHILD_MEMBER).child(userUid).setValue(member);
     }
 
     /*

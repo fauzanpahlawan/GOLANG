@@ -3,11 +3,9 @@ package com.example.fauza.golang.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +14,7 @@ import android.widget.TextView;
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.fragment.FragmentHomeMember;
 import com.example.fauza.golang.fragment.FragmentHomeMemberRequest;
-import com.example.fauza.golang.model.Member;
-import com.example.fauza.golang.model.TourGuideRequest;
+import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,26 +25,14 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class HomeMemberActivity extends AppCompatActivity implements View.OnClickListener,
-        ValueEventListener {
-
+public class HomeMemberActivity extends AppCompatActivity implements ValueEventListener {
 
     private final String TAG = "HomeMemberActivity";
 
     private TextView textViewCurrentUser;
     private Toolbar toolbarHome;
 
-    private FragmentManager fragmentManager;
-    private FragmentHomeMember fragmentHomeMember;
-    private FragmentHomeMemberRequest fragmentHomeMemberRequest;
-
-    /**
-     * Firebase instances
-     */
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currentUser;
+    private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private ValueEventListener callBackRequest;
     private Query query;
 
@@ -55,17 +40,6 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_member);
-
-        //START firebase
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mRef.keepSynced(true);
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
-
-//        Query query = mRef.child("tourRequests").child("idMember").equalTo(currentUser.getUid());
-//        query.addValueEventListener(this);
-        //END firebase
 
         textViewCurrentUser = findViewById(R.id.textView_current_user);
         toolbarHome = findViewById(R.id.toolbar_home);
@@ -83,7 +57,7 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        query = mRef.child(getString(R.string.TOUR_REQUESTS)).orderByKey().equalTo(currentUser.getUid());
+        query = firebaseUtils.firebaseRef().child(getString(R.string.TOUR_REQUESTS)).orderByKey().equalTo(firebaseUtils.firebaseUser().getUid());
         final FragmentManager fragmentManager = getSupportFragmentManager();
         callBackRequest = new ValueEventListener() {
             @Override
@@ -106,7 +80,6 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
 
             }
         };
-//        query.addValueEventListener(this);
         query.addValueEventListener(callBackRequest);
     }
 
@@ -131,12 +104,6 @@ public class HomeMemberActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-        }
     }
 
     private void explicitIntent(Activity activity, Class _class) {

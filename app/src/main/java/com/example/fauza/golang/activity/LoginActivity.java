@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fauza.golang.R;
-import com.example.fauza.golang.SplashScreen;
 import com.example.fauza.golang.model.Member;
+import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,8 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -44,10 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * Initialize Firebase dataa
      */
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private FirebaseAuth mAuth;
-
+    FirebaseUtils firebaseUtils = new FirebaseUtils();
     private Class[] classes;
 
     private String TAG = "LoginActivity";
@@ -57,13 +52,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        //START firebase
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mAuth = FirebaseAuth.getInstance();
-        //END firebase
-
         classes = new Class[3];
         classes[1] = HomeTourGuideActivity.class;
         classes[2] = HomeMemberActivity.class;
@@ -84,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(this);
+        firebaseUtils.firebaseAuth().addAuthStateListener(this);
     }
 
     @Override
@@ -112,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void signIn(String email, String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
+        firebaseUtils.firebaseAuth().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -137,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if (firebaseAuth.getCurrentUser() != null) {
             FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-            Query query = mRef.child("members").orderByKey().equalTo(currentUser.getUid());
+            Query query = firebaseUtils.firebaseRef().child("members").orderByKey().equalTo(currentUser.getUid());
             query.addValueEventListener(this);
 //            explicitIntent(LoginActivity.this, HomeMemberActivity.class);
         }

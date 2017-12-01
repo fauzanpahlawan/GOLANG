@@ -2,9 +2,9 @@ package com.example.fauza.golang.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,14 +13,14 @@ import android.widget.TextView;
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.fragment.FragmentHomeMember;
 import com.example.fauza.golang.fragment.FragmentHomeTourGuide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.fauza.golang.utils.FirebaseUtils;
 
 public class HomeTourGuideActivity extends AppCompatActivity {
 
     private TextView textViewCurrentUser;
     private Toolbar toolbarHome;
 
+    private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private FragmentManager fragmentManager;
     private FragmentHomeTourGuide fragmentHomeTourGuide;
     private FragmentHomeMember fragmentHomeMember;
@@ -61,7 +61,7 @@ public class HomeTourGuideActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_sign_out:
-                FirebaseAuth.getInstance().signOut();
+                firebaseUtils.firebaseAuth().signOut();
                 explicitIntent(this, LoginActivity.class);
                 break;
         }
@@ -74,9 +74,8 @@ public class HomeTourGuideActivity extends AppCompatActivity {
     }
 
     private void setUser() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            this.textViewCurrentUser.setText(user.getEmail());
+        if (firebaseUtils.firebaseUser() != null) {
+            this.textViewCurrentUser.setText(firebaseUtils.firebaseUser().getEmail());
         }
     }
 }

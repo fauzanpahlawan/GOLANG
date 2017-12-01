@@ -10,22 +10,16 @@ import com.example.fauza.golang.activity.HomeMemberActivity;
 import com.example.fauza.golang.activity.HomeTourGuideActivity;
 import com.example.fauza.golang.activity.LoginActivity;
 import com.example.fauza.golang.model.Member;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class SplashScreen extends AppCompatActivity implements ValueEventListener {
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mRef;
-    private FirebaseAuth mAuth;
+    private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private Class[] classes;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +27,6 @@ public class SplashScreen extends AppCompatActivity implements ValueEventListene
         setTheme(R.style.SplashTheme);
         setContentView(R.layout.activity_splash_screen);
 
-        mAuth = FirebaseAuth.getInstance();
         classes = new Class[3];
         classes[0] = LoginActivity.class;
         classes[1] = HomeTourGuideActivity.class;
@@ -43,11 +36,8 @@ public class SplashScreen extends AppCompatActivity implements ValueEventListene
     @Override
     protected void onStart() {
         super.onStart();
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Query query = mRef.child("members").orderByKey().equalTo(currentUser.getUid());
+        if (firebaseUtils.firebaseUser() != null) {
+            Query query = firebaseUtils.firebaseRef().child("members").orderByKey().equalTo(firebaseUtils.firebaseUser().getUid());
             query.addValueEventListener(this);
         } else {
             explicitIntent(this, classes[0]);

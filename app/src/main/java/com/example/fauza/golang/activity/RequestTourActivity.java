@@ -16,14 +16,11 @@ import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.model.TourGuideRequest;
+import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
@@ -43,18 +40,12 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
     /**
      * Firebase instances
      */
-    private DatabaseReference mRef;
-    private FirebaseDatabase mDatabase;
-    private FirebaseAuth mAuth;
+    private FirebaseUtils firebaseUtils = new FirebaseUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_tour);
-
-        mDatabase = FirebaseDatabase.getInstance();
-        mRef = mDatabase.getReference();
-        mAuth = FirebaseAuth.getInstance();
 
         textViewTempatWisata = findViewById(R.id.tv_nama_tempat);
         textViewJumlahWisatawan = findViewById(R.id.tv_jumlah_wisatawan);
@@ -99,21 +90,18 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
             case R.id.bt_buat_request:
                 //COMPLETED Write to Firebase
                 try {
-                    FirebaseUser currentUser = mAuth.getCurrentUser();
                     TourGuideRequest tourGuideRequest = new TourGuideRequest(
                             textViewTempatWisata.getText().toString(),
                             textViewTanggalWisata.getText().toString(),
                             textViewJumlahWisatawan.getText().toString(),
                             "0"
                     );
-                    mRef.child(getString(R.string.TOUR_REQUESTS))
-                            .child(currentUser.getUid())
+                    firebaseUtils.firebaseRef().child(getString(R.string.TOUR_REQUESTS))
+                            .child(firebaseUtils.firebaseUser().getUid())
                             .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Intent intent = new Intent(RequestTourActivity.this, HomeMemberActivity.class);
-//                                startActivity(intent);
                                 RequestTourActivity.this.finish();
                             } else {
                                 if (task.getException() != null) {
