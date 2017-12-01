@@ -31,8 +31,6 @@ import java.util.Calendar;
 public class RequestTourActivity extends AppCompatActivity implements View.OnClickListener,
         DatePickerDialog.OnDateSetListener, ValueEventListener {
 
-    private final String TOUR_REQUEST = "tourRequests";
-
     private TextView textViewJumlahWisatawan;
     private TextView textViewTanggalWisata;
     private TextView textViewTempatWisata;
@@ -103,19 +101,20 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
                 try {
                     FirebaseUser currentUser = mAuth.getCurrentUser();
                     TourGuideRequest tourGuideRequest = new TourGuideRequest(
-                            "tourguideId",
                             textViewTempatWisata.getText().toString(),
                             textViewTanggalWisata.getText().toString(),
                             textViewJumlahWisatawan.getText().toString(),
                             "0"
                     );
-                    mRef.child(this.TOUR_REQUEST)
+                    mRef.child(getString(R.string.TOUR_REQUESTS))
                             .child(currentUser.getUid())
                             .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                //TODO commit fragment tour request active
+                                Intent intent = new Intent(RequestTourActivity.this, HomeMemberActivity.class);
+//                                startActivity(intent);
+                                RequestTourActivity.this.finish();
                             } else {
                                 if (task.getException() != null) {
                                     Toast.makeText(RequestTourActivity.this, task.getException().getMessage(),

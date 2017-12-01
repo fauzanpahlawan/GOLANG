@@ -54,4 +54,5 @@
         <item>Pantai Ngeliyep</item>
         <item>Pantai Kedung Celeng</item>
     </string-array>
+    <string name="TOUR_REQUESTS">tourRequests</string>
 </resources>

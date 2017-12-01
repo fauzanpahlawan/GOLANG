@@ -54,8 +54,8 @@ public class SplashScreen extends AppCompatActivity implements ValueEventListene
         }
     }
 
-    private void explicitIntent(Activity loginActivity, Class activity) {
-        Intent explicitIntent = new Intent(loginActivity, activity);
+    private void explicitIntent(Activity activity, Class mClass) {
+        Intent explicitIntent = new Intent(activity, mClass);
         this.startActivity(explicitIntent);
     }
 
