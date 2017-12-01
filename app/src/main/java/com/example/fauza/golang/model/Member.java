@@ -6,17 +6,15 @@ public class Member {
     public String mobileNumher;
     public String email;
     public String type;
-    public String tourId;
 
     public Member() {
     }
 
-    public Member(String memberName, String mobileNumher, String email, String type, String tourId) {
+    public Member(String memberName, String mobileNumher, String email, String type) {
         this.memberName = memberName;
         this.mobileNumher = mobileNumher;
         this.email = email;
         this.type = type;
-        this.tourId = tourId;
     }
 
     public String getMemberName() {
@@ -49,13 +47,5 @@ public class Member {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getTourId() {
-        return tourId;
-    }
-
-    public void setTourId(String tourId) {
-        this.tourId = tourId;
     }
 }

@@ -14,7 +14,8 @@ public class TourGuideRequest {
     public TourGuideRequest(String tujuanWisata, String tanggalWisata, String jumlahWisatawan, String status) {
         this.tujuanWisata = tujuanWisata;
         this.tanggalWisata = tanggalWisata;
-        this.jumlahWisatawan = jumlahWisatawan;
+        String ORANG = " Orang";
+        this.jumlahWisatawan = jumlahWisatawan + ORANG;
         this.status = status;
     }
 

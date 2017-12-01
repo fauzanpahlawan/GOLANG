@@ -137,7 +137,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
 
     private void writeNewMember(FirebaseUser user, String memberName, String mobileNumber, String email) {
         String userUid = user.getUid();
-        Member member = new Member(memberName, mobileNumber, email, "2", "");
+        Member member = new Member(memberName, mobileNumber, email, getString(R.string.TYPE_MEMBER));
         firebaseUtils.firebaseRef().child(CHILD_MEMBER).child(userUid).setValue(member);
     }
 

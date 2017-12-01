@@ -7,9 +7,16 @@
     <TextView
         android:id="@+id/tv_list_request"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="LIST OF REQUEST"
         android:textSize="26sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_request_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1" />
 
 </LinearLayout>

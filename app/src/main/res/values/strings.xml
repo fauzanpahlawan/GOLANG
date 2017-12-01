@@ -55,4 +55,7 @@
         <item>Pantai Kedung Celeng</item>
     </string-array>
     <string name="TOUR_REQUESTS">tourRequests</string>
+    <string name="TYPE_TOUR_GUIDE">1</string>
+    <string name="TYPE_MEMBER">2</string>
+    <string name="BELUM_ADA_TOUR_GUIDE">Mencari Tour Guide…</string>
 </resources>

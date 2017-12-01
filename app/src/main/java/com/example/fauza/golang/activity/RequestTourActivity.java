@@ -94,7 +94,7 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
                             textViewTempatWisata.getText().toString(),
                             textViewTanggalWisata.getText().toString(),
                             textViewJumlahWisatawan.getText().toString(),
-                            "0"
+                            getString(R.string.BELUM_ADA_TOUR_GUIDE)
                     );
                     firebaseUtils.firebaseRef().child(getString(R.string.TOUR_REQUESTS))
                             .child(firebaseUtils.firebaseUser().getUid())
@@ -114,7 +114,6 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //Completed Intent to Home Member Tour
                 break;
         }
     }
