@@ -2,7 +2,6 @@ package com.example.fauza.golang.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -58,7 +57,7 @@ public class DetailTourRequestActivity extends AppCompatActivity implements View
         Intent intent = getIntent();
         idTourRequest = intent.getStringExtra(getString(R.string.KEY_TOUR_REQUEST));
         Log.i("ID_TOUR", idTourRequest);
-        query = firebaseUtils.getRef().child(getString(R.string.MEMBERS)).orderByKey().equalTo(idTourRequest);
+        query = firebaseUtils.getRef().child(getString(R.string.members)).orderByKey().equalTo(idTourRequest);
         callBack = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -80,14 +79,11 @@ public class DetailTourRequestActivity extends AppCompatActivity implements View
         };
         query.addListenerForSingleValueEvent(callBack);
 
-        query = firebaseUtils.getRef().child(getString(R.string.TOUR_REQUESTS)).orderByKey();
+        query = firebaseUtils.getRef().child(getString(R.string.tourRequests)).child(idTourRequest);
         callBack = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                TourGuideRequest tourGuideRequest = null;
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    tourGuideRequest = ds.getValue(TourGuideRequest.class);
-                }
+                TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
                 if (tourGuideRequest != null) {
                     textViewNamaTempat.setText(tourGuideRequest.getTujuanWisata());
                     textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
@@ -134,10 +130,10 @@ public class DetailTourRequestActivity extends AppCompatActivity implements View
             case R.id.bt_terima_request:
                 TourGuideConfirm tourGuideConfirm = new TourGuideConfirm(
                         firebaseUtils.getUser().getUid(),
-                        firebaseUtils.getUser().getDisplayName()
-                );
+                        idTourRequest, firebaseUtils.getUser().getDisplayName(),
+                        getString(R.string.CONFIRM_STATUS_ONGOING));
                 firebaseUtils.getRef()
-                        .child(getString(R.string.CONFIRM_REQUEST))
+                        .child(getString(R.string.confirmRequests))
                         .child(idTourRequest)
                         .setValue(tourGuideConfirm)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {

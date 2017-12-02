@@ -96,7 +96,7 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
                             textViewJumlahWisatawan.getText().toString(),
                             getString(R.string.BELUM_ADA_TOUR_GUIDE)
                     );
-                    firebaseUtils.getRef().child(getString(R.string.TOUR_REQUESTS))
+                    firebaseUtils.getRef().child(getString(R.string.tourRequests))
                             .child(firebaseUtils.getUser().getUid())
                             .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

@@ -54,7 +54,7 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
     @Override
     protected void onResume() {
         super.onResume();
-        query = firebaseUtils.getRef().child(getString(R.string.TOUR_REQUESTS)).orderByKey().equalTo(firebaseUtils.getUser().getUid());
+        query = firebaseUtils.getRef().child(getString(R.string.tourRequests)).orderByKey().equalTo(firebaseUtils.getUser().getUid());
         final FragmentManager fragmentManager = getSupportFragmentManager();
         callBackRequest = new ValueEventListener() {
             @Override

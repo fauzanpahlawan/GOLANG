@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class FragmentHomeTourGuideConfirmRequest extends Fragment implements View.OnClickListener {
 
+    public static final String argsKeyTourRequest = "tourRequests";
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     public View view;
     private String idConfirmRequest;
@@ -37,6 +38,8 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
                 R.layout.fragment_home_tourguide_confirm_request,
                 container,
                 false);
+
+
         textViewNamaTempat = view.findViewById(R.id.tv_nama_tempat);
         textViewJumlahWisatawan = view.findViewById(R.id.tv_jumlah_wisatawan);
         textViewTanggalWisata = view.findViewById(R.id.tv_tanggal_wisata);
@@ -50,10 +53,39 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
     @Override
     public void onResume() {
         super.onResume();
+        String keyTourRequests = getArguments().getString(argsKeyTourRequest);
+        Query query = firebaseUtils.getRef()
+                .child(getString(R.string.tourRequests))
+                .child(keyTourRequests);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
+                if (tourGuideRequest != null) {
+                    textViewNamaTempat.setText(tourGuideRequest.getTujuanWisata());
+                    textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
+                    textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.bt_selesai_tour:
+                String keyTourRequests = getArguments().getString(argsKeyTourRequest);
+                firebaseUtils.getRef()
+                        .child(getString(R.string.confirmRequests))
+                        .child(keyTourRequests)
+                        .child(getString(R.string.REQUEST_STATUS))
+                        .setValue(getString(R.string.CONFIRM_STATUS_COMPLETED));
+                break;
+        }
     }
 }

@@ -53,17 +53,13 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
     public void onResume() {
         super.onResume();
         Query query1 = firebaseUtils.getRef()
-                .child(getString(R.string.TOUR_REQUESTS))
-                .orderByKey()
-                .equalTo(firebaseUtils.getUser().getUid());
+                .child(getString(R.string.tourRequests))
+                .child(firebaseUtils.getUser().getUid());
         final ArrayList<String> data = new ArrayList<>();
         query1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                TourGuideRequest tourGuideRequest = null;
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    tourGuideRequest = ds.getValue(TourGuideRequest.class);
-                }
+                TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
                 if (tourGuideRequest != null) {
                     data.add(tourGuideRequest.getTujuanWisata());
                     data.add(tourGuideRequest.getJumlahWisatawan());
@@ -85,7 +81,7 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
         });
 
         Query query2 = firebaseUtils.getRef()
-                .child(getString(R.string.CONFIRM_REQUEST))
+                .child(getString(R.string.confirmRequests))
                 .orderByKey()
                 .equalTo(firebaseUtils.getUser().getUid());
         query2.addValueEventListener(new ValueEventListener() {
@@ -115,7 +111,7 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
         switch (view.getId()) {
             case R.id.bt_cancel_request:
                 firebaseUtils.getRef()
-                        .child(getString(R.string.TOUR_REQUESTS))
+                        .child(getString(R.string.tourRequests))
                         .child(firebaseUtils.getUser().getUid())
                         .removeValue();
                 break;

@@ -54,15 +54,18 @@
         <item>Pantai Ngeliyep</item>
         <item>Pantai Kedung Celeng</item>
     </string-array>
-    <string name="TOUR_REQUESTS">tourRequests</string>
+    <string name="confirmRequests">confirmRequests</string>
+    <string name="members">members</string>
+    <string name="tourRequests">tourRequests</string>
     <string name="TYPE_TOUR_GUIDE">1</string>
     <string name="TYPE_MEMBER">2</string>
     <string name="BELUM_ADA_TOUR_GUIDE">Mencari Tour Guide…</string>
     <string name="terima_request">Terima Request</string>
     <string name="KEY_TOUR_REQUEST">KEY_TOUR_REQUEST</string>
-    <string name="CONFIRM_REQUEST">confirmRequests</string>
-    <string name="MEMBERS">members</string>
     <string name="loading">Loading…</string>
     <string name="anda_sedang_menjadi_tour_guide">Anda Sedang Menjadi Tour Guide</string>
-    <string name="REQUEST_STATUS">Status</string>
+    <string name="REQUEST_STATUS">status</string>
+    <string name="idTourguide">idTourguide</string>
+    <string name="CONFIRM_STATUS_ONGOING">ONGOING</string>
+    <string name="CONFIRM_STATUS_COMPLETED">COMPLETED</string>
 </resources>

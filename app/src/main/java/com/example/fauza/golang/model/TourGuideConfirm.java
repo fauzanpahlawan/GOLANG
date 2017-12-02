@@ -2,14 +2,18 @@ package com.example.fauza.golang.model;
 
 public class TourGuideConfirm {
     private String idTourguide;
+    private String idMember;
     private String namaTourGuide;
+    private String status;
 
     public TourGuideConfirm() {
     }
 
-    public TourGuideConfirm(String idTourguide, String namaTourGuide) {
+    public TourGuideConfirm(String idTourguide, String idMember, String namaTourGuide, String status) {
         this.idTourguide = idTourguide;
+        this.idMember = idMember;
         this.namaTourGuide = namaTourGuide;
+        this.status = status;
     }
 
     public String getIdTourguide() {
@@ -26,5 +30,21 @@ public class TourGuideConfirm {
 
     public void setNamaTourGuide(String namaTourGuide) {
         this.namaTourGuide = namaTourGuide;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getIdMember() {
+        return idMember;
+    }
+
+    public void setIdMember(String idMember) {
+        this.idMember = idMember;
     }
 }
