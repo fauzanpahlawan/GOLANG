@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.adapter.ListRequestAdapter;
 import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.Query;
 
 public class FragmentHomeTourGuide extends Fragment {
@@ -36,8 +39,8 @@ public class FragmentHomeTourGuide extends Fragment {
         this.textView = this.view.findViewById(R.id.tv_list_request);
         recyclerViewListRequest = this.view.findViewById(R.id.rv_request_list);
 
-        Query query = firebaseUtils.getRef().child(getString(R.string.TOUR_REQUESTS));
-
+        Query query = firebaseUtils.getRef()
+                .child(getString(R.string.TOUR_REQUESTS));
         FirebaseRecyclerOptions<TourGuideRequest> options =
                 new FirebaseRecyclerOptions.Builder<TourGuideRequest>()
                         .setQuery(query, TourGuideRequest.class)
@@ -47,7 +50,6 @@ public class FragmentHomeTourGuide extends Fragment {
         mAdapter = new ListRequestAdapter(options, getActivity());
         recyclerViewListRequest.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-
 
         return this.view;
     }

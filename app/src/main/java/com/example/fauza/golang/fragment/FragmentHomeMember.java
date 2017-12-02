@@ -13,6 +13,7 @@ import android.widget.SearchView;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.adapter.TempatWisataAdapter;
+import com.example.fauza.golang.utils.FirebaseUtils;
 
 import java.util.Arrays;
 import java.util.Collections;

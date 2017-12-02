@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fauza.golang.R;
+import com.example.fauza.golang.model.TourGuideConfirm;
 import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -19,9 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FragmentHomeMemberRequest extends Fragment implements View.OnClickListener {
+public class FragmentHomeMemberCreateRequest extends Fragment implements View.OnClickListener {
     public View view;
-    public ArrayList<TextView> textViews = new ArrayList<>();
     public TextView textViewNamaTempat;
     public TextView textViewJumlahWisatawan;
     public TextView textViewTanggalWisata;
@@ -34,7 +34,7 @@ public class FragmentHomeMemberRequest extends Fragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(
-                R.layout.fragment_home_member_request,
+                R.layout.fragment_home_member_create_request,
                 container,
                 false);
 
@@ -76,6 +76,31 @@ public class FragmentHomeMemberRequest extends Fragment implements View.OnClickL
                 textViewTanggalWisata.setText(data.get(2));
                 textViewStatus.setText(data.get(3));
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Query query2 = firebaseUtils.getRef()
+                .child(getString(R.string.CONFIRM_REQUEST))
+                .orderByKey()
+                .equalTo(firebaseUtils.getUser().getUid());
+        query2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                TourGuideConfirm tourGuideConfirm = null;
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    tourGuideConfirm = ds.getValue(TourGuideConfirm.class);
+                }
+                if (tourGuideConfirm != null) {
+                    String placeHolder = "Tour Guide Anda: "
+                            + tourGuideConfirm.getNamaTourGuide();
+                    textViewStatus.setText(placeHolder);
+                    buttonCancelRequest.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override

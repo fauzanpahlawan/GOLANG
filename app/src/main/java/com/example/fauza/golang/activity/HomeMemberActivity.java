@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.fragment.FragmentHomeMember;
-import com.example.fauza.golang.fragment.FragmentHomeMemberRequest;
+import com.example.fauza.golang.fragment.FragmentHomeMemberCreateRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,9 +60,9 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    FragmentHomeMemberRequest fragmentHomeMemberRequest = new FragmentHomeMemberRequest();
+                    FragmentHomeMemberCreateRequest fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
                     fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_home_member, fragmentHomeMemberRequest)
+                            .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
                             .commit();
                 } else {
                     FragmentHomeMember fragmentHomeMember = new FragmentHomeMember();

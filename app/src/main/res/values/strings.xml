@@ -63,4 +63,6 @@
     <string name="CONFIRM_REQUEST">confirmRequests</string>
     <string name="MEMBERS">members</string>
     <string name="loading">Loading…</string>
+    <string name="anda_sedang_menjadi_tour_guide">Anda Sedang Menjadi Tour Guide</string>
+    <string name="REQUEST_STATUS">Status</string>
 </resources>
