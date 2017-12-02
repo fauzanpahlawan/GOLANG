@@ -18,19 +18,19 @@ public class FirebaseUtils {
         mUser = mAuth.getCurrentUser();
     }
 
-    public FirebaseDatabase firebaseDb() {
+    public FirebaseDatabase getDb() {
         return mDatabase;
     }
 
-    public DatabaseReference firebaseRef() {
+    public DatabaseReference getRef() {
         return mRef;
     }
 
-    public FirebaseAuth firebaseAuth() {
+    public FirebaseAuth getAuth() {
         return mAuth;
     }
 
-    public FirebaseUser firebaseUser() {
+    public FirebaseUser getUser() {
         return mUser;
     }
 }

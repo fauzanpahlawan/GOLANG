@@ -44,7 +44,7 @@ public class TempatWisataAdapter extends RecyclerView.Adapter<TempatWisataViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, RequestTourActivity.class);
-                intent.putExtra("nama_tempat", data.get(dataPosition));
+                intent.putExtra(mContext.getString(R.string.KEY_TOUR_REQUEST), data.get(dataPosition));
                 mContext.startActivity(intent);
             }
         });

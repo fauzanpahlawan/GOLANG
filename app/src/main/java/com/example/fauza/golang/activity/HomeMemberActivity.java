@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.fauza.golang.R;
@@ -19,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
@@ -57,7 +54,7 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
     @Override
     protected void onResume() {
         super.onResume();
-        query = firebaseUtils.firebaseRef().child(getString(R.string.TOUR_REQUESTS)).orderByKey().equalTo(firebaseUtils.firebaseUser().getUid());
+        query = firebaseUtils.getRef().child(getString(R.string.TOUR_REQUESTS)).orderByKey().equalTo(firebaseUtils.getUser().getUid());
         final FragmentManager fragmentManager = getSupportFragmentManager();
         callBackRequest = new ValueEventListener() {
             @Override
@@ -101,6 +98,7 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
             case R.id.item_sign_out:
                 FirebaseAuth.getInstance().signOut();
                 explicitIntent(this, LoginActivity.class);
+                HomeMemberActivity.this.finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

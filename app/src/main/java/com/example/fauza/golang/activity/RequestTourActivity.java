@@ -53,7 +53,7 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
         buttonMinus = findViewById(R.id.bt_minus);
         buttonPlus = findViewById(R.id.bt_plus);
         buttonBuatRequest = findViewById(R.id.bt_buat_request);
-        toolbarMain = findViewById(R.id.toolbar_home);
+        toolbarMain = findViewById(R.id.toolbar_main);
 
         buttonMinus.setOnClickListener(this);
         buttonPlus.setOnClickListener(this);
@@ -96,8 +96,8 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
                             textViewJumlahWisatawan.getText().toString(),
                             getString(R.string.BELUM_ADA_TOUR_GUIDE)
                     );
-                    firebaseUtils.firebaseRef().child(getString(R.string.TOUR_REQUESTS))
-                            .child(firebaseUtils.firebaseUser().getUid())
+                    firebaseUtils.getRef().child(getString(R.string.TOUR_REQUESTS))
+                            .child(firebaseUtils.getUser().getUid())
                             .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

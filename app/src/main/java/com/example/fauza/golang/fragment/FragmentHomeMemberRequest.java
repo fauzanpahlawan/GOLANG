@@ -3,7 +3,6 @@ package com.example.fauza.golang.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,10 +52,10 @@ public class FragmentHomeMemberRequest extends Fragment implements View.OnClickL
     @Override
     public void onResume() {
         super.onResume();
-        Query query1 = firebaseUtils.firebaseRef()
+        Query query1 = firebaseUtils.getRef()
                 .child(getString(R.string.TOUR_REQUESTS))
                 .orderByKey()
-                .equalTo(firebaseUtils.firebaseUser().getUid());
+                .equalTo(firebaseUtils.getUser().getUid());
         final ArrayList<String> data = new ArrayList<>();
         query1.addValueEventListener(new ValueEventListener() {
             @Override
@@ -90,9 +89,9 @@ public class FragmentHomeMemberRequest extends Fragment implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_cancel_request:
-                firebaseUtils.firebaseRef()
+                firebaseUtils.getRef()
                         .child(getString(R.string.TOUR_REQUESTS))
-                        .child(firebaseUtils.firebaseUser().getUid())
+                        .child(firebaseUtils.getUser().getUid())
                         .removeValue();
                 break;
         }

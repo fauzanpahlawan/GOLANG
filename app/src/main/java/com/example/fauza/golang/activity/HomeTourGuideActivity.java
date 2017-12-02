@@ -61,8 +61,9 @@ public class HomeTourGuideActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_sign_out:
-                firebaseUtils.firebaseAuth().signOut();
+                firebaseUtils.getAuth().signOut();
                 explicitIntent(this, LoginActivity.class);
+                HomeTourGuideActivity.this.finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -74,8 +75,8 @@ public class HomeTourGuideActivity extends AppCompatActivity {
     }
 
     private void setUser() {
-        if (firebaseUtils.firebaseUser() != null) {
-            this.textViewCurrentUser.setText(firebaseUtils.firebaseUser().getEmail());
+        if (firebaseUtils.getUser() != null) {
+            this.textViewCurrentUser.setText(firebaseUtils.getUser().getEmail());
         }
     }
 }

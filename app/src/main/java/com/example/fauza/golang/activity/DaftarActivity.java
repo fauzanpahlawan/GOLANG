@@ -74,7 +74,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseUtils.firebaseAuth().addAuthStateListener(this);
+        firebaseUtils.getAuth().addAuthStateListener(this);
     }
 
     @Override
@@ -102,13 +102,14 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     */
 
     private void createAccount(String email, String password) {
-        firebaseUtils.firebaseAuth().createUserWithEmailAndPassword(email, password)
+        firebaseUtils.getAuth().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
+                            DaftarActivity.this.finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -138,7 +139,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private void writeNewMember(FirebaseUser user, String memberName, String mobileNumber, String email) {
         String userUid = user.getUid();
         Member member = new Member(memberName, mobileNumber, email, getString(R.string.TYPE_MEMBER));
-        firebaseUtils.firebaseRef().child(CHILD_MEMBER).child(userUid).setValue(member);
+        firebaseUtils.getRef().child(CHILD_MEMBER).child(userUid).setValue(member);
     }
 
     /*

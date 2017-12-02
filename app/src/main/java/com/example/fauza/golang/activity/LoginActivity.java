@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseUtils.firebaseAuth().addAuthStateListener(this);
+        firebaseUtils.getAuth().addAuthStateListener(this);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void signIn(String email, String password) {
-        firebaseUtils.firebaseAuth().signInWithEmailAndPassword(email, password)
+        firebaseUtils.getAuth().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
 //                            explicitIntent(LoginActivity.this, HomeMemberActivity.class);
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -125,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if (firebaseAuth.getCurrentUser() != null) {
             FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-            Query query = firebaseUtils.firebaseRef().child("members").orderByKey().equalTo(currentUser.getUid());
+            Query query = firebaseUtils.getRef().child("members").orderByKey().equalTo(currentUser.getUid());
             query.addValueEventListener(this);
 //            explicitIntent(LoginActivity.this, HomeMemberActivity.class);
         }

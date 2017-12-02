@@ -17,13 +17,10 @@ import com.example.fauza.golang.utils.FirebaseUtils;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 
-import java.util.List;
-
 public class FragmentHomeTourGuide extends Fragment {
 
     private View view;
     private TextView textView;
-    private List<String> data;
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private RecyclerView recyclerViewListRequest;
@@ -39,7 +36,7 @@ public class FragmentHomeTourGuide extends Fragment {
         this.textView = this.view.findViewById(R.id.tv_list_request);
         recyclerViewListRequest = this.view.findViewById(R.id.rv_request_list);
 
-        Query query = firebaseUtils.firebaseRef().child(getString(R.string.TOUR_REQUESTS));
+        Query query = firebaseUtils.getRef().child(getString(R.string.TOUR_REQUESTS));
 
         FirebaseRecyclerOptions<TourGuideRequest> options =
                 new FirebaseRecyclerOptions.Builder<TourGuideRequest>()

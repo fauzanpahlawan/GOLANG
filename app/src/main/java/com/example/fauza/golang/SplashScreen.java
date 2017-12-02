@@ -36,8 +36,8 @@ public class SplashScreen extends AppCompatActivity implements ValueEventListene
     @Override
     protected void onStart() {
         super.onStart();
-        if (firebaseUtils.firebaseUser() != null) {
-            Query query = firebaseUtils.firebaseRef().child("members").orderByKey().equalTo(firebaseUtils.firebaseUser().getUid());
+        if (firebaseUtils.getUser() != null) {
+            Query query = firebaseUtils.getRef().child("members").orderByKey().equalTo(firebaseUtils.getUser().getUid());
             query.addValueEventListener(this);
         } else {
             explicitIntent(this, classes[0]);
