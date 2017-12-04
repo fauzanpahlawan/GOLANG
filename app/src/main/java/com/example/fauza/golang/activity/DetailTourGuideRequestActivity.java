@@ -154,7 +154,7 @@ public class DetailTourGuideRequestActivity extends AppCompatActivity implements
                         .child(getString(R.string.tourGuideRequests))
                         .child(idTourRequest)
                         .child(getString(R.string.REQUEST_STATUS))
-                        .setValue(firebaseUtils.getUser().getDisplayName());
+                        .setValue(DetailTourGuideRequestActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED));
                 break;
         }
     }

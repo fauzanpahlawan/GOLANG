@@ -95,35 +95,28 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                             textViewTempatWisata.getText().toString(),
                             textViewJumlahWisatawan.getText().toString(),
                             textViewTanggalWisata.getText().toString(),
-                            getString(R.string.BELUM_ADA_TOUR_GUIDE)
+                            RequestTourGuideActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED)
                     );
-                    String tourGuideKey = firebaseUtils.getRef()
+                    final String keyTourGuideRequest = firebaseUtils.getRef()
                             .child(getString(R.string.tourGuideRequests))
                             .push()
                             .getKey();
-                    String key = tourGuideKey;
-                    Intent intent = new Intent(RequestTourGuideActivity.this, HomeMemberActivity.class);
-                    intent.putExtra("key", tourGuideKey);
-                    RequestTourGuideActivity.this.startActivity(intent);
-//                    firebaseUtils.getRef()
-//                            .child(getString(R.string.tourGuideRequests))
-//                            .child(tourGuideKey)
-//                            .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<Void> task) {
-//                            if (task.isSuccessful()) {
-//                                RequestTourGuideActivity.this.finish();
-//                                Intent intent = new Intent(RequestTourGuideActivity.this, HomeMemberActivity.class);
-//                                intent.putExtra("key", tourGuideKey);
-//                                RequestTourGuideActivity.this.startActivity(intent);
-//                            } else {
-//                                if (task.getException() != null) {
-//                                    Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
-//                                            Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        }
-//                    });
+                    firebaseUtils.getRef()
+                            .child(getString(R.string.tourGuideRequests))
+                            .child(keyTourGuideRequest)
+                            .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                RequestTourGuideActivity.this.finish();
+                            } else {
+                                if (task.getException() != null) {
+                                    Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

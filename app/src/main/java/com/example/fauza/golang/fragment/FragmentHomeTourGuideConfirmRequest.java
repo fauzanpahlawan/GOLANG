@@ -97,11 +97,18 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
         switch (view.getId()) {
             case R.id.bt_selesai_tour:
                 String keyConfirmRequest = getArguments().getString(argsKeyConfirmRequest);
+                String idTourGuideRequest = getArguments().getString(argsIdTourGuideRequest);
                 firebaseUtils.getRef()
                         .child(getString(R.string.confirmRequests))
                         .child(keyConfirmRequest)
                         .child(getString(R.string.REQUEST_STATUS))
                         .setValue(getString(R.string.CONFIRM_STATUS_COMPLETED));
+                firebaseUtils.getRef()
+                        .child(getString(R.string.tourGuideRequests))
+                        .child(idTourGuideRequest)
+                        .child(getString(R.string.REQUEST_STATUS))
+                        .setValue(FragmentHomeTourGuideConfirmRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED));
+
                 break;
         }
     }

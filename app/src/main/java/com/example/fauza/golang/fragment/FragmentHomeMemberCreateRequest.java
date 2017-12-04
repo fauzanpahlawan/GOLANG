@@ -32,6 +32,10 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
     public TextView textViewTanggalWisata;
     public TextView textViewStatus;
     public Button buttonCancelRequest;
+    public Query query1;
+    public Query query2;
+    public ValueEventListener veListener1;
+    public ValueEventListener veListener2;
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
 
@@ -58,21 +62,27 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
     public void onResume() {
         super.onResume();
         String keyTourGuideRequest = getArguments().getString(argsKeyTourGuideRequest);
-        Query query1 = firebaseUtils.getRef()
+        query1 = firebaseUtils.getRef()
                 .child(getString(R.string.tourGuideRequests))
-                .child(keyTourGuideRequest);
-        query1.addValueEventListener(new ValueEventListener() {
+                .child(keyTourGuideRequest)
+                .orderByChild(getString(R.string.REQUEST_STATUS))
+                .endAt(FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED));
+        veListener1 = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
                 if (tourGuideRequest != null) {
-                    textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
-                    textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
-                    textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
-                }
-                textViewStatus.setText(tourGuideRequest.getStatus());
-                if (!tourGuideRequest.getStatus().equals(getString(R.string.BELUM_ADA_TOUR_GUIDE))) {
-                    buttonCancelRequest.setVisibility(View.INVISIBLE);
+                    if (tourGuideRequest.getStatus() <= FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED)) {
+                        textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
+                        textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
+                        textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
+                        if (tourGuideRequest.getStatus() == FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED)) {
+                            textViewStatus.setText(getString(R.string.MENCARI_TOURGUIDE));
+                        } else {
+                            //TODO Query Confirm Request to find tourGuideName
+                            buttonCancelRequest.setVisibility(View.INVISIBLE);
+                        }
+                    }
                 }
             }
 
@@ -80,8 +90,15 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+        query1.addValueEventListener(veListener1);
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        query1.removeEventListener(veListener1);
     }
 
     @Override

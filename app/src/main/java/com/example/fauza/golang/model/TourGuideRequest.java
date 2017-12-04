@@ -5,14 +5,14 @@ public class TourGuideRequest {
     String tempatWisata;
     String jumlahWisatawan;
     String tanggalWisata;
-    String status;
+    int status;
 
 
     public TourGuideRequest() {
 
     }
 
-    public TourGuideRequest(String idMember, String tempatWisata, String jumlahWisatawan, String tanggalWisata, String status) {
+    public TourGuideRequest(String idMember, String tempatWisata, String jumlahWisatawan, String tanggalWisata, int status) {
         this.idMember = idMember;
         this.tempatWisata = tempatWisata;
         this.jumlahWisatawan = jumlahWisatawan;
@@ -52,11 +52,11 @@ public class TourGuideRequest {
         this.tanggalWisata = tanggalWisata;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 }

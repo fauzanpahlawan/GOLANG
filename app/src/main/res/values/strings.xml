@@ -60,12 +60,12 @@
     <string name="tourGuideRequests">tourGuideRequests</string>
     <string name="TYPE_TOUR_GUIDE">1</string>
     <string name="TYPE_MEMBER">2</string>
-    <string name="BELUM_ADA_TOUR_GUIDE">LOOKING</string>
-    <string name="SUDAH_ADA_TOUR_GUIDE">FOUND</string>
     <string name="terima_request">Terima Request</string>
+    <string name="MENCARI_TOURGUIDE">Sedang mencari tourguide …</string>
     <string name="KEY_TOUR_GUIDE_REQUEST">KEY_TOUR_GUIDE_REQUEST</string>
     <string name="loading">Loading…</string>
     <string name="status_tourguide">Anda Sedang Menjadi Tour Guide</string>
+    <string name="tourGuideRequestActive">tourGuideRequestActive</string>
     <string name="REQUEST_STATUS">status</string>
     <string name="idTourguide">idTourguide</string>
     <string name="CONFIRM_STATUS_ONGOING">ONGOING</string>

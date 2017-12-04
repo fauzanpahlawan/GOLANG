@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fauza.golang.R;
+import com.example.fauza.golang.fragment.FragmentGiveRating;
 import com.example.fauza.golang.fragment.FragmentHomeMember;
 import com.example.fauza.golang.fragment.FragmentHomeMemberCreateRequest;
 import com.example.fauza.golang.model.TourGuideConfirm;
@@ -38,15 +39,11 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private ValueEventListener veListener;
-    private ChildEventListener ceListener1;
-    private ChildEventListener ceListener2;
     private Query query1;
-    private Query query2;
-    private Query query3;
-    private String key;
 
     FragmentHomeMember fragmentHomeMember;
     FragmentHomeMemberCreateRequest fragmentHomeMemberCreateRequest;
+    FragmentGiveRating fragmentGiveRating;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,8 +62,7 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        fragmentHomeMember = new FragmentHomeMember();
-        fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
+
     }
 
 
@@ -74,14 +70,55 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
     protected void onResume() {
         super.onResume();
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_home_member, new FragmentHomeMember())
-                .commit();
+
+        query1 = firebaseUtils.getRef()
+                .child(getString(R.string.tourGuideRequests))
+                .orderByChild(getString(R.string.REQUEST_STATUS))
+                .endAt(HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED));
+        veListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
+                    if (tourGuideRequest != null) {
+                        if (tourGuideRequest.getStatus() <= HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED)) {
+                            String key = "";
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                key = ds.getKey();
+                            }
+                            fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
+                            Bundle data = new Bundle();
+                            data.putString(FragmentHomeMemberCreateRequest.argsKeyTourGuideRequest, key);
+                            fragmentHomeMemberCreateRequest.setArguments(data);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
+                                    .commit();
+                        } else {
+                            getSupportFragmentManager().beginTransaction()
+                                    .remove(fragmentHomeMemberCreateRequest);
+                            Toast.makeText(HomeMemberActivity.this, tourGuideRequest.getStatus(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    fragmentHomeMember = new FragmentHomeMember();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_home_member, fragmentHomeMember)
+                            .commit();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        query1.addValueEventListener(veListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        query1.removeEventListener(veListener);
     }
 
     @Override
