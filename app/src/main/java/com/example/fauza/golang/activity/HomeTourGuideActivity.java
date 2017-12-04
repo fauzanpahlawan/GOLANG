@@ -3,7 +3,6 @@ package com.example.fauza.golang.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,8 +10,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.fauza.golang.R;
-import com.example.fauza.golang.fragment.FragmentHomeMember;
-import com.example.fauza.golang.fragment.FragmentHomeMemberCreateRequest;
 import com.example.fauza.golang.fragment.FragmentHomeTourGuide;
 import com.example.fauza.golang.fragment.FragmentHomeTourGuideConfirmRequest;
 import com.example.fauza.golang.model.TourGuideConfirm;
@@ -62,47 +59,26 @@ public class HomeTourGuideActivity extends AppCompatActivity {
                 .child(getString(R.string.confirmRequests))
                 .orderByChild(getString(R.string.idTourguide))
                 .equalTo(firebaseUtils.getUser().getUid());
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    TourGuideConfirm tourGuideConfirm = dataSnapshot.getValue(TourGuideConfirm.class);
-                    FragmentHomeTourGuideConfirmRequest fragmentHomeTourGuideConfirmRequest = new FragmentHomeTourGuideConfirmRequest();
-                    Bundle data = new Bundle();
-                    data.putString(FragmentHomeTourGuideConfirmRequest.argsKeyTourRequest, tourGuideConfirm.getIdMember());
-                    fragmentHomeTourGuideConfirmRequest.setArguments(data);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuideConfirmRequest)
-                            .commit();
-                } else {
-                    FragmentHomeTourGuide fragmentHomeTourGuide = new FragmentHomeTourGuide();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuide)
-                            .commit();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
 
         cListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.exists()) {
-                    FragmentHomeTourGuideConfirmRequest fragmentHomeTourGuideConfirmRequest = new FragmentHomeTourGuideConfirmRequest();
-                    Bundle data = new Bundle();
-                    data.putString(FragmentHomeTourGuideConfirmRequest.argsKeyTourRequest, dataSnapshot.getKey());
-                    fragmentHomeTourGuideConfirmRequest.setArguments(data);
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuideConfirmRequest)
-                            .commit();
+                    TourGuideConfirm tourGuideConfirm = dataSnapshot.getValue(TourGuideConfirm.class);
+                    if (tourGuideConfirm != null && tourGuideConfirm.getStatus().equals(getString(R.string.CONFIRM_STATUS_ONGOING))) {
+                        FragmentHomeTourGuideConfirmRequest fragmentHomeTourGuideConfirmRequest = new FragmentHomeTourGuideConfirmRequest();
+                        Bundle data = new Bundle();
+                        data.putString(FragmentHomeTourGuideConfirmRequest.argsKeyConfirmRequest, dataSnapshot.getKey());
+                        data.putString(FragmentHomeTourGuideConfirmRequest.argsIdTourGuideRequest, tourGuideConfirm.getIdRequest());
+                        data.putString(FragmentHomeTourGuideConfirmRequest.argsIdMember, tourGuideConfirm.getIdMember());
+                        fragmentHomeTourGuideConfirmRequest.setArguments(data);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuideConfirmRequest)
+                                .commit();
+                    }
                 } else {
                     FragmentHomeTourGuide fragmentHomeTourGuide = new FragmentHomeTourGuide();
-                    fragmentManager.beginTransaction()
+                    getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuide)
                             .commit();
                 }
@@ -110,10 +86,10 @@ public class HomeTourGuideActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                TourGuideConfirm tgc = dataSnapshot.getValue(TourGuideConfirm.class);
-                if(tgc.getStatus().equals(getString(R.string.CONFIRM_STATUS_COMPLETED))){
+                TourGuideConfirm tourGuideConfirm = dataSnapshot.getValue(TourGuideConfirm.class);
+                if (tourGuideConfirm != null && tourGuideConfirm.getStatus().equals(getString(R.string.CONFIRM_STATUS_COMPLETED))) {
                     FragmentHomeTourGuide fragmentHomeTourGuide = new FragmentHomeTourGuide();
-                    fragmentManager.beginTransaction()
+                    getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuide)
                             .commit();
                 }
@@ -135,7 +111,6 @@ public class HomeTourGuideActivity extends AppCompatActivity {
             }
         };
 
-//        query.addValueEventListener(listener);
         query.addChildEventListener(cListener);
     }
 

@@ -1,9 +1,10 @@
 package com.example.fauza.golang.model;
 
 public class TourGuideRequest {
-    String tujuanWisata;
-    String tanggalWisata;
+    String idMember;
+    String tempatWisata;
     String jumlahWisatawan;
+    String tanggalWisata;
     String status;
 
 
@@ -11,29 +12,28 @@ public class TourGuideRequest {
 
     }
 
-    public TourGuideRequest(String tujuanWisata, String tanggalWisata, String jumlahWisatawan, String status) {
-        this.tujuanWisata = tujuanWisata;
+    public TourGuideRequest(String idMember, String tempatWisata, String jumlahWisatawan, String tanggalWisata, String status) {
+        this.idMember = idMember;
+        this.tempatWisata = tempatWisata;
+        this.jumlahWisatawan = jumlahWisatawan;
         this.tanggalWisata = tanggalWisata;
-        String ORANG = " Orang";
-        this.jumlahWisatawan = jumlahWisatawan + ORANG;
         this.status = status;
     }
 
-
-    public String getTujuanWisata() {
-        return tujuanWisata;
+    public String getIdMember() {
+        return idMember;
     }
 
-    public void setTujuanWisata(String tujuanWisata) {
-        this.tujuanWisata = tujuanWisata;
+    public void setIdMember(String idMember) {
+        this.idMember = idMember;
     }
 
-    public String getTanggalWisata() {
-        return tanggalWisata;
+    public String getTempatWisata() {
+        return tempatWisata;
     }
 
-    public void setTanggalWisata(String tanggalWisata) {
-        this.tanggalWisata = tanggalWisata;
+    public void setTempatWisata(String tempatWisata) {
+        this.tempatWisata = tempatWisata;
     }
 
     public String getJumlahWisatawan() {
@@ -42,6 +42,14 @@ public class TourGuideRequest {
 
     public void setJumlahWisatawan(String jumlahWisatawan) {
         this.jumlahWisatawan = jumlahWisatawan;
+    }
+
+    public String getTanggalWisata() {
+        return tanggalWisata;
+    }
+
+    public void setTanggalWisata(String tanggalWisata) {
+        this.tanggalWisata = tanggalWisata;
     }
 
     public String getStatus() {

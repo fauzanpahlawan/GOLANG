@@ -3,19 +3,26 @@ package com.example.fauza.golang.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.fragment.FragmentHomeMember;
 import com.example.fauza.golang.fragment.FragmentHomeMemberCreateRequest;
+import com.example.fauza.golang.model.TourGuideConfirm;
+import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -30,8 +37,16 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
     private Toolbar toolbarHome;
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
-    private ValueEventListener callBackRequest;
-    private Query query;
+    private ValueEventListener veListener;
+    private ChildEventListener ceListener1;
+    private ChildEventListener ceListener2;
+    private Query query1;
+    private Query query2;
+    private Query query3;
+    private Intent intent;
+
+    FragmentHomeMember fragmentHomeMember;
+    FragmentHomeMemberCreateRequest fragmentHomeMemberCreateRequest;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,47 +58,52 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
 
         // Set textView text with the current signed in user
         setUser();
-        // Set app logo to account
+
         toolbarHome.setLogo(R.drawable.ic_account);
         setSupportActionBar(toolbarHome);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        fragmentHomeMember = new FragmentHomeMember();
+        fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
+        intent = getIntent();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        query = firebaseUtils.getRef().child(getString(R.string.tourRequests)).orderByKey().equalTo(firebaseUtils.getUser().getUid());
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        callBackRequest = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    FragmentHomeMemberCreateRequest fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
-                            .commit();
-                } else {
-                    FragmentHomeMember fragmentHomeMember = new FragmentHomeMember();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_home_member, fragmentHomeMember)
-                            .commit();
-                }
-            }
+//        getSupportFragmentManager().beginTransaction()
+//                .remove(fragmentHomeMember)
+//                .commit();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_home_member, new FragmentHomeMember())
+                .commit();
 
-            }
-        };
-        query.addValueEventListener(callBackRequest);
+        String key = intent.getStringExtra("key");
+        Toast.makeText(this, key, Toast.LENGTH_SHORT).show();
+//        query1 = firebaseUtils.getRef()
+//                .child(getString(R.string.tourGuideRequests))
+//                .orderByChild(firebaseUtils.getUser().getUid());
+//        veListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
+//                Toast.makeText(HomeMemberActivity.this, tourGuideRequest.getTempatWisata(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        };
+//        query1.addListenerForSingleValueEvent(veListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        query.removeEventListener(callBackRequest);
     }
 
     @Override

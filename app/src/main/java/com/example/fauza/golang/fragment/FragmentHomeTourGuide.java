@@ -37,7 +37,7 @@ public class FragmentHomeTourGuide extends Fragment {
         recyclerViewListRequest = this.view.findViewById(R.id.rv_request_list);
 
         Query query = firebaseUtils.getRef()
-                .child(getString(R.string.tourRequests))
+                .child(getString(R.string.tourGuideRequests))
                 .orderByChild(getString(R.string.REQUEST_STATUS))
                 .equalTo(getString(R.string.BELUM_ADA_TOUR_GUIDE));
         FirebaseRecyclerOptions<TourGuideRequest> options =

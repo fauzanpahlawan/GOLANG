@@ -8,26 +8,59 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/anda_sedang_menjadi_tour_guide" />
+        android:text="@string/status_tourguide" />
 
     <TextView
-        android:id="@+id/tv_nama_tempat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/nama_member" />
+
+    <TextView
+        android:id="@+id/tv_nama_member"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/loading" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nama_tempat" />
 
     <TextView
-        android:id="@+id/tv_tanggal_wisata"
+        android:id="@+id/tv_nama_tempat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/tanggal_wisata" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/loading" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/jumlah_wisatawan" />
 
     <TextView
         android:id="@+id/tv_jumlah_wisatawan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/jumlah_wisatawan" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/loading" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tanggal_wisata" />
+
+    <TextView
+        android:id="@+id/tv_tanggal_wisata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/loading" />
 
     <Button
         android:id="@+id/bt_selesai_tour"

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.fauza.golang.R;
+import com.example.fauza.golang.model.Member;
 import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.firebase.database.DataSnapshot;
@@ -18,14 +19,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 public class FragmentHomeTourGuideConfirmRequest extends Fragment implements View.OnClickListener {
-
-    public static final String argsKeyTourRequest = "tourRequests";
+    public static final String argsKeyConfirmRequest = "confirmRequests";
+    public static final String argsIdTourGuideRequest = "tourGuideRequest";
+    public static final String argsIdMember = "idMember";
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     public View view;
-    private String idConfirmRequest;
+    public TextView textViewNamaMember;
     public TextView textViewNamaTempat;
     public TextView textViewJumlahWisatawan;
     public TextView textViewTanggalWisata;
@@ -40,6 +40,7 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
                 false);
 
 
+        textViewNamaMember = view.findViewById(R.id.tv_nama_member);
         textViewNamaTempat = view.findViewById(R.id.tv_nama_tempat);
         textViewJumlahWisatawan = view.findViewById(R.id.tv_jumlah_wisatawan);
         textViewTanggalWisata = view.findViewById(R.id.tv_tanggal_wisata);
@@ -53,19 +54,35 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
     @Override
     public void onResume() {
         super.onResume();
-        String keyTourRequests = getArguments().getString(argsKeyTourRequest);
-        Query query = firebaseUtils.getRef()
-                .child(getString(R.string.tourRequests))
-                .child(keyTourRequests);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        String keyTourGuideRequests = getArguments().getString(argsIdTourGuideRequest);
+        String idMember = getArguments().getString(argsIdMember);
+        Query query1 = firebaseUtils.getRef()
+                .child(getString(R.string.tourGuideRequests))
+                .child(keyTourGuideRequests);
+        query1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
                 if (tourGuideRequest != null) {
-                    textViewNamaTempat.setText(tourGuideRequest.getTujuanWisata());
+                    textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
                     textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
                     textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        Query query2 = firebaseUtils.getRef()
+                .child(getString(R.string.members))
+                .child(idMember);
+        query2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Member member = dataSnapshot.getValue(Member.class);
+                textViewNamaMember.setText(member.getMemberName());
             }
 
             @Override
@@ -79,10 +96,10 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_selesai_tour:
-                String keyTourRequests = getArguments().getString(argsKeyTourRequest);
+                String keyConfirmRequest = getArguments().getString(argsKeyConfirmRequest);
                 firebaseUtils.getRef()
                         .child(getString(R.string.confirmRequests))
-                        .child(keyTourRequests)
+                        .child(keyConfirmRequest)
                         .child(getString(R.string.REQUEST_STATUS))
                         .setValue(getString(R.string.CONFIRM_STATUS_COMPLETED));
                 break;

@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
-public class RequestTourActivity extends AppCompatActivity implements View.OnClickListener,
+public class RequestTourGuideActivity extends AppCompatActivity implements View.OnClickListener,
         DatePickerDialog.OnDateSetListener, ValueEventListener {
 
     private TextView textViewJumlahWisatawan;
@@ -45,7 +45,7 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_request_tour);
+        setContentView(R.layout.activity_request_tour_guide);
 
         textViewTempatWisata = findViewById(R.id.tv_nama_tempat);
         textViewJumlahWisatawan = findViewById(R.id.tv_jumlah_wisatawan);
@@ -91,21 +91,30 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
                 //COMPLETED Write to Firebase
                 try {
                     TourGuideRequest tourGuideRequest = new TourGuideRequest(
+                            firebaseUtils.getUser().getUid(),
                             textViewTempatWisata.getText().toString(),
-                            textViewTanggalWisata.getText().toString(),
                             textViewJumlahWisatawan.getText().toString(),
+                            textViewTanggalWisata.getText().toString(),
                             getString(R.string.BELUM_ADA_TOUR_GUIDE)
                     );
-                    firebaseUtils.getRef().child(getString(R.string.tourRequests))
-                            .child(firebaseUtils.getUser().getUid())
+                    final String tourGuideKey = firebaseUtils.getRef()
+                            .child(getString(R.string.tourGuideRequests))
+                            .push()
+                            .getKey();
+                    firebaseUtils.getRef()
+                            .child(getString(R.string.tourGuideRequests))
+                            .child(tourGuideKey)
                             .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                RequestTourActivity.this.finish();
+                                RequestTourGuideActivity.this.finish();
+                                Intent intent = new Intent(RequestTourGuideActivity.this, HomeMemberActivity.class);
+                                intent.putExtra("key", tourGuideKey);
+                                startActivity(intent);
                             } else {
                                 if (task.getException() != null) {
-                                    Toast.makeText(RequestTourActivity.this, task.getException().getMessage(),
+                                    Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -120,8 +129,7 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
 
     public void setNamaTempat(TextView textView) {
         Intent intent = getIntent();
-        final String NAMA_TEMPAT = "nama_tempat";
-        String namaTempat = intent.getStringExtra(NAMA_TEMPAT);
+        String namaTempat = intent.getStringExtra(getString(R.string.nama_tempat));
         textView.setText(namaTempat);
     }
 
@@ -157,7 +165,7 @@ public class RequestTourActivity extends AppCompatActivity implements View.OnCli
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
 
-            return new DatePickerDialog(getActivity(), (RequestTourActivity) getActivity(), year, month, day);
+            return new DatePickerDialog(getActivity(), (RequestTourGuideActivity) getActivity(), year, month, day);
         }
     }
 }

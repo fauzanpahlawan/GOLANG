@@ -33,7 +33,7 @@
                 android:value=".activity.LoginActivity" />
         </activity>
         <activity
-            android:name=".activity.RequestTourActivity"
+            android:name=".activity.RequestTourGuideActivity"
             android:parentActivityName=".activity.HomeMemberActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -42,7 +42,7 @@
         <activity android:name=".activity.HomeTourGuideActivity" />
         <activity android:name=".activity.HomeMemberActivity" />
         <activity
-            android:name=".activity.DetailTourRequestActivity"
+            android:name=".activity.DetailTourGuideRequestActivity"
             android:parentActivityName=".activity.HomeTourGuideActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
