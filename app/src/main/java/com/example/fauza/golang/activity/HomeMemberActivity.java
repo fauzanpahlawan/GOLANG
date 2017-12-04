@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.fragment.FragmentGiveRating;
@@ -17,6 +19,7 @@ import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -32,6 +35,7 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private ValueEventListener veListener;
+    private ChildEventListener ceListener;
     private Query query1;
 
     FragmentHomeMember fragmentHomeMember;
@@ -55,7 +59,10 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-
+        fragmentHomeMember = new FragmentHomeMember();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_home_member, fragmentHomeMember)
+                .commit();
     }
 
 
@@ -83,8 +90,12 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
                             .commit();
-                    if (tourGuideRequest.getStatus() == HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED)) {
+                    if (tourGuideRequest != null
+                            && tourGuideRequest.getStatus()
+                            == HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED)) {
                         fragmentGiveRating = new FragmentGiveRating();
+                        data.putString(FragmentGiveRating.argsKeyTourGuideRequests, key);
+                        fragmentGiveRating.setArguments(data);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_home_member, fragmentGiveRating)
                                 .commit();
