@@ -43,7 +43,7 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
     private Query query1;
     private Query query2;
     private Query query3;
-    private Intent intent;
+    private String key;
 
     FragmentHomeMember fragmentHomeMember;
     FragmentHomeMemberCreateRequest fragmentHomeMemberCreateRequest;
@@ -67,38 +67,16 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
 
         fragmentHomeMember = new FragmentHomeMember();
         fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
-        intent = getIntent();
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-//        getSupportFragmentManager().beginTransaction()
-//                .remove(fragmentHomeMember)
-//                .commit();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_home_member, new FragmentHomeMember())
                 .commit();
-
-        String key = intent.getStringExtra("key");
-        Toast.makeText(this, key, Toast.LENGTH_SHORT).show();
-//        query1 = firebaseUtils.getRef()
-//                .child(getString(R.string.tourGuideRequests))
-//                .orderByChild(firebaseUtils.getUser().getUid());
-//        veListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
-//                Toast.makeText(HomeMemberActivity.this, tourGuideRequest.getTempatWisata(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        };
-//        query1.addListenerForSingleValueEvent(veListener);
     }
 
     @Override
