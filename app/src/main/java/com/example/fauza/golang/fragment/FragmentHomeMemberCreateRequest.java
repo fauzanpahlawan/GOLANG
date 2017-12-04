@@ -72,16 +72,14 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
             public void onDataChange(DataSnapshot dataSnapshot) {
                 TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
                 if (tourGuideRequest != null) {
-                    if (tourGuideRequest.getStatus() <= FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED)) {
-                        textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
-                        textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
-                        textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
-                        if (tourGuideRequest.getStatus() == FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED)) {
-                            textViewStatus.setText(getString(R.string.MENCARI_TOURGUIDE));
-                        } else {
-                            //TODO Query Confirm Request to find tourGuideName
-                            buttonCancelRequest.setVisibility(View.INVISIBLE);
-                        }
+                    textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
+                    textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
+                    textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
+                    if (tourGuideRequest.getStatus() == FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED)) {
+                        textViewStatus.setText(getString(R.string.MENCARI_TOURGUIDE));
+                    } else {
+                        //TODO Query Confirm Request to find tourGuideName
+                        buttonCancelRequest.setVisibility(View.INVISIBLE);
                     }
                 }
             }

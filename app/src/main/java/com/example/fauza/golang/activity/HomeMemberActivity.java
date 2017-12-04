@@ -75,22 +75,22 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
                 if (dataSnapshot.exists()) {
                     TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
                     if (tourGuideRequest != null) {
-                        if (tourGuideRequest.getStatus() <= HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED)) {
-                            String key = "";
-                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                key = ds.getKey();
-                            }
-                            fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
-                            Bundle data = new Bundle();
-                            data.putString(FragmentHomeMemberCreateRequest.argsKeyTourGuideRequest, key);
-                            fragmentHomeMemberCreateRequest.setArguments(data);
+                        String key = "";
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            key = ds.getKey();
+                        }
+                        fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
+                        Bundle data = new Bundle();
+                        data.putString(FragmentHomeMemberCreateRequest.argsKeyTourGuideRequest, key);
+                        fragmentHomeMemberCreateRequest.setArguments(data);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
+                                .commit();
+                        if (tourGuideRequest.getStatus() == HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED)) {
+                            fragmentGiveRating = new FragmentGiveRating();
                             getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
+                                    .replace(R.id.fragment_home_member, fragmentGiveRating)
                                     .commit();
-                        } else {
-                            getSupportFragmentManager().beginTransaction()
-                                    .remove(fragmentHomeMemberCreateRequest);
-                            Toast.makeText(HomeMemberActivity.this, tourGuideRequest.getStatus(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
