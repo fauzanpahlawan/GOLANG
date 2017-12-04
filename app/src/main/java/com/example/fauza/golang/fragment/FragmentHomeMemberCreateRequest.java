@@ -64,9 +64,7 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
         String keyTourGuideRequest = getArguments().getString(argsKeyTourGuideRequest);
         query1 = firebaseUtils.getRef()
                 .child(getString(R.string.tourGuideRequests))
-                .child(keyTourGuideRequest)
-                .orderByChild(getString(R.string.REQUEST_STATUS))
-                .endAt(FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED));
+                .child(keyTourGuideRequest);
         veListener1 = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

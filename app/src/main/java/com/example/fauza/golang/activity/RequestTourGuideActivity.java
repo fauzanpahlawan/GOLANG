@@ -108,6 +108,15 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+//                                firebaseUtils.getRef()
+//                                        .child(getString(R.string.members))
+//                                        .child(firebaseUtils.getUser().getUid())
+//                                        .child(getString(R.string.tourGuideRequests))
+//                                        .child(keyTourGuideRequest).setValue(getString(R.string.CONFIRM_STATUS_ONGOING));
+//                                Intent intent = new Intent(RequestTourGuideActivity.this, HomeMemberActivity.class);
+//                                intent.putExtra(getString(R.string.KEY_TOUR_GUIDE_REQUEST), keyTourGuideRequest);
+//                                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//                                RequestTourGuideActivity.this.startActivity(intent);
                                 RequestTourGuideActivity.this.finish();
                             } else {
                                 if (task.getException() != null) {

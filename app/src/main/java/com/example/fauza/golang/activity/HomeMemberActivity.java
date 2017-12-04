@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 
 public class HomeMemberActivity extends AppCompatActivity implements ValueEventListener {
@@ -63,8 +66,6 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
     @Override
     protected void onResume() {
         super.onResume();
-
-
         query1 = firebaseUtils.getRef()
                 .child(getString(R.string.tourGuideRequests))
                 .orderByChild(getString(R.string.REQUEST_STATUS))
@@ -73,25 +74,24 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
-                    if (tourGuideRequest != null) {
-                        String key = "";
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            key = ds.getKey();
-                        }
-                        fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
-                        Bundle data = new Bundle();
-                        data.putString(FragmentHomeMemberCreateRequest.argsKeyTourGuideRequest, key);
-                        fragmentHomeMemberCreateRequest.setArguments(data);
+                    String key = null;
+                    TourGuideRequest tourGuideRequest = null;
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        key = ds.getKey();
+                        tourGuideRequest = ds.getValue(TourGuideRequest.class);
+                    }
+                    fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
+                    Bundle data = new Bundle();
+                    data.putString(FragmentHomeMemberCreateRequest.argsKeyTourGuideRequest, key);
+                    fragmentHomeMemberCreateRequest.setArguments(data);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
+                            .commit();
+                    if (tourGuideRequest.getStatus() == HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED)) {
+                        fragmentGiveRating = new FragmentGiveRating();
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
+                                .replace(R.id.fragment_home_member, fragmentGiveRating)
                                 .commit();
-                        if (tourGuideRequest.getStatus() == HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED)) {
-                            fragmentGiveRating = new FragmentGiveRating();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_home_member, fragmentGiveRating)
-                                    .commit();
-                        }
                     }
                 } else {
                     fragmentHomeMember = new FragmentHomeMember();
