@@ -65,14 +65,13 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
                 .commit();
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         query1 = firebaseUtils.getRef()
                 .child(getString(R.string.tourGuideRequests))
-                .orderByChild(getString(R.string.REQUEST_STATUS))
-                .endAt(HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED));
+                .orderByChild(getString(R.string.idMember_status))
+                .equalTo(firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS));
         veListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -86,12 +85,15 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
                     fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
                     Bundle data = new Bundle();
                     data.putString(FragmentHomeMemberCreateRequest.argsKeyTourGuideRequest, key);
+                    if (tourGuideRequest != null) {
+                        data.putString(FragmentHomeMemberCreateRequest.argsIdTourGuide, tourGuideRequest.getIdTourGuide());
+                    }
                     fragmentHomeMemberCreateRequest.setArguments(data);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
                             .commit();
                     if (tourGuideRequest != null
-                            && tourGuideRequest.getStatus()
+                            && tourGuideRequest.getRequestStatus()
                             == HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED)) {
                         fragmentGiveRating = new FragmentGiveRating();
                         data.putString(FragmentGiveRating.argsKeyTourGuideRequests, key);

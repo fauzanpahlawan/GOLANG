@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.model.Member;
-import com.example.fauza.golang.model.TourGuideConfirm;
 import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +22,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class DetailTourGuideRequestActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,7 +39,7 @@ public class DetailTourGuideRequestActivity extends AppCompatActivity implements
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private Query query;
     private ValueEventListener callBack;
-    private String idTourRequest;
+    private String keyTourGuideRequest;
     private String idMember;
 
     @Override
@@ -56,9 +57,9 @@ public class DetailTourGuideRequestActivity extends AppCompatActivity implements
         toolbarMain = findViewById(R.id.toolbar_main);
 
         Intent intent = getIntent();
-        idTourRequest = intent.getStringExtra(getString(R.string.KEY_TOUR_GUIDE_REQUEST));
+        keyTourGuideRequest = intent.getStringExtra(getString(R.string.KEY_TOUR_GUIDE_REQUEST));
         idMember = intent.getStringExtra(getString(R.string.idMember));
-        Log.i("ID_TOUR", idTourRequest);
+        Log.i("ID_TOUR", keyTourGuideRequest);
         query = firebaseUtils.getRef()
                 .child(getString(R.string.members))
                 .child(idMember);
@@ -80,7 +81,7 @@ public class DetailTourGuideRequestActivity extends AppCompatActivity implements
         };
         query.addListenerForSingleValueEvent(callBack);
 
-        query = firebaseUtils.getRef().child(getString(R.string.tourGuideRequests)).child(idTourRequest);
+        query = firebaseUtils.getRef().child(getString(R.string.tourGuideRequests)).child(keyTourGuideRequest);
         callBack = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -129,32 +130,27 @@ public class DetailTourGuideRequestActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
                 break;
             case R.id.bt_terima_request:
-                TourGuideConfirm tourGuideConfirm = new TourGuideConfirm(
-                        idTourRequest,
-                        firebaseUtils.getUser().getUid(),
-                        idMember,
-                        firebaseUtils.getUser().getDisplayName(),
-                        getString(R.string.CONFIRM_STATUS_ONGOING));
-                firebaseUtils.getRef()
-                        .child(getString(R.string.confirmRequests))
-                        .push()
-                        .setValue(tourGuideConfirm)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("DetailTourRequest", "ConfirmSuccess");
-                                    DetailTourGuideRequestActivity.this.finish();
-                                } else {
-                                    Log.w("DetailTourRequest", task.getException());
-                                }
+                HashMap<String, Object> updateMap = new HashMap<>();
+                updateMap.put(getString(R.string.idTourGuide), firebaseUtils.getUser().getUid());
+                updateMap.put(getString(R.string.idTourGuide_status), firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS));
+                updateMap.put(getString(R.string.requestStatus), DetailTourGuideRequestActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED));
+                firebaseUtils.getRef().child(getString(R.string.tourGuideRequests))
+                        .child(keyTourGuideRequest)
+                        .updateChildren(updateMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            DetailTourGuideRequestActivity.this.finish();
+                        } else {
+                            if (task.getException() != null) {
+                                Toast.makeText(
+                                        DetailTourGuideRequestActivity.this,
+                                        task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
                             }
-                        });
-                firebaseUtils.getRef()
-                        .child(getString(R.string.tourGuideRequests))
-                        .child(idTourRequest)
-                        .child(getString(R.string.REQUEST_STATUS))
-                        .setValue(DetailTourGuideRequestActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_ACCEPTED));
+                        }
+                    }
+                });
                 break;
         }
     }

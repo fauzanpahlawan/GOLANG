@@ -12,9 +12,8 @@ import android.widget.TextView;
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.fragment.FragmentHomeTourGuide;
 import com.example.fauza.golang.fragment.FragmentHomeTourGuideConfirmRequest;
-import com.example.fauza.golang.model.TourGuideConfirm;
+import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -26,9 +25,11 @@ public class HomeTourGuideActivity extends AppCompatActivity {
     private Toolbar toolbarHome;
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
-    private ValueEventListener listener;
-    private ChildEventListener cListener;
+    private ValueEventListener veListener;
     private Query query;
+
+    private FragmentHomeTourGuide fragmentHomeTourGuide;
+    private FragmentHomeTourGuideConfirmRequest fragmentHomeTourGuideConfirmRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,64 +46,41 @@ public class HomeTourGuideActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-        FragmentHomeTourGuide fragmentHomeTourGuide = new FragmentHomeTourGuide();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuide)
-                .commit();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         query = firebaseUtils.getRef()
-                .child(getString(R.string.confirmRequests))
-                .orderByChild(getString(R.string.idTourguide))
-                .equalTo(firebaseUtils.getUser().getUid());
-
-        cListener = new ChildEventListener() {
+                .child(getString(R.string.tourGuideRequests))
+                .orderByChild(getString(R.string.idTourGuide_status))
+                .equalTo(firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS));
+        veListener = new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    TourGuideConfirm tourGuideConfirm = dataSnapshot.getValue(TourGuideConfirm.class);
-                    if (tourGuideConfirm != null && tourGuideConfirm.getStatus().equals(getString(R.string.CONFIRM_STATUS_ONGOING))) {
-                        FragmentHomeTourGuideConfirmRequest fragmentHomeTourGuideConfirmRequest = new FragmentHomeTourGuideConfirmRequest();
-                        Bundle data = new Bundle();
-                        data.putString(FragmentHomeTourGuideConfirmRequest.argsKeyConfirmRequest, dataSnapshot.getKey());
-                        data.putString(FragmentHomeTourGuideConfirmRequest.argsIdTourGuideRequest, tourGuideConfirm.getIdRequest());
-                        data.putString(FragmentHomeTourGuideConfirmRequest.argsIdMember, tourGuideConfirm.getIdMember());
-                        fragmentHomeTourGuideConfirmRequest.setArguments(data);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuideConfirmRequest)
-                                .commit();
+                    String key = null;
+                    TourGuideRequest tourGuideRequest = null;
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        key = ds.getKey();
+                        tourGuideRequest = ds.getValue(TourGuideRequest.class);
                     }
+                    fragmentHomeTourGuideConfirmRequest = new FragmentHomeTourGuideConfirmRequest();
+                    Bundle data = new Bundle();
+                    data.putString(FragmentHomeTourGuideConfirmRequest.argsKeyTourGuideRequest, key);
+                    if (tourGuideRequest != null) {
+                        data.putString(FragmentHomeTourGuideConfirmRequest.argsIdMember, tourGuideRequest.getIdMember());
+                    }
+                    fragmentHomeTourGuideConfirmRequest.setArguments(data);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuideConfirmRequest)
+                            .commit();
                 } else {
-                    FragmentHomeTourGuide fragmentHomeTourGuide = new FragmentHomeTourGuide();
+                    fragmentHomeTourGuide = new FragmentHomeTourGuide();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuide)
                             .commit();
                 }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                TourGuideConfirm tourGuideConfirm = dataSnapshot.getValue(TourGuideConfirm.class);
-                if (tourGuideConfirm != null && tourGuideConfirm.getStatus().equals(getString(R.string.CONFIRM_STATUS_COMPLETED))) {
-                    FragmentHomeTourGuide fragmentHomeTourGuide = new FragmentHomeTourGuide();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuide)
-                            .commit();
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -110,14 +88,14 @@ public class HomeTourGuideActivity extends AppCompatActivity {
 
             }
         };
+        query.addListenerForSingleValueEvent(veListener);
 
-        query.addChildEventListener(cListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        query.removeEventListener(cListener);
+        query.removeEventListener(veListener);
     }
 
     @Override

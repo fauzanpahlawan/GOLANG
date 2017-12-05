@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.utils.FirebaseUtils;
 
+import java.util.HashMap;
+
 public class FragmentGiveRating extends Fragment {
     public static final String argsKeyTourGuideRequests = "keyTourGuideRequest";
 
@@ -30,11 +32,12 @@ public class FragmentGiveRating extends Fragment {
             @Override
             public void onClick(View view) {
                 String keyTourGuideRequest = getArguments().getString(argsKeyTourGuideRequests);
-                firebaseUtils.getRef()
-                        .child(getString(R.string.tourGuideRequests))
+                HashMap<String, Object> updateMap = new HashMap<>();
+                updateMap.put(getString(R.string.idMember_status), firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_COMPLETED));
+                updateMap.put(getString(R.string.requestStatus), FragmentGiveRating.this.getResources().getInteger(R.integer.TOUR_STATUS_RATED));
+                firebaseUtils.getRef().child(getString(R.string.tourGuideRequests))
                         .child(keyTourGuideRequest)
-                        .child(getString(R.string.REQUEST_STATUS))
-                        .setValue(FragmentGiveRating.this.getResources().getInteger(R.integer.TOUR_STATUS_RATED));
+                        .updateChildren(updateMap);
             }
         });
         return view;

@@ -1,6 +1,5 @@
 package com.example.fauza.golang.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,23 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fauza.golang.R;
-import com.example.fauza.golang.model.TourGuideConfirm;
+import com.example.fauza.golang.model.Member;
 import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 public class FragmentHomeMemberCreateRequest extends Fragment implements View.OnClickListener {
     public static final String argsKeyTourGuideRequest = "tourGuideRequest";
     public static final String argsIdTourGuide = "idTourGuide";
+
     public View view;
     public TextView textViewNamaTempat;
     public TextView textViewJumlahWisatawan;
@@ -62,32 +58,56 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
     public void onResume() {
         super.onResume();
         String keyTourGuideRequest = getArguments().getString(argsKeyTourGuideRequest);
-        query1 = firebaseUtils.getRef()
-                .child(getString(R.string.tourGuideRequests))
-                .child(keyTourGuideRequest);
-        veListener1 = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
-                if (tourGuideRequest != null) {
-                    textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
-                    textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
-                    textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
-                    if (tourGuideRequest.getStatus() == FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED)) {
-                        textViewStatus.setText(getString(R.string.MENCARI_TOURGUIDE));
-                    } else {
-                        //TODO Query Confirm Request to find tourGuideName
-                        buttonCancelRequest.setVisibility(View.INVISIBLE);
+        String idTourGuide = getArguments().getString(argsIdTourGuide);
+        if (keyTourGuideRequest != null) {
+            query1 = firebaseUtils.getRef()
+                    .child(getString(R.string.tourGuideRequests))
+                    .child(keyTourGuideRequest);
+            veListener1 = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
+                    if (tourGuideRequest != null) {
+                        textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
+                        textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
+                        textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
+                        if (tourGuideRequest.getRequestStatus() == FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED)) {
+                            textViewStatus.setText(getString(R.string.MENCARI_TOURGUIDE));
+                        } else {
+                            buttonCancelRequest.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        };
+                }
+            };
+        }
+
+
+        if (idTourGuide != null) {
+            query2 = firebaseUtils.getRef()
+                    .child(getString(R.string.members))
+                    .child(idTourGuide);
+            veListener2 = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Member member = dataSnapshot.getValue(Member.class);
+                    if (member != null) {
+                        textViewStatus.setText(member.getMemberName());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+        }
         query1.addValueEventListener(veListener1);
+        query2.addValueEventListener(veListener2);
 
     }
 
@@ -95,6 +115,7 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
     public void onStop() {
         super.onStop();
         query1.removeEventListener(veListener1);
+        query2.removeEventListener(veListener2);
     }
 
     @Override
@@ -102,10 +123,12 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
         switch (view.getId()) {
             case R.id.bt_cancel_request:
                 String keyTourGuideRequest = getArguments().getString(argsKeyTourGuideRequest);
-                firebaseUtils.getRef()
-                        .child(getString(R.string.tourGuideRequests))
-                        .child(keyTourGuideRequest)
-                        .removeValue();
+                if (keyTourGuideRequest != null) {
+                    firebaseUtils.getRef()
+                            .child(getString(R.string.tourGuideRequests))
+                            .child(keyTourGuideRequest)
+                            .removeValue();
+                }
                 break;
         }
     }

@@ -19,9 +19,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class FragmentHomeTourGuideConfirmRequest extends Fragment implements View.OnClickListener {
-    public static final String argsKeyConfirmRequest = "confirmRequests";
-    public static final String argsIdTourGuideRequest = "tourGuideRequest";
+    public static final String argsKeyTourGuideRequest = "keyTourGuideRequest";
     public static final String argsIdMember = "idMember";
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     public View view;
@@ -38,8 +39,6 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
                 R.layout.fragment_home_tourguide_confirm_request,
                 container,
                 false);
-
-
         textViewNamaMember = view.findViewById(R.id.tv_nama_member);
         textViewNamaTempat = view.findViewById(R.id.tv_nama_tempat);
         textViewJumlahWisatawan = view.findViewById(R.id.tv_jumlah_wisatawan);
@@ -54,61 +53,64 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
     @Override
     public void onResume() {
         super.onResume();
-        String keyTourGuideRequests = getArguments().getString(argsIdTourGuideRequest);
+        String keyTourGuideRequest = getArguments().getString(argsKeyTourGuideRequest);
         String idMember = getArguments().getString(argsIdMember);
-        Query query1 = firebaseUtils.getRef()
-                .child(getString(R.string.tourGuideRequests))
-                .child(keyTourGuideRequests);
-        query1.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
-                if (tourGuideRequest != null) {
-                    textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
-                    textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
-                    textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
+        if (keyTourGuideRequest != null) {
+            Query query1 = firebaseUtils.getRef()
+                    .child(getString(R.string.tourGuideRequests))
+                    .child(keyTourGuideRequest);
+            query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    TourGuideRequest tourGuideRequest = dataSnapshot.getValue(TourGuideRequest.class);
+                    if (tourGuideRequest != null) {
+                        textViewNamaTempat.setText(tourGuideRequest.getTempatWisata());
+                        textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
+                        textViewJumlahWisatawan.setText(tourGuideRequest.getJumlahWisatawan());
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        Query query2 = firebaseUtils.getRef()
-                .child(getString(R.string.members))
-                .child(idMember);
-        query2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Member member = dataSnapshot.getValue(Member.class);
-                textViewNamaMember.setText(member.getMemberName());
-            }
+                }
+            });
+        }
+        if (idMember != null) {
+            Query query2 = firebaseUtils.getRef()
+                    .child(getString(R.string.members))
+                    .child(idMember);
+            query2.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Member member = dataSnapshot.getValue(Member.class);
+                    if (member != null) {
+                        textViewNamaMember.setText(member.getMemberName());
+                    }
+                }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_selesai_tour:
-                String keyConfirmRequest = getArguments().getString(argsKeyConfirmRequest);
-                String idTourGuideRequest = getArguments().getString(argsIdTourGuideRequest);
-                firebaseUtils.getRef()
-                        .child(getString(R.string.confirmRequests))
-                        .child(keyConfirmRequest)
-                        .child(getString(R.string.REQUEST_STATUS))
-                        .setValue(getString(R.string.CONFIRM_STATUS_COMPLETED));
-                firebaseUtils.getRef()
-                        .child(getString(R.string.tourGuideRequests))
-                        .child(idTourGuideRequest)
-                        .child(getString(R.string.REQUEST_STATUS))
-                        .setValue(FragmentHomeTourGuideConfirmRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED));
-
+                String keyTourGuideRequest = getArguments().getString(argsKeyTourGuideRequest);
+                HashMap<String, Object> updateMap = new HashMap<>();
+                updateMap.put(getString(R.string.idTourGuide_status), firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_COMPLETED));
+                updateMap.put(getString(R.string.requestStatus), FragmentHomeTourGuideConfirmRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED));
+                if (keyTourGuideRequest != null) {
+                    firebaseUtils.getRef()
+                            .child(getString(R.string.tourGuideRequests))
+                            .child(keyTourGuideRequest)
+                            .updateChildren(updateMap);
+                }
                 break;
         }
     }
