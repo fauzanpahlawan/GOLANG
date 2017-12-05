@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.fauza.golang.R;
@@ -17,13 +19,22 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class FragmentGiveRating extends Fragment {
     public static final String argsKeyTourGuideRequests = "keyTourGuideRequest";
     public static final String argsIdTourGuide = "idTourGuide";
 
-    private TextView textViewGiveRating;
+    private TextView textViewNamaTourGuide;
+    private TextView textViewRatingTourGuide;
+    private RatingBar ratingBarTourGuide;
+    private TextView textViewRating;
+    private Button buttonSubmitRating;
+
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
+    private float lastPoint;
+    private float lastVoter;
+    private float ratingPoint;
 
     @Nullable
     @Override
@@ -33,7 +44,12 @@ public class FragmentGiveRating extends Fragment {
                 container,
                 false);
 
-        textViewGiveRating = view.findViewById(R.id.tv_give_rating);
+        textViewNamaTourGuide = view.findViewById(R.id.tv_nama_tour_guide);
+        textViewRatingTourGuide = view.findViewById(R.id.tv_rating_tour_guide);
+        ratingBarTourGuide = view.findViewById(R.id.rb_tour_guide);
+        textViewRating = view.findViewById(R.id.tv_rating);
+        buttonSubmitRating = view.findViewById(R.id.bt_submit_rating);
+
         String idTourGuide = getArguments().getString(argsIdTourGuide);
         if (idTourGuide != null) {
             Query query = firebaseUtils.getRef()
@@ -43,11 +59,18 @@ public class FragmentGiveRating extends Fragment {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Member member = dataSnapshot.getValue(Member.class);
-                    String placeHolder = null;
+                    String placeHolderNama = null;
+                    String placeHolderRating = null;
+                    float rating = 0;
                     if (member != null) {
-                        placeHolder = "Ratingnya" + member.getMemberName();
+                        lastPoint = member.getRatingPoin();
+                        lastVoter = member.getRatingVoter();
+                        rating = lastPoint / lastVoter;
+                        placeHolderNama = String.format(Locale.ENGLISH, "%s , %s", "Ratingnya", member.getMemberName());
+                        placeHolderRating = String.format(Locale.ENGLISH, "%s %.1f", " ", rating);
                     }
-                    textViewGiveRating.setText(placeHolder);
+                    textViewNamaTourGuide.setText(placeHolderNama);
+                    textViewRatingTourGuide.setText(placeHolderRating);
                 }
 
                 @Override
@@ -57,20 +80,42 @@ public class FragmentGiveRating extends Fragment {
             });
         }
 
-        textViewGiveRating.setOnClickListener(new View.OnClickListener() {
+        ratingBarTourGuide.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                ratingPoint = v;
+            }
+        });
+
+        buttonSubmitRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String keyTourGuideRequest = getArguments().getString(argsKeyTourGuideRequests);
-                HashMap<String, Object> updateMap = new HashMap<>();
-                updateMap.put(getString(R.string.idMember_status), firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_COMPLETED));
-                updateMap.put(getString(R.string.requestStatus), FragmentGiveRating.this.getResources().getInteger(R.integer.TOUR_STATUS_RATED));
+                HashMap<String, Object> updateRequest = new HashMap<>();
+                updateRequest.put(getString(R.string.idMember_status), firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_COMPLETED));
+                updateRequest.put(getString(R.string.requestStatus), FragmentGiveRating.this.getResources().getInteger(R.integer.TOUR_STATUS_RATED));
                 if (keyTourGuideRequest != null) {
-                    firebaseUtils.getRef().child(getString(R.string.tourGuideRequests))
+                    firebaseUtils.getRef()
+                            .child(getString(R.string.tourGuideRequests))
                             .child(keyTourGuideRequest)
-                            .updateChildren(updateMap);
+                            .updateChildren(updateRequest);
+                }
+                float newRatingPoint = lastPoint + ratingPoint;
+                float newRatingVoter = ++lastVoter;
+                String idTourGuide = getArguments().getString(argsIdTourGuide);
+                HashMap<String, Object> updateTourGuide = new HashMap<>();
+                updateTourGuide.put(getString(R.string.ratingPoin), newRatingPoint);
+                updateTourGuide.put(getString(R.string.ratingVoter), newRatingVoter);
+                if (idTourGuide != null) {
+                    firebaseUtils.getRef()
+                            .child(getString(R.string.members))
+                            .child(idTourGuide)
+                            .updateChildren(updateTourGuide);
                 }
             }
         });
         return view;
     }
+
+
 }

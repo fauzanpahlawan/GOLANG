@@ -71,5 +71,9 @@
     <string name="TOUR_STATUS_COMPLETED">COMPLETED</string>
     <string name="tourGuideRequests">tourGuideRequests</string>
     <string name="requestStatus">requestStatus</string>
+    <string name="submit">Submit</string>
+
+    <string name="ratingPoin">ratingPoin</string>
+    <string name="ratingVoter">ratingVoter</string>
 
 </resources>

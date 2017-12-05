@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class DaftarActivity extends AppCompatActivity implements View.OnClickListener, FirebaseAuth.AuthStateListener {
@@ -35,7 +34,6 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private TextInputEditText editTextPassword;
     private Toolbar toolbarMain;
     private Button buttonCreateAnAccount;
-    private static final String CHILD_MEMBER = "members";
 
 
     /**
@@ -127,19 +125,27 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         if (firebaseAuth.getCurrentUser() != null) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
+            String uid = firebaseAuth.getCurrentUser().getUid();
             String memberName = editTextName.getText().toString();
             String mobileNumber = editTextMobileNumber.getText().toString();
             String email = editTextEmail.getText().toString();
-            writeNewMember(user, memberName, mobileNumber, email);
+            writeNewMember(uid, memberName, mobileNumber, email);
             explicitIntent(this, HomeMemberActivity.class);
         }
     }
 
-    private void writeNewMember(FirebaseUser user, String memberName, String mobileNumber, String email) {
-        String userUid = user.getUid();
-        Member member = new Member(memberName, mobileNumber, email, getString(R.string.TYPE_MEMBER));
-        firebaseUtils.getRef().child(CHILD_MEMBER).child(userUid).setValue(member);
+    private void writeNewMember(String uid, String memberName, String mobileNumber, String email) {
+        Member member = new Member(
+                memberName,
+                mobileNumber,
+                email,
+                getString(R.string.TYPE_MEMBER),
+                DaftarActivity.this.getResources().getInteger(R.integer.RATING_POIN_AWAL),
+                DaftarActivity.this.getResources().getInteger(R.integer.RATING_VOTER_AWAL));
+        firebaseUtils.getRef()
+                .child(getString(R.string.members))
+                .child(uid)
+                .setValue(member);
     }
 
     /*

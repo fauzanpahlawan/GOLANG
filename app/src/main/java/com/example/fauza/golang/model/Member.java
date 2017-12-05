@@ -6,15 +6,19 @@ public class Member {
     public String mobileNumher;
     public String email;
     public String type;
+    public float ratingPoin;
+    public float ratingVoter;
 
     public Member() {
     }
 
-    public Member(String memberName, String mobileNumher, String email, String type) {
+    public Member(String memberName, String mobileNumher, String email, String type, float ratingPoin, float ratingVoter) {
         this.memberName = memberName;
         this.mobileNumher = mobileNumher;
         this.email = email;
         this.type = type;
+        this.ratingPoin = ratingPoin;
+        this.ratingVoter = ratingVoter;
     }
 
     public String getMemberName() {
@@ -48,4 +52,21 @@ public class Member {
     public void setType(String type) {
         this.type = type;
     }
+
+    public float getRatingPoin() {
+        return ratingPoin;
+    }
+
+    public void setRatingPoin(float ratingPoin) {
+        this.ratingPoin = ratingPoin;
+    }
+
+    public float getRatingVoter() {
+        return ratingVoter;
+    }
+
+    public void setRatingVoter(float ratingVoter) {
+        this.ratingVoter = ratingVoter;
+    }
+
 }

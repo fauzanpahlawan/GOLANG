@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_give_rating"
+        android:id="@+id/tv_nama_tour_guide"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="RATING HERE"
-        android:textSize="72sp" />
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/tv_rating_tour_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="Rating Tour Guide Saat Ini." />
+
+    <RatingBar
+        android:id="@+id/rb_tour_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="DUMMY TEXT HERE..." />
+
+    <Button
+        android:id="@+id/bt_submit_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/submit"
+        android:textAllCaps="false" />
+
 
 </LinearLayout>
