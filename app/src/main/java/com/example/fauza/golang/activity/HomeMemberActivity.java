@@ -58,11 +58,6 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-        fragmentHomeMember = new FragmentHomeMember();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_home_member, fragmentHomeMember)
-                .commit();
     }
 
     @Override
@@ -82,25 +77,25 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
                         key = ds.getKey();
                         tourGuideRequest = ds.getValue(TourGuideRequest.class);
                     }
-                    fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
-                    Bundle data = new Bundle();
-                    data.putString(FragmentHomeMemberCreateRequest.argsKeyTourGuideRequest, key);
                     if (tourGuideRequest != null) {
+                        fragmentHomeMemberCreateRequest = new FragmentHomeMemberCreateRequest();
+                        Bundle data = new Bundle();
+                        data.putString(FragmentHomeMemberCreateRequest.argsKeyTourGuideRequest, key);
+
                         data.putString(FragmentHomeMemberCreateRequest.argsIdTourGuide, tourGuideRequest.getIdTourGuide());
-                    }
-                    fragmentHomeMemberCreateRequest.setArguments(data);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
-                            .commit();
-                    if (tourGuideRequest != null
-                            && tourGuideRequest.getRequestStatus()
-                            == HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED)) {
-                        fragmentGiveRating = new FragmentGiveRating();
-                        data.putString(FragmentGiveRating.argsKeyTourGuideRequests, key);
-                        fragmentGiveRating.setArguments(data);
+                        fragmentHomeMemberCreateRequest.setArguments(data);
                         getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_home_member, fragmentGiveRating)
+                                .replace(R.id.fragment_home_member, fragmentHomeMemberCreateRequest)
                                 .commit();
+                        if (tourGuideRequest.getRequestStatus() == HomeMemberActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_COMPLETED)) {
+                            fragmentGiveRating = new FragmentGiveRating();
+                            data.putString(FragmentGiveRating.argsKeyTourGuideRequests, key);
+                            data.putString(FragmentGiveRating.argsIdTourGuide, tourGuideRequest.getIdTourGuide());
+                            fragmentGiveRating.setArguments(data);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_home_member, fragmentGiveRating)
+                                    .commit();
+                        }
                     }
                 } else {
                     fragmentHomeMember = new FragmentHomeMember();

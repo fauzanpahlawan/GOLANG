@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.fragment.FragmentHomeTourGuide;
@@ -54,7 +55,8 @@ public class HomeTourGuideActivity extends AppCompatActivity {
         query = firebaseUtils.getRef()
                 .child(getString(R.string.tourGuideRequests))
                 .orderByChild(getString(R.string.idTourGuide_status))
-                .equalTo(firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS));
+                .equalTo(firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS))
+        ;
         veListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -65,21 +67,23 @@ public class HomeTourGuideActivity extends AppCompatActivity {
                         key = ds.getKey();
                         tourGuideRequest = ds.getValue(TourGuideRequest.class);
                     }
-                    fragmentHomeTourGuideConfirmRequest = new FragmentHomeTourGuideConfirmRequest();
-                    Bundle data = new Bundle();
-                    data.putString(FragmentHomeTourGuideConfirmRequest.argsKeyTourGuideRequest, key);
                     if (tourGuideRequest != null) {
+                        fragmentHomeTourGuideConfirmRequest = new FragmentHomeTourGuideConfirmRequest();
+                        Bundle data = new Bundle();
+                        data.putString(FragmentHomeTourGuideConfirmRequest.argsKeyTourGuideRequest, key);
                         data.putString(FragmentHomeTourGuideConfirmRequest.argsIdMember, tourGuideRequest.getIdMember());
+                        fragmentHomeTourGuideConfirmRequest.setArguments(data);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuideConfirmRequest)
+                                .commit();
                     }
-                    fragmentHomeTourGuideConfirmRequest.setArguments(data);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuideConfirmRequest)
-                            .commit();
+
                 } else {
                     fragmentHomeTourGuide = new FragmentHomeTourGuide();
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuide)
                             .commit();
+                    Toast.makeText(HomeTourGuideActivity.this, "DICKBUTT", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -88,8 +92,7 @@ public class HomeTourGuideActivity extends AppCompatActivity {
 
             }
         };
-        query.addListenerForSingleValueEvent(veListener);
-
+        query.addValueEventListener(veListener);
     }
 
     @Override
@@ -97,6 +100,7 @@ public class HomeTourGuideActivity extends AppCompatActivity {
         super.onStop();
         query.removeEventListener(veListener);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

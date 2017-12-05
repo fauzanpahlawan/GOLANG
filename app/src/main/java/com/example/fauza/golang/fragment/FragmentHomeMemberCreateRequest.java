@@ -48,6 +48,8 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
         textViewTanggalWisata = view.findViewById(R.id.tv_tanggal_wisata);
         textViewStatus = view.findViewById(R.id.tv_status_request);
         buttonCancelRequest = view.findViewById(R.id.bt_cancel_request);
+        buttonCancelRequest.setVisibility(View.INVISIBLE);
+
 
         buttonCancelRequest.setOnClickListener(this);
 
@@ -73,6 +75,7 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
                         textViewTanggalWisata.setText(tourGuideRequest.getTanggalWisata());
                         if (tourGuideRequest.getRequestStatus() == FragmentHomeMemberCreateRequest.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED)) {
                             textViewStatus.setText(getString(R.string.MENCARI_TOURGUIDE));
+                            buttonCancelRequest.setVisibility(View.VISIBLE);
                         } else {
                             buttonCancelRequest.setVisibility(View.INVISIBLE);
                         }
