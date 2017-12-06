@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.fauza.golang.R;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 
 public class DaftarActivity extends AppCompatActivity implements View.OnClickListener, FirebaseAuth.AuthStateListener {
+    private ImageView imageViewLogo;
     private TextInputLayout layoutName;
     private TextInputEditText editTextName;
     private TextInputLayout layoutMobileNumber;
@@ -48,6 +50,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar);
 
+        imageViewLogo = findViewById(R.id.imageView_logo);
         layoutName = findViewById(R.id.layout_name);
         editTextName = findViewById(R.id.editText_name);
         layoutMobileNumber = findViewById(R.id.layout_mobile_number);
@@ -57,6 +60,8 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         layoutPassword = findViewById(R.id.layout_password);
         editTextPassword = findViewById(R.id.editText_password);
         toolbarMain = findViewById(R.id.toolbar_home);
+
+        imageViewLogo.setImageResource(R.drawable.logo);
 
         buttonCreateAnAccount = findViewById(R.id.button_create_an_account);
         buttonCreateAnAccount.setOnClickListener(this);

@@ -112,6 +112,7 @@ public class FragmentHomeTourGuideConfirmRequest extends Fragment implements Vie
                             .child(keyTourGuideRequest)
                             .updateChildren(updateMap);
                 }
+                //TODO Prompt Alert Dialog
                 break;
         }
     }

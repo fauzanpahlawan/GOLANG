@@ -43,7 +43,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_logo">
+        app:layout_constraintTop_toBottomOf="@+id/imageView_logo"
+        app:layout_constraintVertical_bias="0.100000024">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/layout_name"
