@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +33,8 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
     private TextView textViewTanggalWisata;
     private TextView textViewTempatWisata;
     private Toolbar toolbarMain;
-    private Button buttonMinus;
-    private Button buttonPlus;
+    private ImageButton buttonMinus;
+    private ImageButton buttonPlus;
     private Button buttonBuatRequest;
 
 
@@ -143,18 +144,18 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                 .child(keyTourGuideRequest)
                 .setValue(tourGuideRequest)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    RequestTourGuideActivity.this.finish();
-                } else {
-                    if (task.getException() != null) {
-                        Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            RequestTourGuideActivity.this.finish();
+                        } else {
+                            if (task.getException() != null) {
+                                Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 
     public void setNamaTempat(TextView textView) {
