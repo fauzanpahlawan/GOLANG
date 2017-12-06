@@ -60,7 +60,6 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         layoutPassword = findViewById(R.id.layout_password);
         editTextPassword = findViewById(R.id.editText_password);
         toolbarMain = findViewById(R.id.toolbar_home);
-
         imageViewLogo.setImageResource(R.drawable.logo);
 
         buttonCreateAnAccount = findViewById(R.id.button_create_an_account);
