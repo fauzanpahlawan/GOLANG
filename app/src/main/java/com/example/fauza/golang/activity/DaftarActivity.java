@@ -156,10 +156,12 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
 
         String email = editText.getText().toString();
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            textInputLayout.setErrorEnabled(true);
             textInputLayout.setError("Invalid email.");
             return true;
         } else {
             textInputLayout.setError(null);
+            textInputLayout.setErrorEnabled(false);
             return false;
         }
     }
@@ -167,21 +169,26 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private boolean lessThanSix(TextInputEditText editText, TextInputLayout textInputLayout) {
         String password = editText.getText().toString();
         if (password.length() < 6) {
+            textInputLayout.setErrorEnabled(true);
             textInputLayout.setError("At least 6 characters");
             return true;
         } else {
             textInputLayout.setError(null);
+            textInputLayout.setErrorEnabled(false);
             return false;
         }
+
     }
 
     private boolean isEmpty(TextInputEditText editText, TextInputLayout textInputLayout) {
         String text = editText.getText().toString();
         if (TextUtils.isEmpty(text)) {
+            textInputLayout.setErrorEnabled(true);
             textInputLayout.setError("*Required");
             return true;
         } else {
             textInputLayout.setError(null);
+            textInputLayout.setErrorEnabled(false);
             return false;
         }
     }

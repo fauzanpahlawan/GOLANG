@@ -122,12 +122,14 @@ public class DetailTourGuideRequestActivity extends AppCompatActivity implements
                         DetailTourGuideRequestActivity.this,
                         imageButtonMessage.getTag().toString(),
                         Toast.LENGTH_SHORT).show();
+                //TODO Intent Message to Number
                 break;
             case R.id.iBt_call:
                 Toast.makeText(
                         DetailTourGuideRequestActivity.this,
                         imageButtonCall.getTag().toString(),
                         Toast.LENGTH_SHORT).show();
+                //TODO Intent Call to Number
                 break;
             case R.id.bt_terima_request:
                 HashMap<String, Object> updateMap = new HashMap<>();

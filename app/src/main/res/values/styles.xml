@@ -12,4 +12,9 @@
         <item name="android:windowBackground">@android:color/white</item>m
     </style>
 
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="colorButtonNormal">@color/colorButton</item>
+        <item name="android:textColor">@color/colorTextButton</item>
+    </style>
+
 </resources>

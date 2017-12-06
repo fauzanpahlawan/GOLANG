@@ -100,6 +100,7 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
                     Member member = dataSnapshot.getValue(Member.class);
                     if (member != null) {
                         textViewStatus.setText(member.getMemberName());
+                        //TODO Show TourGuide Detail Here
                     }
                 }
 
