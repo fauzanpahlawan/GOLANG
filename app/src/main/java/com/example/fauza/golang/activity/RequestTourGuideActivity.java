@@ -88,43 +88,73 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                 showDatePickerDialog(view);
                 break;
             case R.id.bt_buat_request:
-                //COMPLETED Write to Firebase
-                try {
-                    TourGuideRequest tourGuideRequest = new TourGuideRequest(
-                            firebaseUtils.getUser().getUid(),
-                            getString(R.string.idTourGuide),
-                            RequestTourGuideActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED),
-                            firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS),
-                            getString(R.string.idTourGuide) + "_" + getString(R.string.TOUR_STATUS_INPROGRESS),
-                            textViewTempatWisata.getText().toString(),
-                            textViewJumlahWisatawan.getText().toString(),
-                            textViewTanggalWisata.getText().toString()
-                    );
-                    final String keyTourGuideRequest = firebaseUtils.getRef()
-                            .child(getString(R.string.tourGuideRequests))
-                            .push()
-                            .getKey();
-                    firebaseUtils.getRef()
-                            .child(getString(R.string.tourGuideRequests))
-                            .child(keyTourGuideRequest)
-                            .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                RequestTourGuideActivity.this.finish();
-                            } else {
-                                if (task.getException() != null) {
-                                    Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                createTourGuideRequest();
+//                TourGuideRequest tourGuideRequest = new TourGuideRequest(
+//                        firebaseUtils.getUser().getUid(),
+//                        getString(R.string.idTourGuide),
+//                        RequestTourGuideActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED),
+//                        firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS),
+//                        getString(R.string.idTourGuide) + "_" + getString(R.string.TOUR_STATUS_INPROGRESS),
+//                        textViewTempatWisata.getText().toString(),
+//                        textViewJumlahWisatawan.getText().toString(),
+//                        textViewTanggalWisata.getText().toString()
+//                );
+//                final String keyTourGuideRequest = firebaseUtils.getRef()
+//                        .child(getString(R.string.tourGuideRequests))
+//                        .push()
+//                        .getKey();
+//                firebaseUtils.getRef()
+//                        .child(getString(R.string.tourGuideRequests))
+//                        .child(keyTourGuideRequest)
+//                        .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            RequestTourGuideActivity.this.finish();
+//                        } else {
+//                            if (task.getException() != null) {
+//                                Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }
+//                });
                 break;
         }
+    }
+
+    public void createTourGuideRequest() {
+        TourGuideRequest tourGuideRequest = new TourGuideRequest(
+                firebaseUtils.getUser().getUid(),
+                getString(R.string.idTourGuide),
+                RequestTourGuideActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED),
+                firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS),
+                getString(R.string.idTourGuide) + "_" + getString(R.string.TOUR_STATUS_INPROGRESS),
+                textViewTempatWisata.getText().toString(),
+                textViewJumlahWisatawan.getText().toString(),
+                textViewTanggalWisata.getText().toString()
+        );
+        final String keyTourGuideRequest = firebaseUtils.getRef()
+                .child(getString(R.string.tourGuideRequests))
+                .push()
+                .getKey();
+        firebaseUtils.getRef()
+                .child(getString(R.string.tourGuideRequests))
+                .child(keyTourGuideRequest)
+                .setValue(tourGuideRequest)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    RequestTourGuideActivity.this.finish();
+                } else {
+                    if (task.getException() != null) {
+                        Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 
     public void setNamaTempat(TextView textView) {

@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="3dp"
-    android:layout_marginTop="3dp"
+    android:background="@drawable/border"
     android:orientation="horizontal">
 
     <TextView
@@ -15,6 +14,7 @@
         android:gravity="start"
         android:padding="8dp"
         android:textAlignment="textStart"
+        android:textColor="@color/coloText"
         android:textSize="24sp"
         tools:text="Pantai Goa Cina" />
 
@@ -27,6 +27,7 @@
         android:padding="8dp"
         android:text="@string/pilih_tempat"
         android:textAllCaps="false"
-        android:textSize="14sp" />
+        android:textSize="18sp"
+        android:theme="@style/AppTheme.Button" />
 
 </LinearLayout>

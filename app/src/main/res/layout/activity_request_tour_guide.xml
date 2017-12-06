@@ -56,19 +56,21 @@
             android:text="@string/zero"
             android:textSize="24sp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/bt_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/minus"
+            android:background="@android:drawable/screen_background_light_transparent"
+            android:src="@drawable/ic_minus"
             android:textSize="18sp" />
 
 
-        <Button
+        <ImageButton
             android:id="@+id/bt_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/plus"
+            android:background="@android:drawable/screen_background_light_transparent"
+            android:src="@drawable/ic_plus"
             android:textSize="18sp" />
 
 

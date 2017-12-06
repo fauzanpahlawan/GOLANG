@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         FirebaseAuth.AuthStateListener, ValueEventListener {
 
+    private ImageView imageViewLogo;
     private TextInputLayout layoutEmail;
     private TextInputEditText editTextEmail;
     private TextInputLayout layoutPassword;
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         classes[1] = HomeTourGuideActivity.class;
         classes[2] = HomeMemberActivity.class;
 
+        imageViewLogo = findViewById(R.id.imageView_logo);
         layoutEmail = findViewById(R.id.layout_email);
         editTextEmail = findViewById(R.id.editText_email);
         layoutPassword = findViewById(R.id.layout_password);
@@ -63,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonSignIn = findViewById(R.id.button_sign_in);
         textViewForgetPassword = findViewById(R.id.textView_forget_password);
         textViewSignUp = findViewById(R.id.textView_sign_up);
+
+        imageViewLogo.setImageResource(R.drawable.logo);
 
         buttonSignIn.setOnClickListener(this);
         textViewForgetPassword.setOnClickListener(this);
