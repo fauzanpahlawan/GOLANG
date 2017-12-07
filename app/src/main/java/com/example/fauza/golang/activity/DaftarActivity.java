@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.model.Member;
@@ -25,6 +26,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 
 public class DaftarActivity extends AppCompatActivity implements View.OnClickListener, FirebaseAuth.AuthStateListener {
+
+    private ConstraintLayout layoutDaftarActivity;
     private ImageView imageViewLogo;
     private TextInputLayout layoutName;
     private TextInputEditText editTextName;
@@ -50,6 +53,8 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar);
 
+
+        layoutDaftarActivity = findViewById(R.id.layout_activity_daftar);
         imageViewLogo = findViewById(R.id.imageView_logo);
         layoutName = findViewById(R.id.layout_name);
         editTextName = findViewById(R.id.editText_name);
@@ -116,8 +121,8 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             if (task.getException() != null) {
-                                Toast.makeText(DaftarActivity.this, task.getException().getMessage(),
-                                        Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(layoutDaftarActivity, task.getException().getMessage(), Snackbar.LENGTH_SHORT);
+                                snackbar.show();
                             }
                             buttonCreateAnAccount.setText(R.string.create_an_account);
                             buttonCreateAnAccount.setClickable(true);

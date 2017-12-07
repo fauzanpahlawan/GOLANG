@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.model.Member;
@@ -32,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         FirebaseAuth.AuthStateListener, ValueEventListener {
 
+    private ConstraintLayout layoutLoginActivity;
     private ImageView imageViewLogo;
     private TextInputLayout layoutEmail;
     private TextInputEditText editTextEmail;
@@ -58,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         classes[1] = HomeTourGuideActivity.class;
         classes[2] = HomeMemberActivity.class;
 
+        layoutLoginActivity = findViewById(R.id.layout_activity_login);
         imageViewLogo = findViewById(R.id.imageView_logo);
         layoutEmail = findViewById(R.id.layout_email);
         editTextEmail = findViewById(R.id.editText_email);
@@ -118,8 +121,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed. Invalid Email or Password",
-                                    Toast.LENGTH_SHORT).show();
+                            if (task.getException() != null) {
+                                Snackbar snackbar = Snackbar.make(layoutLoginActivity, task.getException().getMessage(), Snackbar.LENGTH_SHORT);
+                                snackbar.show();
+                            }
                             buttonSignIn.setText(R.string.sign_in);
                             buttonSignIn.setClickable(true);
                         }
