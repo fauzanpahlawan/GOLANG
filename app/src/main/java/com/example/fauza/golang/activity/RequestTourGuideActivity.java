@@ -164,7 +164,15 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-            return new DatePickerDialog(getActivity(), (RequestTourGuideActivity) getActivity(), year, month, day);
+            Calendar maxDate = Calendar.getInstance();
+            maxDate.set(Calendar.YEAR, year);
+            maxDate.set(Calendar.MONTH, month + 6);
+            maxDate.set(Calendar.DAY_OF_MONTH, day);
+            DatePickerDialog datePickerDialog = new
+                    DatePickerDialog(getActivity(), (RequestTourGuideActivity) getActivity(), year, month, day);
+            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+            datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+            return datePickerDialog;
         }
     }
 }

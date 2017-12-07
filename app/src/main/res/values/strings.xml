@@ -85,5 +85,7 @@
     <string name="selesai">Ya</string>
     <string name="belum_selesai">Tidak</string>
     <string name="one">1</string>
+    <string name="belum_terdaftar">Belum terdaftar?</string>
+    <string name="daftar_sekarang">Daftar Sekarang.</string>
 
 </resources>
