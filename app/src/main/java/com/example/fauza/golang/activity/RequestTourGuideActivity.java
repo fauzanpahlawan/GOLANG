@@ -15,7 +15,6 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.model.TourGuideRequest;
@@ -91,8 +90,8 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                 break;
             case R.id.bt_buat_request:
                 if (dateNotSet(textViewTanggalWisata)) {
-//                    Toast.makeText(this, "Jumlah wisatawan harus lebih dari 0 (nol).", Toast.LENGTH_SHORT).show();
-                    Snackbar snackbar = Snackbar.make(layouRequestTourGuide, "Simple Snackbar", Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(layouRequestTourGuide, "Silahkan pilih tanggal.", Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 } else {
                     createTourGuideRequest();
                 }
@@ -126,8 +125,8 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                             RequestTourGuideActivity.this.finish();
                         } else {
                             if (task.getException() != null) {
-                                Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
-                                        Toast.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(layouRequestTourGuide, task.getException().getMessage(), Snackbar.LENGTH_SHORT);
+                                snackbar.show();
                             }
                         }
                     }
