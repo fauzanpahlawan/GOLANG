@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             if (task.getException() != null) {
-                                Snackbar snackbar = Snackbar.make(layoutLoginActivity, task.getException().getMessage(), Snackbar.LENGTH_SHORT);
+                                Snackbar snackbar = Snackbar.make(layoutLoginActivity, "Authentication failed Email or Password is invalid.", Snackbar.LENGTH_LONG);
                                 snackbar.show();
                             }
                             buttonSignIn.setText(R.string.sign_in);
