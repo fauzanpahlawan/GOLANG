@@ -50,6 +50,13 @@ public class HomeTourGuideActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         query = firebaseUtils.getRef()
@@ -112,17 +119,14 @@ public class HomeTourGuideActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_sign_out:
                 firebaseUtils.getAuth().signOut();
-                explicitIntent(this, LoginActivity.class);
+                Intent intent = new Intent(HomeTourGuideActivity.this, LoginActivity.class);
+                HomeTourGuideActivity.this.startActivity(intent);
                 HomeTourGuideActivity.this.finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void explicitIntent(Activity activity, Class _class) {
-        Intent explicitIntent = new Intent(activity, _class);
-        startActivity(explicitIntent);
-    }
 
     private void setUser() {
         if (firebaseUtils.getUser() != null) {

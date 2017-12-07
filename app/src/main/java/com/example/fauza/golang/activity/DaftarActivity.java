@@ -129,7 +129,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                             Intent intent = new Intent(DaftarActivity.this, HomeMemberActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                             DaftarActivity.this.startActivity(intent);
-                            finish();
+                            DaftarActivity.this.finish();
                             Log.d(TAG, "createUserWithEmail:success");
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

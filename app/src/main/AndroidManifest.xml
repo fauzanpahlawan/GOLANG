@@ -26,7 +26,6 @@
         <activity android:name=".activity.LoginActivity" />
         <activity
             android:name=".activity.DaftarActivity"
-            android:noHistory="true"
             android:parentActivityName=".activity.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -62,6 +62,13 @@ public class HomeMemberActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         query1 = firebaseUtils.getRef()
@@ -138,7 +145,7 @@ public class HomeMemberActivity extends AppCompatActivity {
                 firebaseUtils.getAuth().signOut();
                 Intent intent = new Intent(HomeMemberActivity.this, LoginActivity.class);
                 HomeMemberActivity.this.startActivity(intent);
-                finish();
+                HomeMemberActivity.this.finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
