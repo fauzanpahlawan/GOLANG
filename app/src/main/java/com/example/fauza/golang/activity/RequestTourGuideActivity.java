@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,15 +22,13 @@ import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 public class RequestTourGuideActivity extends AppCompatActivity implements View.OnClickListener,
         DatePickerDialog.OnDateSetListener {
 
+    private LinearLayout layouRequestTourGuide;
     private TextView textViewJumlahWisatawan;
     private TextView textViewTanggalWisata;
     private TextView textViewTempatWisata;
@@ -48,6 +48,7 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_tour_guide);
 
+        layouRequestTourGuide = findViewById(R.id.layout_request_tour_guide);
         textViewTempatWisata = findViewById(R.id.tv_nama_tempat);
         textViewJumlahWisatawan = findViewById(R.id.tv_jumlah_wisatawan);
         textViewTanggalWisata = findViewById(R.id.tv_tanggal_wisata);
@@ -70,13 +71,13 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
         }
     }
 
-    int lastJumlah = 0;
+    int lastJumlah = 1;
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_minus:
-                if (lastJumlah > 0) {
+                if (lastJumlah > 1) {
                     String placeholder = --lastJumlah + "";
                     textViewJumlahWisatawan.setText(placeholder);
                 }
@@ -89,10 +90,9 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                 showDatePickerDialog(view);
                 break;
             case R.id.bt_buat_request:
-                if (isZero(textViewJumlahWisatawan)) {
-                    Toast.makeText(this, "Jumlah wisatawan harus lebih dari 0 (nol).", Toast.LENGTH_SHORT).show();
-                } else if (dateNotSet(textViewTanggalWisata)) {
-                    Toast.makeText(this, "Silahkan pilih tanggal.", Toast.LENGTH_SHORT).show();
+                if (dateNotSet(textViewTanggalWisata)) {
+//                    Toast.makeText(this, "Jumlah wisatawan harus lebih dari 0 (nol).", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(layouRequestTourGuide, "Simple Snackbar", Snackbar.LENGTH_LONG);
                 } else {
                     createTourGuideRequest();
                 }
@@ -135,15 +135,8 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
     }
 
     private boolean dateNotSet(TextView textView) {
-        //TODO STILL BUGGY HERE
         String text = textView.getText().toString();
         return text.equals(getString(R.string.pilih_tanggal));
-    }
-
-    private boolean isZero(TextView textView) {
-        String text = textView.getText().toString();
-        int intText = Integer.valueOf(text);
-        return intText == 0;
     }
 
     public void setNamaTempat(TextView textView) {
