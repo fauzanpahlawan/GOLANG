@@ -6,14 +6,12 @@
     android:orientation="vertical"
     tools:context="com.example.fauza.golang.SplashScreen">
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textColor="@color/colorPrimary"
-        android:textSize="72sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:paddingEnd="27dp"
+        android:paddingStart="27dp"
+        android:src="@drawable/logo" />
+
 
 </LinearLayout>

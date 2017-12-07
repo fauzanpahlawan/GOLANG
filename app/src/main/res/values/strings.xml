@@ -53,12 +53,13 @@
     <string name="terima_request">Terima Request</string>
     <string name="MENCARI_TOURGUIDE">Sedang mencari tourguide …</string>
     <string name="KEY_TOUR_GUIDE_REQUEST">KEY_TOUR_GUIDE_REQUEST</string>
-    <string name="loading">Loading…</string>
+    <string name="memuat">Memuat…</string>
     <string name="status_tourguide">Anda Sedang Menjadi Tour Guide</string>
     <string name="REQUEST_STATUS">status</string>
     <string name="CONFIRM_STATUS_ONGOING">ONGOING</string>
     <string name="CONFIRM_STATUS_COMPLETED">COMPLETED</string>
     <string name="nama_member">Nama Member</string>
+    <string name="MENEMUKAN_TOURGUIDE">Tour Guide anda:</string>
 
 
     <!--String for Firebase Database Key-->
@@ -73,7 +74,15 @@
     <string name="requestStatus">requestStatus</string>
     <string name="submit">Submit</string>
 
+    <string name="photo">photo</string>
     <string name="ratingPoin">ratingPoin</string>
     <string name="ratingVoter">ratingVoter</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="alert_message_tourguide">
+        Pastikan pekerjaan anda telah benar-benar selesai dan klien anda sudah menyatakan bahwa Tour sudah selesai.
+    </string>
+    <string name="selesai">Ya</string>
+    <string name="belum_selesai">Tidak</string>
 
 </resources>

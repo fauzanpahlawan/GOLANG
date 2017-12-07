@@ -83,7 +83,6 @@ public class HomeTourGuideActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.fragment_home_tourguide, fragmentHomeTourGuide)
                             .commit();
-                    Toast.makeText(HomeTourGuideActivity.this, "DICKBUTT", Toast.LENGTH_SHORT).show();
                 }
             }
 

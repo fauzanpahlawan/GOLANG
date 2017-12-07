@@ -17,4 +17,10 @@
         <item name="android:textColor">@color/colorTextButton</item>
     </style>
 
+    <style name="AppTheme.ButtonCancel" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="colorButtonNormal">@color/colorCancel</item>
+        <item name="android:textColor">@color/colorTextButton</item>
+    </style>
+
+
 </resources>

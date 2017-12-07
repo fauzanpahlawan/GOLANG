@@ -1,6 +1,7 @@
 package com.example.fauza.golang.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -118,18 +119,22 @@ public class DetailTourGuideRequestActivity extends AppCompatActivity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iBt_message:
-                Toast.makeText(
-                        DetailTourGuideRequestActivity.this,
-                        imageButtonMessage.getTag().toString(),
-                        Toast.LENGTH_SHORT).show();
-                //TODO Intent Message to Number
+                //COMPLETED Intent Message to Number
+                String phoneMsg = imageButtonMessage.getTag().toString();
+                Intent intentMsg = new Intent(Intent.ACTION_SENDTO);
+                intentMsg.setData(Uri.parse("smsto:" + phoneMsg));
+                if (intentMsg.resolveActivity(getPackageManager()) != null) {
+                    DetailTourGuideRequestActivity.this.startActivity(intentMsg);
+                }
                 break;
             case R.id.iBt_call:
-                Toast.makeText(
-                        DetailTourGuideRequestActivity.this,
-                        imageButtonCall.getTag().toString(),
-                        Toast.LENGTH_SHORT).show();
-                //TODO Intent Call to Number
+                //COMPLETED Intent Call to Number
+                String phoneCall = imageButtonCall.getTag().toString();
+                Intent intentCall = new Intent(Intent.ACTION_DIAL);
+                intentCall.setData(Uri.parse("tel:" + phoneCall));
+                if (intentCall.resolveActivity(getPackageManager()) != null) {
+                    DetailTourGuideRequestActivity.this.startActivity(intentCall);
+                }
                 break;
             case R.id.bt_terima_request:
                 HashMap<String, Object> updateMap = new HashMap<>();

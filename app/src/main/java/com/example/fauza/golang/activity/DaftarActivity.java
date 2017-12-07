@@ -144,6 +144,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                 mobileNumber,
                 email,
                 getString(R.string.TYPE_MEMBER),
+                getString(R.string.photo),
                 DaftarActivity.this.getResources().getInteger(R.integer.RATING_POIN_AWAL),
                 DaftarActivity.this.getResources().getInteger(R.integer.RATING_VOTER_AWAL));
         firebaseUtils.getRef()

@@ -5,10 +5,12 @@
     android:id="@+id/layout_tour_request"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="3dp"
-    android:layout_marginTop="3dp"
-    android:background="@android:color/holo_blue_dark"
-    android:orientation="vertical">
+    android:layout_marginBottom="1dp"
+    android:layout_marginTop="1dp"
+    android:background="@drawable/border"
+    android:backgroundTint="@color/colorAccent"
+    android:orientation="vertical"
+    android:paddingBottom="30dp">
 
     <TextView
         android:id="@+id/tv_nama_tempat"
@@ -16,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorTextButton"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:text="Tujuan Wisata" />
@@ -27,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorTextButton"
         android:textSize="14sp"
         tools:text="Jumlah Wisatawan" />
 
@@ -37,9 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorTextButton"
         android:textSize="14sp"
         tools:text="Tanggal Wisata" />
-
-
 </LinearLayout>

@@ -5,20 +5,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="170dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp" />
+
     <TextView
         android:id="@+id/tv_nama_tour_guide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="RATING HERE"
-        android:textSize="36sp" />
+        android:text="@string/memuat"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tv_rating_tour_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"
         tools:text="Rating Tour Guide Saat Ini." />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1" />
 
     <RatingBar
         android:id="@+id/rb_tour_guide"
@@ -31,15 +45,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         tools:text="DUMMY TEXT HERE..." />
 
     <Button
         android:id="@+id/bt_submit_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="56dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="40dp"
         android:text="@string/submit"
-        android:textAllCaps="false" />
+        android:theme="@style/AppTheme.Button" />
 
 
 </LinearLayout>

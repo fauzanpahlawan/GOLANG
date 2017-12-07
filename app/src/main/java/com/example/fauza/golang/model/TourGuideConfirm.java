@@ -22,39 +22,19 @@ public class TourGuideConfirm {
         return idRequest;
     }
 
-    public void setIdRequest(String idRequest) {
-        this.idRequest = idRequest;
-    }
-
     public String getIdTourguide() {
         return idTourguide;
-    }
-
-    public void setIdTourguide(String idTourguide) {
-        this.idTourguide = idTourguide;
     }
 
     public String getIdMember() {
         return idMember;
     }
 
-    public void setIdMember(String idMember) {
-        this.idMember = idMember;
-    }
-
     public String getNamaTourGuide() {
         return namaTourGuide;
     }
 
-    public void setNamaTourGuide(String namaTourGuide) {
-        this.namaTourGuide = namaTourGuide;
-    }
-
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }

@@ -34,7 +34,7 @@
         android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:paddingTop="16dp"
-        android:textColor="@color/coloText"
+        android:textColor="@color/colorText"
         android:textSize="24sp"
         tools:text="Nama tempat" />
 
@@ -64,7 +64,7 @@
             android:paddingEnd="30dp"
             android:paddingStart="30dp"
             android:text="@string/zero"
-            android:textColor="@color/coloText"
+            android:textColor="@color/colorText"
             android:textSize="24sp" />
 
         <ImageButton
@@ -96,24 +96,34 @@
         android:text="@string/tanggal_wisata" />
 
     <TextView
-        android:background="@drawable/border"
         android:id="@+id/tv_tanggal_wisata"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/border"
         android:paddingBottom="16dp"
         android:paddingEnd="10dp"
         android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:paddingTop="16dp"
         android:text="@string/pilih_tanggal"
-        android:textColor="@color/coloText"
+        android:textColor="@color/colorText"
         android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="36sp" />
 
     <Button
         android:id="@+id/bt_buat_request"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         android:text="@string/buat_request"
         android:textAllCaps="false"
         android:textSize="18sp"

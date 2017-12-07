@@ -6,22 +6,47 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/status_tourguide" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/nama_member" />
+        android:text="Data Member" />
 
     <TextView
         android:id="@+id/tv_nama_member"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:text="@string/loading" />
+        android:paddingBottom="10dp"
+        android:text="@string/memuat"
+        android:textColor="@color/colorText"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/iBt_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_call" />
+
+        <ImageButton
+            android:id="@+id/iBt_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_message" />
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -34,7 +59,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:text="@string/loading" />
+        android:paddingBottom="10dp"
+        android:text="@string/memuat"
+        android:textColor="@color/colorText"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -47,7 +75,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:text="@string/loading" />
+        android:paddingBottom="10dp"
+        android:text="@string/memuat"
+        android:textColor="@color/colorText"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -60,13 +91,26 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:text="@string/loading" />
+        android:paddingBottom="10dp"
+        android:text="@string/memuat"
+        android:textColor="@color/colorText"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <Button
         android:id="@+id/bt_selesai_tour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:text="Selesai"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:theme="@style/AppTheme.Button" />
 
 </LinearLayout>

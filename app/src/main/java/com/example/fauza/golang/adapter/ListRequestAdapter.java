@@ -40,7 +40,6 @@ public class ListRequestAdapter extends FirebaseRecyclerAdapter<TourGuideRequest
         holder.linearLayoutTourRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, getRef(itemPosition).getKey(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext, DetailTourGuideRequestActivity.class);
                 intent.putExtra(mContext.getString(R.string.KEY_TOUR_GUIDE_REQUEST), getRef(itemPosition).getKey());
                 intent.putExtra(mContext.getString(R.string.idMember), model.getIdMember());
