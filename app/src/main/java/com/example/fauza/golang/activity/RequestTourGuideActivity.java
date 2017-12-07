@@ -135,8 +135,9 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
     }
 
     private boolean dateNotSet(TextView textView) {
+        //TODO STILL BUGGY HERE
         String text = textView.getText().toString();
-        return text.equals(R.string.pilih_tanggal);
+        return text.equals(getString(R.string.pilih_tanggal));
     }
 
     private boolean isZero(TextView textView) {
