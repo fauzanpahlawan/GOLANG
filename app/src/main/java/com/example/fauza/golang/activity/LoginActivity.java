@@ -75,6 +75,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textViewSignUp.setOnClickListener(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -100,11 +107,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         );
                 break;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     private void signIn(String email, String password) {

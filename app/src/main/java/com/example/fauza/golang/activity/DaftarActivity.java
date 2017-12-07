@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -71,11 +72,24 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         buttonCreateAnAccount = findViewById(R.id.button_create_an_account);
         buttonCreateAnAccount.setOnClickListener(this);
 
+
         setSupportActionBar(toolbarMain);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                DaftarActivity.this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -127,7 +141,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                                 }
                             });
                             Intent intent = new Intent(DaftarActivity.this, HomeMemberActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             DaftarActivity.this.startActivity(intent);
                             DaftarActivity.this.finish();
                             Log.d(TAG, "createUserWithEmail:success");
