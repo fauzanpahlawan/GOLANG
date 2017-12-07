@@ -13,14 +13,18 @@ import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.viewHolder.ListRequestViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.ObservableSnapshotArray;
 
 
 public class ListRequestAdapter extends FirebaseRecyclerAdapter<TourGuideRequest, ListRequestViewHolder> {
 
     private Context mContext;
+    private final ObservableSnapshotArray<TourGuideRequest> mSnapshots;
+
 
     public ListRequestAdapter(FirebaseRecyclerOptions<TourGuideRequest> options, Context mContext) {
         super(options);
+        mSnapshots = options.getSnapshots();
         this.mContext = mContext;
     }
 
@@ -46,5 +50,11 @@ public class ListRequestAdapter extends FirebaseRecyclerAdapter<TourGuideRequest
                 mContext.startActivity(intent);
             }
         });
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return mSnapshots.isListening(this) ? mSnapshots.size() : 0;
     }
 }

@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword = findViewById(R.id.editText_password);
         buttonSignIn = findViewById(R.id.button_sign_in);
         textViewForgetPassword = findViewById(R.id.textView_forget_password);
+        textViewForgetPassword.setVisibility(View.INVISIBLE);
         textViewSignUp = findViewById(R.id.textView_sign_up);
 
         imageViewLogo.setImageResource(R.drawable.logo);

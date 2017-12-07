@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 public class RequestTourGuideActivity extends AppCompatActivity implements View.OnClickListener,
-        DatePickerDialog.OnDateSetListener, ValueEventListener {
+        DatePickerDialog.OnDateSetListener {
 
     private TextView textViewJumlahWisatawan;
     private TextView textViewTanggalWisata;
@@ -89,37 +89,13 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                 showDatePickerDialog(view);
                 break;
             case R.id.bt_buat_request:
-                createTourGuideRequest();
-//                TourGuideRequest tourGuideRequest = new TourGuideRequest(
-//                        firebaseUtils.getUser().getUid(),
-//                        getString(R.string.idTourGuide),
-//                        RequestTourGuideActivity.this.getResources().getInteger(R.integer.TOUR_STATUS_CREATED),
-//                        firebaseUtils.getUser().getUid() + "_" + getString(R.string.TOUR_STATUS_INPROGRESS),
-//                        getString(R.string.idTourGuide) + "_" + getString(R.string.TOUR_STATUS_INPROGRESS),
-//                        textViewTempatWisata.getText().toString(),
-//                        textViewJumlahWisatawan.getText().toString(),
-//                        textViewTanggalWisata.getText().toString()
-//                );
-//                final String keyTourGuideRequest = firebaseUtils.getRef()
-//                        .child(getString(R.string.tourGuideRequests))
-//                        .push()
-//                        .getKey();
-//                firebaseUtils.getRef()
-//                        .child(getString(R.string.tourGuideRequests))
-//                        .child(keyTourGuideRequest)
-//                        .setValue(tourGuideRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if (task.isSuccessful()) {
-//                            RequestTourGuideActivity.this.finish();
-//                        } else {
-//                            if (task.getException() != null) {
-//                                Toast.makeText(RequestTourGuideActivity.this, task.getException().getMessage(),
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    }
-//                });
+                if (isZero(textViewJumlahWisatawan)) {
+                    Toast.makeText(this, "Jumlah wisatawan harus lebih dari 0 (nol).", Toast.LENGTH_SHORT).show();
+                } else if (dateNotSet(textViewTanggalWisata)) {
+                    Toast.makeText(this, "Silahkan pilih tanggal.", Toast.LENGTH_SHORT).show();
+                } else {
+                    createTourGuideRequest();
+                }
                 break;
         }
     }
@@ -158,6 +134,17 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
                 });
     }
 
+    private boolean dateNotSet(TextView textView) {
+        String text = textView.getText().toString();
+        return text.equals(R.string.pilih_tanggal);
+    }
+
+    private boolean isZero(TextView textView) {
+        String text = textView.getText().toString();
+        int intText = Integer.valueOf(text);
+        return intText == 0;
+    }
+
     public void setNamaTempat(TextView textView) {
         Intent intent = getIntent();
         String namaTempat = intent.getStringExtra(getString(R.string.nama_tempat));
@@ -175,17 +162,6 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
-    }
-
-
     public static class DatePickerFragment extends DialogFragment {
 
         @NonNull
@@ -195,7 +171,6 @@ public class RequestTourGuideActivity extends AppCompatActivity implements View.
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
-
             return new DatePickerDialog(getActivity(), (RequestTourGuideActivity) getActivity(), year, month, day);
         }
     }

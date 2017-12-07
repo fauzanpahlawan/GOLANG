@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.fauza.golang.R;
-import com.example.fauza.golang.activity.DetailTourGuideRequestActivity;
 import com.example.fauza.golang.model.Member;
 import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
@@ -61,7 +60,7 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
         textViewTanggalWisata = view.findViewById(R.id.tv_tanggal_wisata);
         textViewStatus = view.findViewById(R.id.tv_status_request);
         buttonCancelRequest = view.findViewById(R.id.bt_cancel_request);
-        imageViewPhotoTourGuide = view.findViewById(R.id.imageView_tour_photo_guide);
+        imageViewPhotoTourGuide = view.findViewById(R.id.imageView_photo_tour_guide);
         textViewNamaTourGuide = view.findViewById(R.id.tv_nama_tour_guide);
         textViewRatingTourGuide = view.findViewById(R.id.tv_rating_tour_guide);
         imageButtonCall = view.findViewById(R.id.iBt_call);

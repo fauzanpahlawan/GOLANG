@@ -5,9 +5,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Seberapa puas anda?\n\n Berikan Rating."
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="18sp" />
+
     <ImageView
-        android:layout_width="128dp"
-        android:layout_height="170dp"
+        android:id="@+id/imageView_photo_tour_guide"
+        android:layout_width="174dp"
+        android:layout_height="232dp"
+
         android:layout_gravity="center"
         android:layout_marginTop="50dp" />
 
@@ -17,7 +28,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/memuat"
-        android:textSize="18sp" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/tv_rating_tour_guide"

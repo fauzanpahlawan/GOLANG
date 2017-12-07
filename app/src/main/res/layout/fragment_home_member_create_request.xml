@@ -66,7 +66,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView_tour_photo_guide"
+        android:id="@+id/imageView_photo_tour_guide"
         android:layout_width="128dp"
         android:layout_height="170dp"
         android:layout_gravity="center" />

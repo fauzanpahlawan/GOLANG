@@ -23,6 +23,7 @@ public class FragmentHomeTourGuide extends Fragment {
     private TextView textView;
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
+    private TextView textViewSuchEmpty;
     private RecyclerView recyclerViewListRequest;
     private ListRequestAdapter mAdapter;
 
@@ -34,7 +35,8 @@ public class FragmentHomeTourGuide extends Fragment {
 
         this.view = inflater.inflate(R.layout.fragment_home_tourguide, container, false);
         this.textView = this.view.findViewById(R.id.tv_list_request);
-        recyclerViewListRequest = this.view.findViewById(R.id.rv_request_list);
+        this.textViewSuchEmpty = this.view.findViewById(R.id.tv_such_empty);
+        this.recyclerViewListRequest = this.view.findViewById(R.id.rv_request_list);
 
         Query query = firebaseUtils.getRef()
                 .child(getString(R.string.tourGuideRequests))
@@ -47,6 +49,11 @@ public class FragmentHomeTourGuide extends Fragment {
 
         recyclerViewListRequest.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ListRequestAdapter(options, getActivity());
+//        if (mAdapter.getItemCount() == 0) {
+//            textViewSuchEmpty.setVisibility(View.VISIBLE);
+//        } else {
+//            textViewSuchEmpty.setVisibility(View.INVISIBLE);
+//        }
         recyclerViewListRequest.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 
