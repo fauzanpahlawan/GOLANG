@@ -1,7 +1,6 @@
 
 package com.example.fauza.golang.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,14 +23,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
-        FirebaseAuth.AuthStateListener, ValueEventListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ConstraintLayout layoutLoginActivity;
     private ImageView imageViewLogo;
@@ -78,11 +75,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textViewSignUp.setOnClickListener(this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseUtils.getAuth().addAuthStateListener(this);
-    }
 
     @Override
     public void onClick(View view) {
@@ -102,11 +94,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // TODO Forget Password Event.
                 break;
             case R.id.textView_sign_up:
-                explicitIntent(LoginActivity.this, DaftarActivity.class);
+                LoginActivity.this
+                        .startActivity(
+                                new Intent(LoginActivity.this, DaftarActivity.class)
+                        );
                 break;
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     private void signIn(String email, String password) {
         firebaseUtils.getAuth().signInWithEmailAndPassword(email, password)
@@ -114,10 +113,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            firebaseUtils.getAuth().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                                @Override
+                                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                                    if (firebaseAuth.getCurrentUser() != null) {
+                                        Query query = firebaseUtils.getRef()
+                                                .child(getString(R.string.members))
+                                                .child(firebaseAuth.getCurrentUser().getUid());
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Member member = dataSnapshot.getValue(Member.class);
+                                                if (member != null) {
+                                                    int type = Integer.valueOf(member.getType());
+                                                    Intent intent = new Intent(LoginActivity.this, classes[type]);
+                                                    LoginActivity.this.startActivity(intent);
+                                                    finish();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+                            });
                             Log.d(TAG, "signInWithEmail:success");
-//                            explicitIntent(LoginActivity.this, HomeMemberActivity.class);
-                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -132,17 +155,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if (firebaseAuth.getCurrentUser() != null) {
-            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-            Query query = firebaseUtils.getRef().child("members").orderByKey().equalTo(currentUser.getUid());
-            query.addValueEventListener(this);
-//            explicitIntent(LoginActivity.this, HomeMemberActivity.class);
-        }
-    }
-
     private boolean isEmpty(TextInputEditText editText, TextInputLayout textInputLayout) {
         if (TextUtils.isEmpty(editText.getText().toString())) {
             textInputLayout.setError("*Required");
@@ -151,30 +163,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             textInputLayout.setError(null);
             return false;
         }
-    }
-
-    private void explicitIntent(Activity activity, Class _class) {
-        Intent explicitIntent = new Intent(activity, _class);
-        this.startActivity(explicitIntent);
-    }
-
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-        if (dataSnapshot.getValue() != null) {
-            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                Member member = postSnapshot.getValue(Member.class);
-                if (member != null) {
-                    explicitIntent(LoginActivity.this, classes[Integer.valueOf(member.getType())]);
-                    Log.i("Login", member.getType());
-                }
-            }
-        } else {
-            Log.i("Login", "Data Empty");
-        }
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
     }
 }

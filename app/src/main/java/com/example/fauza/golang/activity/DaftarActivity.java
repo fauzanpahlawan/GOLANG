@@ -25,7 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class DaftarActivity extends AppCompatActivity implements View.OnClickListener, FirebaseAuth.AuthStateListener {
+public class DaftarActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ConstraintLayout layoutDaftarActivity;
     private ImageView imageViewLogo;
@@ -39,6 +39,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private TextInputEditText editTextPassword;
     private Toolbar toolbarMain;
     private Button buttonCreateAnAccount;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     /**
@@ -79,9 +80,8 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        firebaseUtils.getAuth().addAuthStateListener(this);
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -114,11 +114,24 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            firebaseUtils.getAuth().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                                @Override
+                                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                                    if (firebaseAuth.getCurrentUser() != null) {
+                                        String uid = firebaseAuth.getCurrentUser().getUid();
+                                        String memberName = editTextName.getText().toString();
+                                        String mobileNumber = editTextMobileNumber.getText().toString();
+                                        String email = editTextEmail.getText().toString();
+                                        writeNewMember(uid, memberName, mobileNumber, email);
+                                    }
+                                }
+                            });
+                            Intent intent = new Intent(DaftarActivity.this, HomeMemberActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                            DaftarActivity.this.startActivity(intent);
+                            finish();
                             Log.d(TAG, "createUserWithEmail:success");
-                            DaftarActivity.this.finish();
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             if (task.getException() != null) {
                                 Snackbar snackbar = Snackbar.make(layoutDaftarActivity, task.getException().getMessage(), Snackbar.LENGTH_SHORT);
@@ -129,18 +142,6 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
-    }
-
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if (firebaseAuth.getCurrentUser() != null) {
-            String uid = firebaseAuth.getCurrentUser().getUid();
-            String memberName = editTextName.getText().toString();
-            String mobileNumber = editTextMobileNumber.getText().toString();
-            String email = editTextEmail.getText().toString();
-            writeNewMember(uid, memberName, mobileNumber, email);
-            explicitIntent(this, HomeMemberActivity.class);
-        }
     }
 
     private void writeNewMember(String uid, String memberName, String mobileNumber, String email) {
@@ -201,10 +202,5 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
             textInputLayout.setErrorEnabled(false);
             return false;
         }
-    }
-
-    private void explicitIntent(Activity activity, Class _class) {
-        Intent explicitIntent = new Intent(activity, _class);
-        this.startActivity(explicitIntent);
     }
 }

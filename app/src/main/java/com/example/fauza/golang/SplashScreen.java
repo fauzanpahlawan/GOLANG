@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class SplashScreen extends AppCompatActivity implements ValueEventListener {
+public class SplashScreen extends AppCompatActivity {
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private Class[] classes;
@@ -37,8 +37,24 @@ public class SplashScreen extends AppCompatActivity implements ValueEventListene
     protected void onStart() {
         super.onStart();
         if (firebaseUtils.getUser() != null) {
-            Query query = firebaseUtils.getRef().child("members").orderByKey().equalTo(firebaseUtils.getUser().getUid());
-            query.addValueEventListener(this);
+            Query query = firebaseUtils.getRef()
+                    .child("members")
+                    .child(firebaseUtils.getUser().getUid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Member member = dataSnapshot.getValue(Member.class);
+                    if (member != null) {
+                        explicitIntent(SplashScreen.this, classes[Integer.valueOf(member.getType())]);
+                        Log.i("Login", member.getType());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         } else {
             explicitIntent(this, classes[0]);
         }
@@ -47,25 +63,5 @@ public class SplashScreen extends AppCompatActivity implements ValueEventListene
     private void explicitIntent(Activity activity, Class mClass) {
         Intent explicitIntent = new Intent(activity, mClass);
         this.startActivity(explicitIntent);
-    }
-
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-        if (dataSnapshot.getValue() != null) {
-            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                Member member = postSnapshot.getValue(Member.class);
-                if (member != null) {
-                    explicitIntent(SplashScreen.this, classes[Integer.valueOf(member.getType())]);
-                    Log.i("Login", member.getType());
-                }
-            }
-        } else {
-            Log.i("Login", "Data Empty");
-        }
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
     }
 }

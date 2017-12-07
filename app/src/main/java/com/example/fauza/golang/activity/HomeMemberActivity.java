@@ -3,6 +3,7 @@ package com.example.fauza.golang.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,7 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class HomeMemberActivity extends AppCompatActivity implements ValueEventListener {
+public class HomeMemberActivity extends AppCompatActivity {
 
     private final String TAG = "HomeMemberActivity";
 
@@ -35,12 +36,12 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
 
     private FirebaseUtils firebaseUtils = new FirebaseUtils();
     private ValueEventListener veListener;
-    private ChildEventListener ceListener;
     private Query query1;
 
     FragmentHomeMember fragmentHomeMember;
     FragmentHomeMemberCreateRequest fragmentHomeMemberCreateRequest;
     FragmentGiveRating fragmentGiveRating;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,11 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
@@ -129,17 +135,13 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_sign_out:
-                FirebaseAuth.getInstance().signOut();
-                explicitIntent(this, LoginActivity.class);
-                HomeMemberActivity.this.finish();
+                firebaseUtils.getAuth().signOut();
+                Intent intent = new Intent(HomeMemberActivity.this, LoginActivity.class);
+                HomeMemberActivity.this.startActivity(intent);
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void explicitIntent(Activity activity, Class _class) {
-        Intent explicitIntent = new Intent(activity, _class);
-        startActivity(explicitIntent);
     }
 
     private void setUser() {
@@ -147,15 +149,5 @@ public class HomeMemberActivity extends AppCompatActivity implements ValueEventL
         if (user != null) {
             this.textViewCurrentUser.setText(user.getEmail());
         }
-    }
-
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
     }
 }
