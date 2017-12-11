@@ -1,6 +1,5 @@
 package com.example.fauza.golang.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -104,6 +103,8 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.button_create_an_account:
                 if (!isEmpty(editTextName, layoutName)
                         && !isEmpty(editTextMobileNumber, layoutMobileNumber)
+                        && !isNotNumber(editTextMobileNumber, layoutMobileNumber)
+                        && !moreThanTwelve(editTextMobileNumber, layoutMobileNumber)
                         && !isEmpty(editTextEmail, layoutEmail)
                         && !invalidEmail(editTextEmail, layoutEmail)
                         && !isEmpty(editTextPassword, layoutPassword)
@@ -178,11 +179,36 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     */
 
     private boolean invalidEmail(TextInputEditText editText, TextInputLayout textInputLayout) {
-
         String email = editText.getText().toString();
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             textInputLayout.setErrorEnabled(true);
             textInputLayout.setError("Invalid email.");
+            return true;
+        } else {
+            textInputLayout.setError(null);
+            textInputLayout.setErrorEnabled(false);
+            return false;
+        }
+    }
+
+    private boolean isNotNumber(TextInputEditText editText, TextInputLayout textInputLayout) {
+        String number = editText.getText().toString();
+        if (!TextUtils.isDigitsOnly(number)) {
+            textInputLayout.setErrorEnabled(true);
+            textInputLayout.setError("Invalid Phone Number.");
+            return true;
+        } else {
+            textInputLayout.setError(null);
+            textInputLayout.setErrorEnabled(false);
+            return false;
+        }
+    }
+
+    private boolean moreThanTwelve(TextInputEditText editText, TextInputLayout textInputLayout) {
+        String number = editText.getText().toString();
+        if (number.length() > 12) {
+            textInputLayout.setErrorEnabled(true);
+            textInputLayout.setError("Invalid Phone Number.");
             return true;
         } else {
             textInputLayout.setError(null);
