@@ -2,13 +2,13 @@ package com.example.fauza.golang.model;
 
 public class Member {
 
-    public String memberName;
-    public String mobileNumher;
-    public String email;
-    public String type;
-    public String photo;
-    public float ratingPoin;
-    public float ratingVoter;
+    private String memberName;
+    private String mobileNumher;
+    private String email;
+    private String type;
+    private String photo;
+    private float ratingPoin;
+    private float ratingVoter;
 
     public Member() {
     }

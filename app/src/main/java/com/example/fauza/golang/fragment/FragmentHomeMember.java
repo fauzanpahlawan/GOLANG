@@ -1,6 +1,5 @@
 package com.example.fauza.golang.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.widget.SearchView;
 
 import com.example.fauza.golang.R;
 import com.example.fauza.golang.adapter.TempatWisataAdapter;
-import com.example.fauza.golang.utils.FirebaseUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
