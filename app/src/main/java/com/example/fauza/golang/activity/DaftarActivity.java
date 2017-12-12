@@ -131,10 +131,6 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "createUserWithEmail:success");
-                            Intent intent = new Intent(DaftarActivity.this, HomeMemberActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            DaftarActivity.this.startActivity(intent);
-                            DaftarActivity.this.finish();
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             if (task.getException() != null) {
@@ -156,6 +152,10 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
             String mobileNumber = editTextMobileNumber.getText().toString();
             String email = editTextEmail.getText().toString();
             writeNewMember(uid, memberName, mobileNumber, email);
+            Intent intent = new Intent(DaftarActivity.this, HomeMemberActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            DaftarActivity.this.startActivity(intent);
+            DaftarActivity.this.finish();
         }
         Log.w(TAG, "onAuthStateChanged");
     }
