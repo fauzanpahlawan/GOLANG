@@ -25,7 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class DaftarActivity extends AppCompatActivity implements View.OnClickListener {
+public class DaftarActivity extends AppCompatActivity implements View.OnClickListener, FirebaseAuth.AuthStateListener {
 
     private ConstraintLayout layoutDaftarActivity;
     private ImageView imageViewLogo;
@@ -54,6 +54,7 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar);
 
+        firebaseUtils.getAuth().addAuthStateListener(this);
 
         layoutDaftarActivity = findViewById(R.id.layout_activity_daftar);
         imageViewLogo = findViewById(R.id.imageView_logo);
@@ -129,23 +130,11 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            firebaseUtils.getAuth().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-                                @Override
-                                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                                    if (firebaseAuth.getCurrentUser() != null) {
-                                        String uid = firebaseAuth.getCurrentUser().getUid();
-                                        String memberName = editTextName.getText().toString();
-                                        String mobileNumber = editTextMobileNumber.getText().toString();
-                                        String email = editTextEmail.getText().toString();
-                                        writeNewMember(uid, memberName, mobileNumber, email);
-                                    }
-                                }
-                            });
+                            Log.d(TAG, "createUserWithEmail:success");
                             Intent intent = new Intent(DaftarActivity.this, HomeMemberActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             DaftarActivity.this.startActivity(intent);
                             DaftarActivity.this.finish();
-                            Log.d(TAG, "createUserWithEmail:success");
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             if (task.getException() != null) {
@@ -157,6 +146,18 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            String uid = firebaseAuth.getCurrentUser().getUid();
+            String memberName = editTextName.getText().toString();
+            String mobileNumber = editTextMobileNumber.getText().toString();
+            String email = editTextEmail.getText().toString();
+            writeNewMember(uid, memberName, mobileNumber, email);
+        }
+        Log.w(TAG, "onAuthStateChanged");
     }
 
     private void writeNewMember(String uid, String memberName, String mobileNumber, String email) {

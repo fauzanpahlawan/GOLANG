@@ -28,7 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, FirebaseAuth.AuthStateListener {
 
     private ConstraintLayout layoutLoginActivity;
     private ImageView imageViewLogo;
@@ -73,6 +73,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         buttonSignIn.setOnClickListener(this);
         textViewForgetPassword.setOnClickListener(this);
         textViewSignUp.setOnClickListener(this);
+
+        firebaseUtils.getAuth().addAuthStateListener(this);
+
     }
 
     @Override
@@ -115,33 +118,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            firebaseUtils.getAuth().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-                                @Override
-                                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                                    if (firebaseAuth.getCurrentUser() != null) {
-                                        Query query = firebaseUtils.getRef()
-                                                .child(getString(R.string.members))
-                                                .child(firebaseAuth.getCurrentUser().getUid());
-                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                Member member = dataSnapshot.getValue(Member.class);
-                                                if (member != null) {
-                                                    int type = Integer.valueOf(member.getType());
-                                                    Intent intent = new Intent(LoginActivity.this, classes[type]);
-                                                    LoginActivity.this.startActivity(intent);
-                                                    LoginActivity.this.finish();
-                                                }
-                                            }
 
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        });
-                                    }
-                                }
-                            });
                             Log.d(TAG, "signInWithEmail:success");
                         } else {
                             // If sign in fails, display a message to the user.
@@ -157,6 +134,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+
     private boolean isEmpty(TextInputEditText editText, TextInputLayout textInputLayout) {
         if (TextUtils.isEmpty(editText.getText().toString())) {
             textInputLayout.setError("*Required");
@@ -164,6 +142,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             textInputLayout.setError(null);
             return false;
+        }
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            Query query = firebaseUtils.getRef()
+                    .child(getString(R.string.members))
+                    .child(firebaseAuth.getCurrentUser().getUid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Member member = dataSnapshot.getValue(Member.class);
+                    if (member != null) {
+                        int type = Integer.valueOf(member.getType());
+                        Intent intent = new Intent(LoginActivity.this, classes[type]);
+                        LoginActivity.this.startActivity(intent);
+                        LoginActivity.this.finish();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 }
