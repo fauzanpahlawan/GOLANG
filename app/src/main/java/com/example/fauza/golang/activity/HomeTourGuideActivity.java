@@ -1,6 +1,8 @@
 package com.example.fauza.golang.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -118,10 +120,25 @@ public class HomeTourGuideActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_sign_out:
-                firebaseUtils.getAuth().signOut();
-                Intent intent = new Intent(HomeTourGuideActivity.this, LoginActivity.class);
-                HomeTourGuideActivity.this.startActivity(intent);
-                HomeTourGuideActivity.this.finish();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeTourGuideActivity.this);
+                alertDialog.setMessage("Yakin akan sign out?");
+                alertDialog.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        firebaseUtils.getAuth().signOut();
+                        Intent intent = new Intent(HomeTourGuideActivity.this, LoginActivity.class);
+                        HomeTourGuideActivity.this.startActivity(intent);
+                        HomeTourGuideActivity.this.finish();
+                    }
+                });
+                alertDialog.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Do Nothing
+                    }
+                });
+                AlertDialog signOutAlert = alertDialog.create();
+                signOutAlert.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
