@@ -23,6 +23,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Locale;
+
 public class FragmentHomeMemberCreateRequest extends Fragment implements View.OnClickListener {
     public static final String argsKeyTourGuideRequest = "tourGuideRequest";
     public static final String argsIdTourGuide = "idTourGuide";
@@ -124,10 +126,11 @@ public class FragmentHomeMemberCreateRequest extends Fragment implements View.On
                         Uri uri = Uri.parse(member.getPhoto());
                         Picasso.with(FragmentHomeMemberCreateRequest.this.getActivity()).load(uri).into(imageViewPhotoTourGuide);
                         textViewNamaTourGuide.setText(member.getMemberName());
-                        String ratingPlaceHolder = "Rating: " + String.valueOf(
-                                calculateRating(member.getRatingPoin(), member.getRatingVoter())
-                        );
-                        textViewRatingTourGuide.setText(ratingPlaceHolder);
+                        String placeHolderRating = String.format(
+                                Locale.ENGLISH,
+                                "%s %.1f", "Rating: ",
+                                calculateRating(member.getRatingPoin(), member.getRatingVoter()));
+                        textViewRatingTourGuide.setText(placeHolderRating);
                         imageButtonCall.setTag(member.getMobileNumher());
                         imageButtonMessage.setTag(member.getMobileNumher());
                         imageButtonCall.setVisibility(View.VISIBLE);
