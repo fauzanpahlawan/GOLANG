@@ -144,7 +144,6 @@ public class HomeMemberActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_sign_out:
-
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(HomeMemberActivity.this);
                 alertDialog.setMessage("Yakin akan sign out?");
                 alertDialog.setPositiveButton("Ya", new DialogInterface.OnClickListener() {

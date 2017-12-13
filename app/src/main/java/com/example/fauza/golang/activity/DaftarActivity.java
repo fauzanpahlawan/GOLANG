@@ -39,7 +39,6 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     private TextInputEditText editTextPassword;
     private Toolbar toolbarMain;
     private Button buttonCreateAnAccount;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     /**
@@ -83,19 +82,9 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                DaftarActivity.this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+        firebaseUtils.getAuth().removeAuthStateListener(this);
     }
 
     @Override
@@ -120,9 +109,16 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    /*
-    Create Account Starts here
-    */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                DaftarActivity.this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     private void createAccount(String email, String password) {
         firebaseUtils.getAuth().createUserWithEmailAndPassword(email, password)
@@ -144,22 +140,6 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                 });
     }
 
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if (firebaseAuth.getCurrentUser() != null) {
-            String uid = firebaseAuth.getCurrentUser().getUid();
-            String memberName = editTextName.getText().toString();
-            String mobileNumber = editTextMobileNumber.getText().toString();
-            String email = editTextEmail.getText().toString();
-            writeNewMember(uid, memberName, mobileNumber, email);
-            Intent intent = new Intent(DaftarActivity.this, HomeMemberActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            DaftarActivity.this.startActivity(intent);
-            DaftarActivity.this.finish();
-        }
-        Log.w(TAG, "onAuthStateChanged");
-    }
-
     private void writeNewMember(String uid, String memberName, String mobileNumber, String email) {
         Member member = new Member(
                 memberName,
@@ -175,9 +155,21 @@ public class DaftarActivity extends AppCompatActivity implements View.OnClickLis
                 .setValue(member);
     }
 
-    /*
-    End of Create Account
-    */
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            String uid = firebaseAuth.getCurrentUser().getUid();
+            String memberName = editTextName.getText().toString();
+            String mobileNumber = editTextMobileNumber.getText().toString();
+            String email = editTextEmail.getText().toString();
+            writeNewMember(uid, memberName, mobileNumber, email);
+            Intent intent = new Intent(DaftarActivity.this, HomeMemberActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            DaftarActivity.this.startActivity(intent);
+            DaftarActivity.this.finish();
+        }
+        Log.w(TAG, "onAuthStateChanged");
+    }
 
     private boolean invalidEmail(TextInputEditText editText, TextInputLayout textInputLayout) {
         String email = editText.getText().toString();

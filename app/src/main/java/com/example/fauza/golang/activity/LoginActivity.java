@@ -75,7 +75,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         textViewSignUp.setOnClickListener(this);
 
         firebaseUtils.getAuth().addAuthStateListener(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        firebaseUtils.getAuth().removeAuthStateListener(this);
     }
 
     @Override
@@ -84,7 +89,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
     }
-
 
     @Override
     public void onClick(View view) {
@@ -118,7 +122,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             Log.d(TAG, "signInWithEmail:success");
                         } else {
                             // If sign in fails, display a message to the user.
@@ -132,17 +135,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 });
-    }
-
-
-    private boolean isEmpty(TextInputEditText editText, TextInputLayout textInputLayout) {
-        if (TextUtils.isEmpty(editText.getText().toString())) {
-            textInputLayout.setError("*Required");
-            return true;
-        } else {
-            textInputLayout.setError(null);
-            return false;
-        }
     }
 
     @Override
@@ -168,6 +160,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 }
             });
+        }
+    }
+
+    private boolean isEmpty(TextInputEditText editText, TextInputLayout textInputLayout) {
+        if (TextUtils.isEmpty(editText.getText().toString())) {
+            textInputLayout.setError("*Required");
+            return true;
+        } else {
+            textInputLayout.setError(null);
+            return false;
         }
     }
 }
