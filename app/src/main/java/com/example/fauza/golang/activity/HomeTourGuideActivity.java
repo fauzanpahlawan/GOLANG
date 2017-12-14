@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,12 +18,13 @@ import com.example.fauza.golang.fragment.FragmentHomeTourGuide;
 import com.example.fauza.golang.fragment.FragmentHomeTourGuideConfirmRequest;
 import com.example.fauza.golang.model.TourGuideRequest;
 import com.example.fauza.golang.utils.FirebaseUtils;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class HomeTourGuideActivity extends AppCompatActivity {
+public class HomeTourGuideActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
 
     private TextView textViewCurrentUser;
     private Toolbar toolbarHome;
@@ -49,6 +51,8 @@ public class HomeTourGuideActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        firebaseUtils.getAuth().addAuthStateListener(this);
     }
 
     @Override
@@ -109,6 +113,11 @@ public class HomeTourGuideActivity extends AppCompatActivity {
         query.removeEventListener(veListener);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        firebaseUtils.getAuth().removeAuthStateListener(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -126,9 +135,6 @@ public class HomeTourGuideActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         firebaseUtils.getAuth().signOut();
-                        Intent intent = new Intent(HomeTourGuideActivity.this, LoginActivity.class);
-                        HomeTourGuideActivity.this.startActivity(intent);
-                        HomeTourGuideActivity.this.finish();
                     }
                 });
                 alertDialog.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
@@ -144,6 +150,15 @@ public class HomeTourGuideActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if (firebaseAuth.getCurrentUser() == null) {
+            Intent intent = new Intent(HomeTourGuideActivity.this, LoginActivity.class);
+            HomeTourGuideActivity.this.startActivity(intent);
+            HomeTourGuideActivity.this.finish();
+        }
+    }
 
     private void setUser() {
         if (firebaseUtils.getUser() != null) {

@@ -29,7 +29,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class HomeMemberActivity extends AppCompatActivity {
+public class HomeMemberActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
 
     private final String TAG = "HomeMemberActivity";
 
@@ -61,6 +61,8 @@ public class HomeMemberActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+
+        firebaseUtils.getAuth().addAuthStateListener(this);
     }
 
     @Override
@@ -132,6 +134,7 @@ public class HomeMemberActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        firebaseUtils.getAuth().removeAuthStateListener(this);
     }
 
     @Override
@@ -150,9 +153,6 @@ public class HomeMemberActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         firebaseUtils.getAuth().signOut();
-                        Intent intent = new Intent(HomeMemberActivity.this, LoginActivity.class);
-                        HomeMemberActivity.this.startActivity(intent);
-                        HomeMemberActivity.this.finish();
                     }
                 });
                 alertDialog.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
@@ -166,6 +166,15 @@ public class HomeMemberActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        if (firebaseAuth.getCurrentUser() == null) {
+            Intent intent = new Intent(HomeMemberActivity.this, LoginActivity.class);
+            HomeMemberActivity.this.startActivity(intent);
+            HomeMemberActivity.this.finish();
+        }
     }
 
     private void setUser() {
