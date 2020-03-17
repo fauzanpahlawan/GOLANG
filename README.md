@@ -5,4 +5,4 @@ Go-Lang is abbreviation of Go Petualang(Adventure), Petualang is Adventure in in
 
 Go-Lang will match tourists that need a professional and reliable Tour Guide for their adventure in East Java, Malang City.
 
-Go-Lang developed using Firebase realtime-database.
+Go-Lang developed using Android Studio Java and Google Firebase realtime-database.
